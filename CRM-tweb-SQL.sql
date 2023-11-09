@@ -21,7 +21,7 @@ SET default_table_access_method = heap;
 
 
 -- Create the "Employees" table and change owner to 'jakarta'
-CREATE TABLE Employees (
+CREATE TABLE Users (
     id serial PRIMARY KEY,
     name VARCHAR(50) NOT NULL,
     email VARCHAR(100) UNIQUE NOT NULL,
@@ -30,7 +30,7 @@ CREATE TABLE Employees (
     username VARCHAR(30) UNIQUE NOT NULL,
     password VARCHAR(100) NOT NULL
 );
-ALTER TABLE CRM-tweb.Employees OWNER TO jakarta;
+ALTER TABLE CRM-tweb.Users OWNER TO jakarta;
 
 
 -- Create the "Customers" table and change owner to 'jakarta'
@@ -47,15 +47,16 @@ ALTER TABLE CRM-tweb.Customers OWNER TO jakarta;
 
 
 -- Create the "Contacts" table and change owner to 'jakarta'
-CREATE TABLE Contacts (
+CREATE TABLE Providers (
     id serial PRIMARY KEY,
-    name VARCHAR(50) NOT NULL,
-    role VARCHAR(50),
-    contact_info TEXT,
-    preferences TEXT[],
-    customer_id INT REFERENCES Customers(id)
+    company_name VARCHAR(100) NOT NULL,
+    primary_contact VARCHAR(50),
+    address TEXT,
+    phone VARCHAR(15),
+    email VARCHAR(100) UNIQUE NOT NULL,
+    supply_history TEXT[]
 );
-ALTER TABLE CRM-tweb.Contacts OWNER TO jakarta;
+ALTER TABLE CRM-tweb.Providers OWNER TO jakarta;
 
 
 -- Create the "Documents" table and change owner to 'jakarta'
@@ -91,8 +92,8 @@ CREATE TABLE Products_Services (
 );
 ALTER TABLE Products_Services OWNER TO jakarta;
 
--- Insert random data into the "Employees" table
-INSERT INTO CRM-tweb.Employees (name, email, role, phone, username, password)
+-- Insert data into the "Employees" table
+INSERT INTO CRM-tweb.Users (name, email, role, phone, username, password)
 VALUES
     ('Marco Rossi', 'marco.rossi@email.com', 'Manager', '123-456-7890', 'marco123', 'password1'),
     ('Anna Bianchi', 'anna.bianchi@email.com', 'Sales Rep', '987-654-3210', 'anna456', 'password2'),
@@ -110,8 +111,8 @@ VALUES
     ('Antonio Russo', 'antonio.russo@email.com', 'Sales Rep', '777-666-5555', 'antonio456', 'password14'),
     ('Giulia Bellini', 'giulia.bellini@email.com', 'Support', '333-444-5555', 'giulia789', 'password15');
 
--- Insert random data into the "Customers" table
-INSERT INTO Customers (company_name, primary_contact, address, phone, email, purchase_history)
+-- Insert data into the "Customers" table
+INSERT INTO CRM-tweb.Customers (company_name, primary_contact, address, phone, email, purchase_history)
 VALUES
     ('ABC Company', 'Maria Esposito', '123 Main St, Milan', '555-123-4567', 'info@abc.com', ARRAY['2023-10-05', '2023-08-15']),
     ('XYZ Corporation', 'Roberto Russo', '456 Elm St, Rome', '333-987-6543', 'contact@xyzcorp.com', ARRAY['2023-09-20']),
@@ -129,26 +130,26 @@ VALUES
     ('JKL Corporation', 'Alessio Rinaldi', '567 Elm St, Rome', '888-777-6666', 'contact@jklcorp.com', ARRAY['2023-09-30']),
     ('MNO Ltd', 'Laura Ferrara', '789 Oak St, Venice', '222-111-3333', 'info@mnoltd.com', ARRAY['2023-09-22']);
 
--- Insert random data into the "Contacts" table
-INSERT INTO Contacts (name, role, contact_info, preferences, customer_id)
+-- Insert data into the "Contacts" table
+INSERT INTO CRM_tweb.Providers (company_name, primary_contact, address, phone, email, supply_history)
 VALUES
-    ('Giorgio Moretti', 'Purchasing Manager', 'giorgio.moretti@email.com, 555-987-1234', ARRAY['Email'], 1),
-    ('Sara Costa', 'Sales Representative', 'sara.costa@email.com, 333-555-7777', ARRAY['Phone'], 2),
-    ('Luigi Bellini', 'Account Manager', 'luigi.bellini@email.com, 111-222-3333', ARRAY['Email', 'Phone'], 3),
-    ('Valentina Mancini', 'Purchasing Manager', 'valentina.mancini@email.com, 777-888-9999', ARRAY['Email', 'Phone'], 4),
-    ('Roberto Pellegrini', 'Sales Representative', 'roberto.pellegrini@email.com, 444-555-6666', ARRAY['Email'], 5),
-    ('Elisa Rinaldi', 'Account Manager', 'elisa.rinaldi@email.com, 222-333-4444', ARRAY['Phone'], 6),
-    ('Giovanni Ferrara', 'Purchasing Manager', 'giovanni.ferrara@email.com, 333-444-5555', ARRAY['Email', 'Phone'], 7),
-    ('Maria Vitale', 'Sales Representative', 'maria.vitale@email.com, 555-666-7777', ARRAY['Email'], 8),
-    ('Carla Barbieri', 'Account Manager', 'carla.barbieri@email.com, 777-888-9999', ARRAY['Phone'], 9),
-    ('Sofia Russo', 'Purchasing Manager', 'sofia.russo@email.com, 222-111-3333', ARRAY['Email', 'Phone'], 10),
-    ('Roberto Conti', 'Sales Representative', 'roberto.conti@email.com, 555-333-4444', ARRAY['Email'], 11),
-    ('Alessio Ferrari', 'Account Manager', 'alessio.ferrari@email.com, 111-222-3333', ARRAY['Phone'], 12),
-    ('Laura Bianchi', 'Purchasing Manager', 'laura.bianchi@email.com, 333-444-5555', ARRAY['Email', 'Phone'], 13),
-    ('Antonio Rinaldi', 'Sales Representative', 'antonio.rinaldi@email.com, 555-666-7777', ARRAY['Email'], 14),
-    ('Giulia Pellegrini', 'Account Manager', 'giulia.pellegrini@email.com, 777-888-9999', ARRAY['Phone'], 15);
+    ('SupplyTech Ltd', 'Marco Rossi', '456 Oak St, Milan', '555-123-4567', 'marco@supplytech.com', ARRAY['2023-10-05', '2023-08-15']),
+    ('Global Supplies', 'Laura Bianchi', '789 Elm St, Rome', '333-987-6543', 'laura@globalsupplies.com', ARRAY['2023-09-20']),
+    ('Innovative Solutions', 'Antonio Ferrari', '123 Pine St, Venice', '222-444-8888', 'antonio@innovativesolutions.com', ARRAY['2023-10-10']),
+    ('Supply Dynamics', 'Giulia Moretti', '567 Birch St, Florence', '111-222-3333', 'giulia@supplydynamics.com', ARRAY['2023-11-01']),
+    ('Tech Supplies Co.', 'Roberto De Luca', '678 Maple St, Naples', '777-555-4444', 'roberto@techsuppliesco.com', ARRAY['2023-09-12']),
+    ('Future Supplies', 'Elena Rinaldi', '789 Oak St, Turin', '888-777-6666', 'elena@futuresupplies.com', ARRAY['2023-09-25']),
+    ('Global Innovations', 'Giovanni Vitale', '456 Elm St, Bologna', '999-888-7777', 'giovanni@globalinnovations.com', ARRAY['2023-10-20']),
+    ('Smart Suppliers', 'Sara Barbieri', '123 Pine St, Florence', '444-555-6666', 'sara@smartsuppliers.com', ARRAY['2023-08-28']),
+    ('Dynamic Tech', 'Luca Pellegrini', '345 Oak St, Rome', '555-666-7777', 'luca@dynamictech.com', ARRAY['2023-07-15']),
+    ('Innovate Supplies', 'Sofia Ferrara', '567 Elm St, Venice', '333-444-5555', 'sofia@innovatesupplies.com', ARRAY['2023-09-05']),
+    ('Global Dynamics', 'Alessio De Luca', '678 Birch St, Naples', '777-888-9999', 'alessio@globaldynamics.com', ARRAY['2023-11-10']),
+    ('Tech Co.', 'Carla Ferrari', '456 Pine St, Florence', '111-222-3333', 'carla@techco.com', ARRAY['2023-10-15']),
+    ('Future Innovations', 'Marco Bianchi', '123 Maple St, Turin', '555-333-4444', 'marco@futureinnovations.com', ARRAY['2023-09-18']),
+    ('Dynamic Corporation', 'Sara Rinaldi', '567 Elm St, Rome', '888-777-6666', 'sara@dynamiccorp.com', ARRAY['2023-09-30']),
+    ('Innovate Ltd', 'Giovanni Ferrara', '789 Oak St, Venice', '222-111-3333', 'giovanni@innovateltd.com', ARRAY['2023-09-22']);
 
--- Insert random data into the "Documents" table
+-- Insert data into the "Documents" table
 INSERT INTO Documents (document_name, document_type, document_url, customer_id)
 VALUES
     ('Contract 1', 'Contract', 'http://example.com/contract1.pdf', 1),
@@ -167,7 +168,7 @@ VALUES
     ('Proposal 5', 'Proposal', 'http://example.com/proposal5.pdf', 14),
     ('Invoice 5', 'Invoice', 'http://example.com/invoice5.pdf', 15);
 
--- Insert random data into the "Activities" table
+-- Insert data into the "Activities" table
 INSERT INTO Activities (activity_type, activity_date, responsible, customer_id)
 VALUES
     ('Meeting', '2023-10-01', 1, 1),
@@ -186,7 +187,7 @@ VALUES
     ('Call', '2023-09-18', 14, 14),
     ('Email', '2023-09-22', 15, 15);
 
--- Insert random data into the "Products_Services" table
+-- Insert data into the "Products_Services" table
 INSERT INTO Products_Services (product_name, product_code, description, price, inventory)
 VALUES
     ('Product A', 'PA001', 'High-quality product A', 99.99, 50),
@@ -205,3 +206,56 @@ VALUES
     ('Service T', 'ST003', 'Reliable service T', 179.99, 70),
     ('Product H', 'PH008', 'Durable product H', 109.99, 25);
 
+-- Primary key for the Users table
+ALTER TABLE ONLY CRM-tweb.Users
+    ADD CONSTRAINT users_pk PRIMARY KEY (id);
+
+-- Primary key for the Customers table
+ALTER TABLE ONLY CRM-tweb.Customers
+    ADD CONSTRAINT customers_pk PRIMARY KEY (id);
+
+-- Primary key for the Providers table
+ALTER TABLE ONLY CRM-tweb.Providers
+    ADD CONSTRAINT providers_pk PRIMARY KEY (id);
+
+-- Primary key for the Documents table
+ALTER TABLE ONLY CRM-tweb.Documents
+    ADD CONSTRAINT documents_pk PRIMARY KEY (id);
+
+-- Primary key for the Activities table
+ALTER TABLE ONLY CRM-tweb.Activities
+    ADD CONSTRAINT activities_pk PRIMARY KEY (id);
+
+-- Primary key for the Products_Services table
+ALTER TABLE ONLY CRM-tweb.Products_Services
+    ADD CONSTRAINT products_services_pk PRIMARY KEY (id);
+
+-- Foreign key for the relationship between Activities and Users
+ALTER TABLE ONLY CRM-tweb.Activities
+    ADD CONSTRAINT fk_activities_responsible_user
+    FOREIGN KEY (responsible)
+    REFERENCES CRM-tweb.Users(id);
+
+-- Foreign key for the relationship between Activities and Customers
+ALTER TABLE ONLY CRM-tweb.Activities
+    ADD CONSTRAINT fk_activities_customer
+    FOREIGN KEY (customer_id)
+    REFERENCES CRM-tweb.Customers(id);
+
+-- Foreign key for the relationship between Documents and Customers
+ALTER TABLE ONLY CRM-tweb.Documents
+    ADD CONSTRAINT fk_documents_customer
+    FOREIGN KEY (customer_id)
+    REFERENCES CRM-tweb.Customers(id);
+
+-- Foreign key for the relationship between Documents and Users
+ALTER TABLE ONLY CRM-tweb.Documents
+    ADD CONSTRAINT fk_documents_created_by
+    FOREIGN KEY (created_by)
+    REFERENCES CRM-tweb.Users(id);
+
+-- Foreign key for the relationship between Activities and Products_Services
+ALTER TABLE ONLY CRM-tweb.Activities
+    ADD CONSTRAINT fk_activities_product_service
+    FOREIGN KEY (product_service_id)
+    REFERENCES CRM-tweb.Products_Services(id);
