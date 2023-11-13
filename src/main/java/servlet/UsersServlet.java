@@ -16,7 +16,7 @@ import java.util.ArrayList;
 import java.util.HashMap;
 import java.util.Map;
 
-@WebServlet(name = "RPGPC-Party-Servlet", urlPatterns = {"/parties", "/parties/member/add", "/parties/member/remove"})
-public class CRMUsersServlet extends HttpServlet {
+@WebServlet(name = "Users-Servlet", urlPatterns = {})
+public class UsersServlet extends HttpServlet {
 
 }

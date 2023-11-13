@@ -13,9 +13,9 @@ import java.io.BufferedReader;
 import java.io.IOException;
 import java.io.PrintWriter;
 
-@WebServlet(name = "CRM-Login-Servlet",
+@WebServlet(name = "Login-Servlet",
         urlPatterns = {LoginService.LOGIN_PATH, LoginService.LOGOUT_PATH})
-public class CRMLoginServlet extends HttpServlet {
+public class LoginServlet extends HttpServlet {
 
     public void init() {
 
