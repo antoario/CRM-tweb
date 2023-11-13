@@ -4,10 +4,10 @@
          xsi:schemaLocation="http://maven.apache.org/POM/4.0.0 http://maven.apache.org/xsd/maven-4.0.0.xsd">
     <modelVersion>4.0.0</modelVersion>
 
-    <groupId>CRM-tweb</groupId>
-    <artifactId>CRM-tweb</artifactId>
+    <groupId>crmtweb</groupId>
+    <artifactId>crmtweb</artifactId>
     <version>1.0-SNAPSHOT</version>
-    <name>CRM-tweb</name>
+    <name>crmtweb</name>
     <packaging>war</packaging>
 
     <properties>
@@ -49,6 +49,6 @@
                 <version>3.3.2</version>
             </plugin>
         </plugins>
-        <finalName>CRM-tweb</finalName>
+        <finalName>crmtweb</finalName>
     </build>
 </project>
