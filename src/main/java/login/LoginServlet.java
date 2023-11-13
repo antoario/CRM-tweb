@@ -7,7 +7,6 @@ import jakarta.servlet.http.HttpServlet;
 import jakarta.servlet.http.HttpServletRequest;
 import jakarta.servlet.http.HttpServletResponse;
 import login.LoginService;
-import rpgdb.PartyManagerDB;
 
 import java.io.BufferedReader;
 import java.io.IOException;
@@ -17,9 +16,10 @@ import java.io.PrintWriter;
         urlPatterns = {LoginService.LOGIN_PATH, LoginService.LOGOUT_PATH})
 public class LoginServlet extends HttpServlet {
 
-    public void init() {
+    public void init() {}
 
-    }
+
+    /* CODICE DELLA PROF(non funziona con il nostro codice, è da modificare)
 
     public void doGet(HttpServletRequest request, HttpServletResponse response) throws IOException {
 
@@ -100,8 +100,7 @@ public class LoginServlet extends HttpServlet {
             out.println(result);
         } else response.sendError(HttpServletResponse.SC_NOT_FOUND);
     }
+    */
 
-
-    public void destroy() {
-    }
+    public void destroy() {}
 }
