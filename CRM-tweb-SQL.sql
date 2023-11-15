@@ -14,14 +14,14 @@ SET row_security = off;
 
 -- Create the CRMtweb database
 CREATE SCHEMA CRMtweb;
-ALTER SCHEMA CRMtweb OWNER TO jakarta;
+ALTER SCHEMA CRMtweb OWNER TO admin;
 
 SET default_tablespace = '';
 SET default_table_access_method     = heap;
 
 
 
--- Create the users table, change owner to 'jakarta' and create ID sequence
+-- Create the users table, change owner to 'admin' and create ID sequence
 CREATE TABLE CRMtweb.users (
     id INTEGER PRIMARY KEY NOT NULL,
     name VARCHAR(50) NOT NULL,
@@ -31,7 +31,7 @@ CREATE TABLE CRMtweb.users (
     username VARCHAR(30) UNIQUE NOT NULL,
     password VARCHAR(100) NOT NULL
 );
-ALTER TABLE CRMtweb.users OWNER TO jakarta;
+ALTER TABLE CRMtweb.users OWNER TO admin;
 
 CREATE SEQUENCE CRMtweb.users_id_seq
     AS integer
@@ -41,12 +41,12 @@ CREATE SEQUENCE CRMtweb.users_id_seq
     NO MAXVALUE
     CACHE 1;
 
-ALTER SEQUENCE CRMtweb.users_id_seq OWNER TO jakarta;
+ALTER SEQUENCE CRMtweb.users_id_seq OWNER TO admin;
 ALTER SEQUENCE CRMtweb.users_id_seq OWNED BY CRMtweb.users.id;
 
 
 
--- Create the customers table, change owner to 'jakarta' and create ID sequence
+-- Create the customers table, change owner to 'admin' and create ID sequence
 CREATE TABLE CRMtweb.customers (
     id INTEGER PRIMARY KEY NOT NULL,
     company_name VARCHAR(100) NOT NULL,
@@ -56,7 +56,7 @@ CREATE TABLE CRMtweb.customers (
     email VARCHAR(100) UNIQUE NOT NULL,
     purchase_history TEXT[]
 );
-ALTER TABLE CRMtweb.customers OWNER TO jakarta;
+ALTER TABLE CRMtweb.customers OWNER TO admin;
 
 CREATE SEQUENCE CRMtweb.customers_id_seq
     AS integer
@@ -66,12 +66,12 @@ CREATE SEQUENCE CRMtweb.customers_id_seq
     NO MAXVALUE
     CACHE 1;
 
-ALTER SEQUENCE CRMtweb.customers_id_seq OWNER TO jakarta;
+ALTER SEQUENCE CRMtweb.customers_id_seq OWNER TO admin;
 ALTER SEQUENCE CRMtweb.customers_id_seq OWNED BY CRMtweb.customers.id;
 
 
 
--- Create the providers table, change owner to 'jakarta' and create ID sequence
+-- Create the providers table, change owner to 'admin' and create ID sequence
 CREATE TABLE CRMtweb.providers (
     id INTEGER PRIMARY KEY NOT NULL,
     company_name VARCHAR(100) NOT NULL,
@@ -81,7 +81,7 @@ CREATE TABLE CRMtweb.providers (
     email VARCHAR(100) UNIQUE NOT NULL,
     supply_history TEXT[]
 );
-ALTER TABLE CRMtweb.providers OWNER TO jakarta;
+ALTER TABLE CRMtweb.providers OWNER TO admin;
 
 CREATE SEQUENCE CRMtweb.providers_id_seq
     AS integer
@@ -91,12 +91,12 @@ CREATE SEQUENCE CRMtweb.providers_id_seq
     NO MAXVALUE
     CACHE 1;
 
-ALTER SEQUENCE CRMtweb.providers_id_seq OWNER TO jakarta;
+ALTER SEQUENCE CRMtweb.providers_id_seq OWNER TO admin;
 ALTER SEQUENCE CRMtweb.providers_id_seq OWNED BY CRMtweb.providers.id;
 
 
 
--- Create the customers_documents table, change owner to 'jakarta' and create ID sequence
+-- Create the customers_documents table, change owner to 'admin' and create ID sequence
 CREATE TABLE CRMtweb.customers_documents (
     id INTEGER PRIMARY KEY NOT NULL,
     document_name VARCHAR(100) NOT NULL,
@@ -105,7 +105,7 @@ CREATE TABLE CRMtweb.customers_documents (
     customer_id INT REFERENCES CRMtweb.customers(id),
 	created_by INTEGER REFERENCES CRMtweb.users(id)
 );
-ALTER TABLE CRMtweb.customers_documents OWNER TO jakarta;
+ALTER TABLE CRMtweb.customers_documents OWNER TO admin;
 
 CREATE SEQUENCE CRMtweb.customers_documents_id_seq
     AS integer
@@ -115,12 +115,12 @@ CREATE SEQUENCE CRMtweb.customers_documents_id_seq
     NO MAXVALUE
     CACHE 1;
 
-ALTER SEQUENCE CRMtweb.customers_documents_id_seq OWNER TO jakarta;
+ALTER SEQUENCE CRMtweb.customers_documents_id_seq OWNER TO admin;
 ALTER SEQUENCE CRMtweb.customers_documents_id_seq OWNED BY CRMtweb.customers_documents.id;
 
 
 
--- Create the providers_documents table, change owner to 'jakarta' and create ID sequence
+-- Create the providers_documents table, change owner to 'admin' and create ID sequence
 CREATE TABLE CRMtweb.providers_documents (
     id INTEGER PRIMARY KEY NOT NULL,
     document_name VARCHAR(100) NOT NULL,
@@ -129,7 +129,7 @@ CREATE TABLE CRMtweb.providers_documents (
     providers_id INT REFERENCES CRMtweb.providers(id),
 	created_by INTEGER REFERENCES CRMtweb.users(id)
 );
-ALTER TABLE CRMtweb.providers_documents OWNER TO jakarta;
+ALTER TABLE CRMtweb.providers_documents OWNER TO admin;
 
 CREATE SEQUENCE CRMtweb.providers_documents_id_seq
     AS integer
@@ -139,12 +139,12 @@ CREATE SEQUENCE CRMtweb.providers_documents_id_seq
     NO MAXVALUE
     CACHE 1;
 
-ALTER SEQUENCE CRMtweb.providers_documents_id_seq OWNER TO jakarta;
+ALTER SEQUENCE CRMtweb.providers_documents_id_seq OWNER TO admin;
 ALTER SEQUENCE CRMtweb.providers_documents_id_seq OWNED BY CRMtweb.providers_documents.id;
 
 
 
--- Create the customers_activities table, change owner to 'jakarta' and create ID sequence
+-- Create the customers_activities table, change owner to 'admin' and create ID sequence
 CREATE TABLE CRMtweb.customers_activities (
     id INTEGER PRIMARY KEY NOT NULL,
     activity_type VARCHAR(50) NOT NULL,
@@ -152,7 +152,7 @@ CREATE TABLE CRMtweb.customers_activities (
     responsible INT REFERENCES CRMtweb.users(id),
     customer_id INT REFERENCES CRMtweb.customers(id)
 );
-ALTER TABLE CRMtweb.customers_activities OWNER TO jakarta;
+ALTER TABLE CRMtweb.customers_activities OWNER TO admin;
 
 CREATE SEQUENCE CRMtweb.customers_activities_id_seq
     AS integer
@@ -162,12 +162,12 @@ CREATE SEQUENCE CRMtweb.customers_activities_id_seq
     NO MAXVALUE
     CACHE 1;
 
-ALTER SEQUENCE CRMtweb.customers_activities_id_seq OWNER TO jakarta;
+ALTER SEQUENCE CRMtweb.customers_activities_id_seq OWNER TO admin;
 ALTER SEQUENCE CRMtweb.customers_activities_id_seq OWNED BY CRMtweb.customers_activities.id;
 
 
 
--- Create the providersactivities table, change owner to 'jakarta' and create ID sequence
+-- Create the providersactivities table, change owner to 'admin' and create ID sequence
 CREATE TABLE CRMtweb.providers_activities (
     id INTEGER PRIMARY KEY NOT NULL,
     activity_type VARCHAR(50) NOT NULL,
@@ -175,7 +175,7 @@ CREATE TABLE CRMtweb.providers_activities (
     responsible INT REFERENCES CRMtweb.users(id),
     provider_id INT REFERENCES CRMtweb.providers(id)
 );
-ALTER TABLE CRMtweb.providers_activities OWNER TO jakarta;
+ALTER TABLE CRMtweb.providers_activities OWNER TO admin;
 
 CREATE SEQUENCE CRMtweb.providers_activities_id_seq
     AS integer
@@ -185,11 +185,11 @@ CREATE SEQUENCE CRMtweb.providers_activities_id_seq
     NO MAXVALUE
     CACHE 1;
 
-ALTER SEQUENCE CRMtweb.providers_activities_id_seq OWNER TO jakarta;
+ALTER SEQUENCE CRMtweb.providers_activities_id_seq OWNER TO admin;
 ALTER SEQUENCE CRMtweb.providers_activities_id_seq OWNED BY CRMtweb.providers_activities.id;
 
 
--- Create the products_services table, change owner to 'jakarta' and create ID sequence
+-- Create the products_services table, change owner to 'admin' and create ID sequence
 CREATE TABLE CRMtweb.products_services (
     id INTEGER PRIMARY KEY NOT NULL,
     product_name VARCHAR(100) NOT NULL,
@@ -198,7 +198,7 @@ CREATE TABLE CRMtweb.products_services (
     price DECIMAL(10, 2),
     inventory INT
 );
-ALTER TABLE CRMtweb.products_services OWNER TO jakarta;
+ALTER TABLE CRMtweb.products_services OWNER TO admin;
 
 CREATE SEQUENCE CRMtweb.products_services_id_seq
     AS integer
@@ -208,7 +208,7 @@ CREATE SEQUENCE CRMtweb.products_services_id_seq
     NO MAXVALUE
     CACHE 1;
 
-ALTER SEQUENCE CRMtweb.products_services_id_seq OWNER TO jakarta;
+ALTER SEQUENCE CRMtweb.products_services_id_seq OWNER TO admin;
 ALTER SEQUENCE CRMtweb.products_services_id_seq OWNED BY CRMtweb.products_services.id;
 
 
