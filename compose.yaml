@@ -1,0 +1,45 @@
+version: '3.8'
+
+services:
+  tomcat:
+    build: ./backend
+    ports:
+      - "8080:8080"
+    volumes:
+      - ./backend/target/crmtweb.war:/usr/local/tomcat/webapps/crmtweb.war
+    networks:
+      - mynetwork
+
+
+  db:
+    image: postgres
+    environment:
+      POSTGRES_DB: crmtweb
+      POSTGRES_USER: admin
+      POSTGRES_PASSWORD: admin
+    volumes:
+      - postgres_data:/var/lib/postgresql/data
+    ports:
+      - "5432:5432"
+    networks:
+      - mynetwork
+
+  adminer:
+    image: adminer
+    ports:
+      - "5050:8080"
+
+  angular:
+    build: ./frontend
+    ports:
+      - "4300:80"
+    volumes:
+      - ./frontend:/app
+    # command: ng serve --host 0.0.0.0
+
+volumes:
+  postgres_data:
+  pgadmin_data:
+
+networks:
+  mynetwork:
