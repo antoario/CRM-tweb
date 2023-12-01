@@ -84,9 +84,5 @@
       "ID_user": 1,
       "ID_provider": 1
     }
-  ],
-
-  "login:": {
-    "responde": {""}
-  }
+  ]
 }

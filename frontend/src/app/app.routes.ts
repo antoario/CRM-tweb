@@ -1,8 +1,9 @@
-import { Routes } from '@angular/router';
-import { UtentiComponent } from './routes/utenti/utenti.component';
-import { canActivateTeam } from './guard';
-import { EveryoneComponent } from './routes/everyone/everyone.component';
-import { LoggedHomeComponent } from './routes/logged-home/logged-home.component';
+import { Routes } from '@angular/router'
+import { UtentiComponent } from './routes/utenti/utenti.component'
+
+import { EveryoneComponent } from './routes/everyone/everyone.component'
+import { LoggedHomeComponent } from './routes/logged-home/logged-home.component'
+import { canActivateIfLoggedIn } from './guard'
 
 export const routesLogged: Routes = [
   {
@@ -17,14 +18,14 @@ export const routesLogged: Routes = [
     component: UtentiComponent,
     data: { icon: 'settings' },
   },
-];
+]
 export const routes: Routes = [
   { path: '', component: EveryoneComponent },
   {
     title: 'logged',
     path: 'logged',
     component: LoggedHomeComponent,
-    canActivate: [canActivateTeam],
+    canActivate: [canActivateIfLoggedIn],
     children: routesLogged,
   },
-];
+]

@@ -6,7 +6,7 @@ services:
     ports:
       - "8080:8080"
     volumes:
-      - ./backend/target/crmtweb.war:/usr/local/tomcat/webapps/crmtweb.war
+      - ./backend/target/crmtweb.war:/usr/local/tomcat/webapps/ROOT.war
     networks:
       - mynetwork
 

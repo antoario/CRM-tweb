@@ -1,29 +1,57 @@
-import { inject, Injectable } from '@angular/core';
-import { environment } from '../environments/environment';
-import {
-  ActivatedRouteSnapshot,
-  CanActivateFn,
-  RouterStateSnapshot,
-} from '@angular/router';
-import { User } from './types';
-import { catchError, Observable, of } from 'rxjs';
-import { HttpClient } from '@angular/common/http';
+import { inject, Injectable } from '@angular/core'
+import { environment } from '../environments/environment'
+import { ActivatedRouteSnapshot, CanActivateFn, RouterStateSnapshot } from '@angular/router'
+import { User } from './types'
+import { BehaviorSubject, map, Observable } from 'rxjs'
+import { HttpClient } from '@angular/common/http'
 
-@Injectable({
-  providedIn: 'root',
-})
+@Injectable()
 export class UserService {
-  private currentUser: User | null = null;
+  private currentUser: BehaviorSubject<User | null> = new BehaviorSubject<User | null>(null)
 
-  constructor(private http: HttpClient) {}
+  constructor(private http: HttpClient) {
+    this.loadUserFromToken()
+  }
 
-  login(email: string, password: string): Observable<any> {
-    const body = { email, password };
-    return this.http.post<any>(`${environment.apiUrl}/login`, body);
+  private loadUserFromToken() {
+    const token = localStorage.getItem('authToken')
+    if (token) {
+      // Qui puoi inviare una richiesta al server per validare il token
+      // e ottenere i dettagli dell'utente, oppure semplicemente impostare l'utente
+      // basandoti sul token se la tua app lo permette
+      this.http.post<User>(`${environment.apiUrl}/validateToken`, { token }).subscribe({
+        next: (user) => this.currentUser.next(user),
+        error: () => localStorage.removeItem('authToken'),
+        complete: () => console.info('complete'),
+      })
+    }
+  }
+
+  login(email: string, password: string): Observable<User> {
+    const body = { email, password }
+    return this.http.post<User>(`${environment.apiUrl}/login`, body).pipe(
+      map((res) => {
+        this.currentUser.next(res)
+        return res
+      })
+    )
   }
 
   getCurrentUser() {
-    return this.currentUser;
+    return this.currentUser
+  }
+
+  getCurrentUserVal(): User | null {
+    return this.currentUser.getValue()
+  }
+
+  checkLogged() {
+    return true
+  }
+
+  logout() {
+    localStorage.removeItem('authToken')
+    this.currentUser.next(null)
   }
 }
 
@@ -31,20 +59,15 @@ export class UserService {
   providedIn: 'root',
 })
 class PermissionsService {
-  canActivate(currentUser: UserService, userId: string): boolean {
-    return true;
-  }
-  canMatch(currentUser: UserService): boolean {
-    return true;
+  canActivate(currentUser: UserService): boolean {
+    // Qui puoi utilizzare currentUser.isLoggedIn() per verificare se l'utente è loggato
+    return currentUser.checkLogged()
   }
 }
 
-export const canActivateTeam: CanActivateFn = (
+export const canActivateIfLoggedIn: CanActivateFn = (
   route: ActivatedRouteSnapshot,
-  state: RouterStateSnapshot,
+  state: RouterStateSnapshot
 ) => {
-  return inject(PermissionsService).canActivate(
-    inject(UserService),
-    route.params['id'],
-  );
-};
+  return inject(PermissionsService).canActivate(inject(UserService))
+}
