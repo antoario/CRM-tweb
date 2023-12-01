@@ -4,6 +4,7 @@ import java.io.IOException;
 import java.io.PrintWriter;
 import java.sql.Connection;
 
+import com.google.gson.Gson;
 import jakarta.servlet.ServletException;
 import jakarta.servlet.annotation.WebServlet;
 import jakarta.servlet.http.HttpServlet;
@@ -14,12 +15,18 @@ import javax.naming.Context;
 import javax.naming.InitialContext;
 import javax.sql.DataSource;
 
-@WebServlet("/helloservlet")
+@WebServlet(name = "UsersServlet", urlPatterns = {"/users"})
 public class UsersServlet extends HttpServlet {
 
+    private Gson gson;
+
+    public void init() {
+        gson = new Gson();
+    }
+
     @Override
-    protected void doGet(HttpServletRequest req, HttpServletResponse resp) throws ServletException, IOException {
-        var out = resp.getOutputStream();
+    protected void doGet(HttpServletRequest request, HttpServletResponse response) throws ServletException, IOException {
+        PrintWriter out = response.getWriter();
         try {
             Context initContext = new InitialContext();
             Context envContext = (Context) initContext.lookup("java:/comp/env");
@@ -29,10 +36,15 @@ public class UsersServlet extends HttpServlet {
             }
         } catch (Exception e) {
             e.printStackTrace();
-            // Gestisci l'eccezione
             out.println("Eh no caro non sei connesso al Server");
         }
     }
 
+    protected void doPost(HttpServletRequest request, HttpServletResponse response) throws ServletException, IOException {}
 
+    protected void doDelete(HttpServletRequest request, HttpServletResponse response) throws ServletException, IOException {}
+
+    protected void doPut(HttpServletRequest request, HttpServletResponse response) throws ServletException, IOException {}
+
+    public void destroy() {}
 }

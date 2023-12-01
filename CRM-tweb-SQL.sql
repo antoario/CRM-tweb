@@ -17,19 +17,20 @@ CREATE SCHEMA CRMtweb;
 ALTER SCHEMA CRMtweb OWNER TO admin;
 
 SET default_tablespace = '';
-SET default_table_access_method     = heap;
+SET default_table_access_method = heap;
 
 
 
--- Create the users table, change owner to 'admin' and create ID sequence
+-- Create the users table and create ID sequence
 CREATE TABLE CRMtweb.users (
     id INTEGER PRIMARY KEY NOT NULL,
     name VARCHAR(50) NOT NULL,
+    surname VARCHAR(50) NOT NULL,
     email VARCHAR(100) UNIQUE NOT NULL,
-    role VARCHAR(50) NOT NULL,
-    phone VARCHAR(15),
+    phone_number VARCHAR(15),
     username VARCHAR(30) UNIQUE NOT NULL,
-    password VARCHAR(100) NOT NULL
+    password VARCHAR(100) NOT NULL,
+    role VARCHAR(50) NOT NULL
 );
 ALTER TABLE CRMtweb.users OWNER TO admin;
 
@@ -46,17 +47,17 @@ ALTER SEQUENCE CRMtweb.users_id_seq OWNED BY CRMtweb.users.id;
 
 
 
--- Create the customers table, change owner to 'admin' and create ID sequence
+-- Create the customers table and create ID sequence
 CREATE TABLE CRMtweb.customers (
     id INTEGER PRIMARY KEY NOT NULL,
-    company_name VARCHAR(100) NOT NULL,
-    primary_contact VARCHAR(50) NOT NULL,
-    address TEXT,
-    phone VARCHAR(15),
+    name VARCHAR(50) NOT NULL,
+    surname VARCHAR(50) NOT NULL,
     email VARCHAR(100) UNIQUE NOT NULL,
-    purchase_history TEXT[]
+    phone_number VARCHAR(15),
+    country varchar(30)
 );
 ALTER TABLE CRMtweb.customers OWNER TO admin;
+
 
 CREATE SEQUENCE CRMtweb.customers_id_seq
     AS integer
@@ -71,15 +72,15 @@ ALTER SEQUENCE CRMtweb.customers_id_seq OWNED BY CRMtweb.customers.id;
 
 
 
--- Create the providers table, change owner to 'admin' and create ID sequence
+-- Create the providers table and create ID sequence
 CREATE TABLE CRMtweb.providers (
     id INTEGER PRIMARY KEY NOT NULL,
     company_name VARCHAR(100) NOT NULL,
-    primary_contact VARCHAR(50) NOT NULL,
-    address TEXT,
-    phone VARCHAR(15),
     email VARCHAR(100) UNIQUE NOT NULL,
-    supply_history TEXT[]
+    phone_number VARCHAR(15),
+    primary_contact VARCHAR(50) NOT NULL,
+    address VARCHAR(100),
+    country VARCHAR(30)
 );
 ALTER TABLE CRMtweb.providers OWNER TO admin;
 
@@ -96,18 +97,17 @@ ALTER SEQUENCE CRMtweb.providers_id_seq OWNED BY CRMtweb.providers.id;
 
 
 
--- Create the customers_documents table, change owner to 'admin' and create ID sequence
-CREATE TABLE CRMtweb.customers_documents (
+-- Create the products table and create ID sequence
+CREATE TABLE CRMtweb.products (
     id INTEGER PRIMARY KEY NOT NULL,
-    document_name VARCHAR(100) NOT NULL,
-    document_type VARCHAR(50),
-    document_url TEXT NOT NULL,
-    customer_id INT REFERENCES CRMtweb.customers(id),
-	created_by INTEGER REFERENCES CRMtweb.users(id)
+    name VARCHAR(50) NOT NULL,
+    shortname VARCHAR(20) NOT NULL,
+    description VARCHAR(200),
+    price FLOAT NOT NULL
 );
-ALTER TABLE CRMtweb.customers_documents OWNER TO admin;
+ALTER TABLE CRMtweb.products OWNER TO admin;
 
-CREATE SEQUENCE CRMtweb.customers_documents_id_seq
+CREATE SEQUENCE CRMtweb.products_id_seq
     AS integer
     START WITH 1
     INCREMENT BY 1
@@ -115,23 +115,22 @@ CREATE SEQUENCE CRMtweb.customers_documents_id_seq
     NO MAXVALUE
     CACHE 1;
 
-ALTER SEQUENCE CRMtweb.customers_documents_id_seq OWNER TO admin;
-ALTER SEQUENCE CRMtweb.customers_documents_id_seq OWNED BY CRMtweb.customers_documents.id;
+ALTER SEQUENCE CRMtweb.products_id_seq OWNER TO admin;
+ALTER SEQUENCE CRMtweb.products_id_seq OWNED BY CRMtweb.products.id;
 
 
 
--- Create the providers_documents table, change owner to 'admin' and create ID sequence
-CREATE TABLE CRMtweb.providers_documents (
+-- Create the sales table and create ID sequence
+CREATE TABLE CRMtweb.sales (
     id INTEGER PRIMARY KEY NOT NULL,
-    document_name VARCHAR(100) NOT NULL,
-    document_type VARCHAR(50),
-    document_url TEXT NOT NULL,
-    providers_id INT REFERENCES CRMtweb.providers(id),
-	created_by INTEGER REFERENCES CRMtweb.users(id)
+    id_customer INTEGER REFERENCES CRMtweb.customers(id),
+    id_product INTEGER REFERENCES CRMtweb.products(id),
+    quantity INTEGER,
+    date DATE NOT NULL
 );
-ALTER TABLE CRMtweb.providers_documents OWNER TO admin;
+ALTER TABLE CRMtweb.sales OWNER TO admin;
 
-CREATE SEQUENCE CRMtweb.providers_documents_id_seq
+CREATE SEQUENCE CRMtweb.sales_id_seq
     AS integer
     START WITH 1
     INCREMENT BY 1
@@ -139,16 +138,16 @@ CREATE SEQUENCE CRMtweb.providers_documents_id_seq
     NO MAXVALUE
     CACHE 1;
 
-ALTER SEQUENCE CRMtweb.providers_documents_id_seq OWNER TO admin;
-ALTER SEQUENCE CRMtweb.providers_documents_id_seq OWNED BY CRMtweb.providers_documents.id;
+ALTER SEQUENCE CRMtweb.sales_id_seq OWNER TO admin;
+ALTER SEQUENCE CRMtweb.sales_id_seq OWNED BY CRMtweb.sales.id;
 
 
 
--- Create the customers_activities table, change owner to 'admin' and create ID sequence
+-- Create the customers_activities table and create ID sequence
 CREATE TABLE CRMtweb.customers_activities (
     id INTEGER PRIMARY KEY NOT NULL,
-    activity_type VARCHAR(50) NOT NULL,
-    activity_date DATE,
+    type VARCHAR(50) NOT NULL,
+    date DATE,
     responsible INT REFERENCES CRMtweb.users(id),
     customer_id INT REFERENCES CRMtweb.customers(id)
 );
@@ -167,11 +166,11 @@ ALTER SEQUENCE CRMtweb.customers_activities_id_seq OWNED BY CRMtweb.customers_ac
 
 
 
--- Create the providersactivities table, change owner to 'admin' and create ID sequence
+-- Create the providers_activities table and create ID sequence
 CREATE TABLE CRMtweb.providers_activities (
     id INTEGER PRIMARY KEY NOT NULL,
-    activity_type VARCHAR(50) NOT NULL,
-    activity_date DATE,
+    type VARCHAR(50) NOT NULL,
+    date DATE,
     responsible INT REFERENCES CRMtweb.users(id),
     provider_id INT REFERENCES CRMtweb.providers(id)
 );
@@ -188,183 +187,150 @@ CREATE SEQUENCE CRMtweb.providers_activities_id_seq
 ALTER SEQUENCE CRMtweb.providers_activities_id_seq OWNER TO admin;
 ALTER SEQUENCE CRMtweb.providers_activities_id_seq OWNED BY CRMtweb.providers_activities.id;
 
-
--- Create the products_services table, change owner to 'admin' and create ID sequence
-CREATE TABLE CRMtweb.products_services (
-    id INTEGER PRIMARY KEY NOT NULL,
-    product_name VARCHAR(100) NOT NULL,
-    product_code VARCHAR(20),
-    description TEXT,
-    price DECIMAL(10, 2),
-    inventory INT
-);
-ALTER TABLE CRMtweb.products_services OWNER TO admin;
-
-CREATE SEQUENCE CRMtweb.products_services_id_seq
-    AS integer
-    START WITH 1
-    INCREMENT BY 1
-    NO MINVALUE
-    NO MAXVALUE
-    CACHE 1;
-
-ALTER SEQUENCE CRMtweb.products_services_id_seq OWNER TO admin;
-ALTER SEQUENCE CRMtweb.products_services_id_seq OWNED BY CRMtweb.products_services.id;
-
-
 -- Insert data into the users table
 INSERT INTO CRMtweb.users VALUES
-    (1, 'Marco Rossi', 'marco.rossi@email.com', 'Manager', '123-456-7890', 'marco123', 'password1'),
-    (2, 'Anna Bianchi', 'anna.bianchi@email.com', 'Manager', '987-654-3210', 'anna456', 'password2'),
-    (3, 'Luca Verdi', 'luca.verdi@email.com', 'Support', '111-222-3333', 'luca789', 'password3'),
-    (4, 'Simona Ricci', 'simona.ricci@email.com', 'Support', '555-444-3333', 'simona456', 'password4'),
-    (5, 'Francesco Conti', 'francesco.conti@email.com', 'Sales Rep', '999-888-7777', 'francesco123', 'password5'),
-    (6, 'Elena Ferrari', 'elena.ferrari@email.com', 'Sales Rep', '777-666-5555', 'elena789', 'password6'),
-    (7, 'Giovanni Moretti', 'giovanni.moretti@email.com', 'Tester', '888-777-6666', 'giovanni123', 'password7'),
-    (8, 'Maria Santoro', 'maria.santoro@email.com', 'Tester', '555-333-2222', 'maria456', 'password8'),
-    (9, 'Francesca De Luca', 'francesca.deluca@email.com', 'Tester', '333-111-9999', 'francesca789', 'password9');
+    (1, 'Marco', 'Rossi', 'marco.rossi@email.com', '123-456-7890', 'marco123', 'password1', 'Manager'),
+    (2, 'Anna', 'Bianchi', 'anna.bianchi@email.com', '987-654-3210', 'anna456', 'password2','Manager'),
+    (3, 'Luca', 'Verdi', 'luca.verdi@email.com', '111-222-3333', 'luca789', 'password3', 'Support'),
+    (4, 'Simona', 'Ricci', 'simona.ricci@email.com', '555-444-3333', 'simona456', 'password4', 'Support'),
+    (5, 'Francesco', 'Conti', 'francesco.conti@email.com', '999-888-7777', 'francesco123', 'password5', 'Support'),
+    (6, 'Giovanni', 'Moretti', 'giovanni.moretti@email.com', '888-777-6666', 'giovanni123', 'password6', 'Tester'),
+    (7, 'Maria', 'Santoro', 'maria.santoro@email.com', '555-333-2222', 'maria456', 'password7', 'Tester'),
+    (8, 'Francesca', 'De Luca', 'francesca.deluca@email.com', '333-111-9999', 'francesca789', 'password8', 'Tester');
 
 -- Insert data into the customers table
 INSERT INTO CRMtweb.customers VALUES
-    (1, 'ABC Company', 'Maria Esposito', '123 Main St, Milan', '555-123-4567', 'info@abc.com', ARRAY['2023-10-05', '2023-08-15']),
-    (2, 'XYZ Corporation', 'Roberto Russo', '456 Elm St, Rome', '333-987-6543', 'contact@xyzcorp.com', ARRAY['2023-09-20']),
-    (3, 'LMN Ltd', 'Laura Ferrari', '789 Oak St, Venice', '222-444-8888', 'sales@lmn-ltd.com', ARRAY['2023-10-10']),
-    (4, 'PQR Enterprises', 'Giovanni De Luca', '345 Pine St, Florence', '111-222-3333', 'info@pqrenterprises.com', ARRAY['2023-11-01']),
-    (5, 'DEF Incorporated', 'Carla Moretti', '567 Birch St, Naples', '777-555-4444', 'contact@definc.com', ARRAY['2023-09-12']),
-    (6, 'GHI Ltd', 'Alessio Bianchi', '678 Maple St, Turin', '888-777-6666', 'sales@ghi-ltd.com', ARRAY['2023-09-25']),
-    (7, 'JKL Solutions', 'Luigi Rinaldi', '456 Oak St, Bologna', '999-888-7777', 'info@jklsolutions.com', ARRAY['2023-10-20']),
-    (8, 'MNO Enterprises', 'Paolo Vitale', '789 Pine St, Florence', '444-555-6666', 'contact@mnoent.com', ARRAY['2023-08-28']),
-    (9, 'UVW Co.', 'Sofia Barbieri', '123 Elm St, Rome', '555-666-7777', 'info@uvwco.com', ARRAY['2023-07-15']),
-    (10, 'XYZ Ltd', 'Roberto Pellegrini', '345 Oak St, Venice', '333-444-5555', 'sales@xyzltd.com', ARRAY['2023-09-05']),
-    (11, 'ABC Enterprises', 'Carla De Luca', '678 Birch St, Naples', '777-888-9999', 'contact@abcent.com', ARRAY['2023-11-10']),
-    (12, 'LMN Solutions', 'Giovanni Ferrari', '456 Pine St, Florence', '111-222-3333', 'info@lmnsolutions.com', ARRAY['2023-10-15']),
-    (13, 'DEF Co.', 'Sara Bianchi', '123 Maple St, Turin', '555-333-4444', 'sales@defco.com', ARRAY['2023-09-18']),
-    (14, 'JKL Corporation', 'Alessio Rinaldi', '567 Elm St, Rome', '888-777-6666', 'contact@jklcorp.com', ARRAY['2023-09-30']),
-    (15, 'MNO Ltd', 'Laura Ferrara', '789 Oak St, Venice', '222-111-3333', 'info@mnoltd.com', ARRAY['2023-09-22']);
+    (1, 'Giovanni', 'Rossi', 'giovanni.rossi@example.com', '123456789', 'Italy'),
+    (2, 'Francesca', 'Russo', 'francesca.russo@example.com', '987654321', 'Italy'),
+    (3, 'Alessandro', 'Ferrari', 'alessandro.ferrari@example.com', '555555555', 'Italy'),
+    (4, 'Maria', 'Bianchi', 'maria.bianchi@example.com', '666666666', 'USA'),
+    (5, 'Luca', 'Romano', 'luca.romano@example.com', '777777777', 'USA'),
+    (6, 'Laura', 'Marini', 'laura.marini@example.com', '888888888', 'USA'),
+    (7, 'Roberto', 'Conti', 'roberto.conti@example.com', '999999999', 'Germany'),
+    (8, 'Anna', 'Ferri', 'anna.ferri@example.com', '111111111', 'Germany'),
+    (9, 'Marco', 'De Luca', 'marco.deluca@example.com', '222222222', 'Germany'),
+    (10, 'Giulia', 'Ricci', 'giulia.ricci@example.com', '333333333', 'France'),
+    (11, 'Paolo', 'Santoro', 'paolo.santoro@example.com', '444444444', 'France'),
+    (12, 'Silvia', 'Lombardi', 'silvia.lombardi@example.com', '555555555', 'France'),
+    (13, 'Davide', 'Barbieri', 'davide.barbieri@example.com', '666666666', 'Spain'),
+    (14, 'Elena', 'Mancini', 'elena.mancini@example.com', '777777777', 'Spain'),
+    (15, 'Simone', 'Martini', 'simone.martini@example.com', '888888888', 'Spain'),
+    (16, 'Valentina', 'Fabbri', 'valentina.fabbri@example.com', '999999999', 'Switzerland'),
+    (17, 'Andrea', 'Galli', 'andrea.galli@example.com', '111111111', 'Switzerland'),
+    (18, 'Chiara', 'Costa', 'chiara.costa@example.com', '222222222', 'Switzerland'),
+    (19, 'Pietro', 'Moretti', 'pietro.moretti@example.com', '333333333', 'Italy'),
+    (20, 'Sara', 'Caruso', 'sara.caruso@example.com', '444444444', 'Switzerland');
 
 -- Insert data into the providers table
 INSERT INTO CRMtweb.providers VALUES
-    (1, 'SupplyTech Ltd', 'Marco Rossi', '456 Oak St, Milan', '555-123-4567', 'marco@supplytech.com', ARRAY['2023-10-05', '2023-08-15']),
-    (2, 'Global Supplies', 'Laura Bianchi', '789 Elm St, Rome', '333-987-6543', 'laura@globalsupplies.com', ARRAY['2023-09-20']),
-    (3, 'Innovative Solutions', 'Antonio Ferrari', '123 Pine St, Venice', '222-444-8888', 'antonio@innovativesolutions.com', ARRAY['2023-10-10']),
-    (4, 'Supply Dynamics', 'Giulia Moretti', '567 Birch St, Florence', '111-222-3333', 'giulia@supplydynamics.com', ARRAY['2023-11-01']),
-    (5, 'Tech Supplies Co.', 'Roberto De Luca', '678 Maple St, Naples', '777-555-4444', 'roberto@techsuppliesco.com', ARRAY['2023-09-12']),
-    (6, 'Future Supplies', 'Elena Rinaldi', '789 Oak St, Turin', '888-777-6666', 'elena@futuresupplies.com', ARRAY['2023-09-25']),
-    (7, 'Global Innovations', 'Giovanni Vitale', '456 Elm St, Bologna', '999-888-7777', 'giovanni@globalinnovations.com', ARRAY['2023-10-20']),
-    (8, 'Smart Suppliers', 'Sara Barbieri', '123 Pine St, Florence', '444-555-6666', 'sara@smartsuppliers.com', ARRAY['2023-08-28']),
-    (9, 'Dynamic Tech', 'Luca Pellegrini', '345 Oak St, Rome', '555-666-7777', 'luca@dynamictech.com', ARRAY['2023-07-15']),
-    (10, 'Innovate Supplies', 'Sofia Ferrara', '567 Elm St, Venice', '333-444-5555', 'sofia@innovatesupplies.com', ARRAY['2023-09-05']),
-    (11, 'Global Dynamics', 'Alessio De Luca', '678 Birch St, Naples', '777-888-9999', 'alessio@globaldynamics.com', ARRAY['2023-11-10']),
-    (12, 'Tech Co.', 'Carla Ferrari', '456 Pine St, Florence', '111-222-3333', 'carla@techco.com', ARRAY['2023-10-15']),
-    (13, 'Future Innovations', 'Marco Bianchi', '123 Maple St, Turin', '555-333-4444', 'marco@futureinnovations.com', ARRAY['2023-09-18']),
-    (14, 'Dynamic Corporation', 'Sara Rinaldi', '567 Elm St, Rome', '888-777-6666', 'sara@dynamiccorp.com', ARRAY['2023-09-30']),
-    (15, 'Innovate Ltd', 'Giovanni Ferrara', '789 Oak St, Venice', '222-111-3333', 'giovanni@innovateltd.com', ARRAY['2023-09-22']);
+    (1, 'Azienda Italiana', 'info@aziendaitaliana.com', '123456789', 'Mario Rossi', 'Via Roma, 1', 'Italy'),
+    (2, 'Italia SRL', 'info@italiasrl.com', '987654321', 'Laura Bianchi', 'Via Milano, 2', 'Italy'),
+    (3, 'Produzioni Napoli', 'info@produzioninapoli.it', '555555555', 'Luigi De Luca', 'Via Napoli, 3', 'Italy'),
+    (4, 'Moda Roma', 'info@modaroma.com', '666666666', 'Giulia Ricci', 'Via Roma, 4', 'Italy'),
+    (5, 'Gusto Italiano', 'info@gustoitaliano.it', '777777777', 'Antonio Ferrari', 'Via Firenze, 5', 'USA'),
+    (6, 'Dolce Vita', 'info@dolcevita.com', '888888888', 'Isabella Taylor', 'Via Venezia, 6', 'USA'),
+    (7, 'Tech Innovativa', 'info@techinnovativa.it', '999999999', 'Roberto Conti', 'Via Torino, 7', 'USA'),
+    (8, 'Artigianato Siciliano', 'info@artigianatosiciliano.it', '111111111', 'Elena Mancini', 'Via Palermo, 8', 'France'),
+    (9, 'Motori Italiani', 'info@motoriitaliani.com', '222222222', 'Davide Barbieri', 'Via Bologna, 9', 'France'),
+    (10, 'Viaggi Bella Italia', 'info@viaggibellaitalia.it', '333333333', 'Valentina Fabbri', 'Via Florence, 10', 'France');
 
--- Insert data into the customers_documents table
-INSERT INTO CRMtweb.customers_documents VALUES
-    (1, 'Contract 1', 'Contract', 'http://example.com/costumercontract1.pdf', 1, 5),
-    (2, 'Proposal 1', 'Proposal', 'http://example.com/customerproposal1.pdf', 2, 6),
-    (3, 'Invoice 1', 'Invoice', 'http://example.com/customerinvoice1.pdf', 3, 4),
-    (4, 'Contract 2', 'Contract', 'http://example.com/customercontract2.pdf', 4, 3),
-    (5, 'Proposal 2', 'Proposal', 'http://example.com/customerproposal2.pdf', 5, 6),
-    (6, 'Invoice 2', 'Invoice', 'http://example.com/customerinvoice2.pdf', 6, 5),
-    (7, 'Contract 3', 'Contract', 'http://example.com/customercontract3.pdf', 7, 3),
-    (8, 'Proposal 3', 'Proposal', 'http://example.com/customerproposal3.pdf', 8, 4),
-    (9, 'Invoice 3', 'Invoice', 'http://example.com/customerinvoice3.pdf', 9, 4),
-    (10, 'Contract 4', 'Contract', 'http://example.com/customercontract4.pdf', 10, 5);
+-- Insert data into the products table
+INSERT INTO CRMtweb.products VALUES
+    (1, 'Product 1', 'P1', 'Description for Product 1', 19.99),
+    (2, 'Product 2', 'P2', 'Description for Product 2', 29.99),
+    (3, 'Product 3', 'P3', 'Description for Product 3', 39.99),
+    (4, 'Product 4', 'P4', 'Description for Product 4', 49.99),
+    (5, 'Product 5', 'P5', 'Description for Product 5', 59.99),
+    (6, 'Product 6', 'P6', 'Description for Product 6', 69.99),
+    (7, 'Product 7', 'P7', 'Description for Product 7', 79.99),
+    (8, 'Product 8', 'P8', 'Description for Product 8', 89.99),
+    (9, 'Product 9', 'P9', 'Description for Product 9', 99.99),
+    (10, 'Product 10', 'P10', 'Description for Product 10', 109.99),
+    (11, 'Product 11', 'P11', 'Description for Product 11', 119.99),
+    (12, 'Product 12', 'P12', 'Description for Product 12', 129.99),
+    (13, 'Product 13', 'P13', 'Description for Product 13', 139.99),
+    (14, 'Product 14', 'P14', 'Description for Product 14', 149.99),
+    (15, 'Product 15', 'P15', 'Description for Product 15', 159.99),
+    (16, 'Product 16', 'P16', 'Description for Product 16', 169.99),
+    (17, 'Product 17', 'P17', 'Description for Product 17', 179.99),
+    (18, 'Product 18', 'P18', 'Description for Product 18', 189.99),
+    (19, 'Product 19', 'P19', 'Description for Product 19', 199.99),
+    (20, 'Product 20', 'P20', 'Description for Product 20', 209.99);
 
--- Insert data into the providers_documents table
-INSERT INTO CRMtweb.providers_documents VALUES
-    (1, 'Contract 1', 'Contract', 'http://example.com/providercostumercontract1.pdf', 1, 3),
-    (2, 'Proposal 1', 'Proposal', 'http://example.com/providerproposal1.pdf', 2, 4),
-    (3, 'Invoice 1', 'Invoice', 'http://example.com/providerinvoice1.pdf', 3, 4),
-    (4, 'Contract 2', 'Contract', 'http://example.com/providercontract2.pdf', 4, 3),
-    (5, 'Proposal 2', 'Proposal', 'http://example.com/providerproposal2.pdf', 5, 3),
-    (6, 'Invoice 2', 'Invoice', 'http://example.com/providerinvoice2.pdf', 6, 3),
-    (7, 'Contract 3', 'Contract', 'http://example.com/providercontract3.pdf', 7, 4),
-    (8, 'Proposal 3', 'Proposal', 'http://example.com/providerproposal3.pdf', 8, 4),
-    (9, 'Invoice 3', 'Invoice', 'http://example.com/providerinvoice3.pdf', 9, 3),
-    (10, 'Contract 4', 'Contract', 'http://example.com/providercontract4.pdf', 10, 3);
+-- Insert data into the sales table
+INSERT INTO CRMtweb.sales VALUES
+     (1, 1, 1, 10, '2023-01-01'),
+     (2, 2, 2, 15, '2023-01-02'),
+     (3, 3, 3, 8, '2023-01-03'),
+     (4, 4, 4, 20, '2023-01-04'),
+     (5, 5, 5, 12, '2023-01-05'),
+     (6, 6, 6, 18, '2023-01-06'),
+     (7, 7, 7, 25, '2023-01-07'),
+     (8, 8, 8, 30, '2023-01-08'),
+     (9, 9, 9, 5, '2023-01-09'),
+     (10, 10, 10, 22, '2023-01-10'),
+     (11, 11, 11, 17, '2023-01-11'),
+     (12, 12, 12, 14, '2023-01-12'),
+     (13, 13, 13, 9, '2023-01-13'),
+     (14, 14, 14, 28, '2023-01-14'),
+     (15, 15, 15, 16, '2023-01-15'),
+     (16, 16, 16, 19, '2023-01-16'),
+     (17, 17, 17, 23, '2023-01-17'),
+     (18, 18, 18, 11, '2023-01-18'),
+     (19, 19, 19, 7, '2023-01-19'),
+     (20, 20, 20, 13, '2023-01-20');
 
 -- Insert data into the customers_activities table
 INSERT INTO CRMtweb.customers_activities VALUES
     (1, 'Meeting', '2023-10-01', 1, 1),
     (2, 'Call', '2023-09-15', 2, 2),
-    (3, 'Email', '2023-08-25', 3, 3),
-    (4, 'Meeting', '2023-10-05', 4, 4),
-    (5, 'Call', '2023-09-20', 5, 5),
-    (6, 'Email', '2023-08-30', 6, 6),
-    (7, 'Meeting', '2023-10-10', 7, 7),
-    (8, 'Call', '2023-09-25', 8, 8),
-    (9, 'Email', '2023-08-15', 9, 9),
-    (10, 'Meeting', '2023-10-15', 1, 10);
+    (3, 'Email', '2023-08-25', 6, 3),
+    (4, 'Meeting', '2023-10-05', 7, 4),
+    (5, 'Call', '2023-09-20', 8, 5),
+    (6, 'Email', '2023-08-30', 1, 6),
+    (7, 'Meeting', '2023-10-10', 2, 7),
+    (8, 'Call', '2023-09-25', 6, 8),
+    (9, 'Email', '2023-08-15', 7, 9),
+    (10, 'Meeting', '2023-10-15', 8, 10);
 
 -- Insert data into the providers_activities table
 INSERT INTO CRMtweb.providers_activities VALUES
     (1, 'Meeting', '2023-10-01', 1, 1),
     (2, 'Call', '2023-09-15', 2, 2),
-    (3, 'Email', '2023-08-25', 3, 3),
-    (4, 'Meeting', '2023-10-05', 4, 4),
-    (5, 'Call', '2023-09-20', 5, 5),
-    (6, 'Email', '2023-08-30', 6, 6),
-    (7, 'Meeting', '2023-10-10', 7, 7),
-    (8, 'Call', '2023-09-25', 8, 8),
-    (9, 'Email', '2023-08-15', 9, 9),
-    (10, 'Meeting', '2023-10-15', 1, 10);
+    (3, 'Email', '2023-08-25', 6, 3),
+    (4, 'Meeting', '2023-10-05', 7, 4),
+    (5, 'Call', '2023-09-20', 8, 5),
+    (6, 'Email', '2023-08-30', 1, 6),
+    (7, 'Meeting', '2023-10-10', 2, 7),
+    (8, 'Call', '2023-09-25', 6, 8),
+    (9, 'Email', '2023-08-15', 7, 9),
+    (10, 'Meeting', '2023-10-15', 8, 10);
 
--- Insert data into the products_services table
-INSERT INTO CRMtweb.products_services VALUES
-    (1, 'Product A', 'PA001', 'High-quality product A', 99.99, 50),
-    (2, 'Service X', 'SX123', 'Premium service X', 199.99, 100),
-    (3, 'Product B', 'PB002', 'Affordable product B', 49.99, 75),
-    (4, 'Service Y', 'SY456', 'Advanced service Y', 299.99, 30),
-    (5, 'Product C', 'PC003', 'Versatile product C', 79.99, 60),
-    (6, 'Service Z', 'SZ789', 'Professional service Z', 249.99, 45),
-    (7, 'Product D', 'PD004', 'Innovative product D', 149.99, 40),
-    (8, 'Service W', 'SW789', 'Flexible service W', 159.99, 90),
-    (9, 'Product E', 'PE005', 'Economical product E', 69.99, 55),
-    (10, 'Service V', 'SV001', 'Compact service V', 119.99, 80),
-    (11, 'Product F', 'PF006', 'Stylish product F', 89.99, 65),
-    (12, 'Service U', 'SU002', 'Efficient service U', 169.99, 20),
-    (13, 'Product G', 'PG007', 'Robust product G', 129.99, 35),
-    (14, 'Service T', 'ST003', 'Reliable service T', 179.99, 70),
-    (15, 'Product H', 'PH008', 'Durable product H', 109.99, 25);
+
+
+-- Foreign key for the relationship between sales and products
+ALTER TABLE ONLY CRMtweb.sales
+    ADD CONSTRAINT fk_sales_users
+        FOREIGN KEY (id_product)
+            REFERENCES CRMtweb.products(id);
+
+-- Foreign key for the relationship between sales and customers
+ALTER TABLE ONLY CRMtweb.sales
+    ADD CONSTRAINT fk_customers_users
+        FOREIGN KEY (id_customer)
+            REFERENCES CRMtweb.customers(id);
 
 -- Foreign key for the relationship between users and customers_activities
 ALTER TABLE ONLY CRMtweb.customers_activities
     ADD CONSTRAINT fk_customers_activities_users
-    FOREIGN KEY (responsible)
-    REFERENCES CRMtweb.users(id);
+        FOREIGN KEY (responsible)
+            REFERENCES CRMtweb.users(id);
 
 -- Foreign key for the relationship between users and providers_activities
 ALTER TABLE ONLY CRMtweb.providers_activities
     ADD CONSTRAINT fk_providers_activities_users
-    FOREIGN KEY (responsible)
-    REFERENCES CRMtweb.users(id);
-
--- Foreign key for the relationship between customers and customers_documents
-ALTER TABLE ONLY CRMtweb.customers_documents
-    ADD CONSTRAINT fk_customers_documents_customers
-    FOREIGN KEY (customer_id)
-    REFERENCES CRMtweb.customers(id);
-
--- Foreign key for the relationship between providers and providers_documents
-ALTER TABLE ONLY CRMtweb.providers_documents
-    ADD CONSTRAINT fk_providers_documents_providers
-    FOREIGN KEY (providers_id)
-    REFERENCES CRMtweb.providers(id);
-
--- Foreign key for the relationship between users and customers_documents
-ALTER TABLE ONLY CRMtweb.customers_documents
-    ADD CONSTRAINT fk_customers_documents_users
-    FOREIGN KEY (created_by)
-    REFERENCES CRMtweb.users(id);
-
--- Foreign key for the relationship between users and providers_documents
-ALTER TABLE ONLY CRMtweb.providers_documents
-    ADD CONSTRAINT fk_providers_documents_users
-    FOREIGN KEY (created_by)
-    REFERENCES CRMtweb.users(id);
+        FOREIGN KEY (responsible)
+            REFERENCES CRMtweb.users(id);
 
 -- Foreign key for the relationship between customers and customers_activities
 ALTER TABLE ONLY CRMtweb.customers_activities
@@ -377,4 +343,3 @@ ALTER TABLE ONLY CRMtweb.providers_activities
     ADD CONSTRAINT fk_providers_activities_providers
     FOREIGN KEY (provider_id)
     REFERENCES CRMtweb.providers(id);
-
