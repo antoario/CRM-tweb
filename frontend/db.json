@@ -1,0 +1,92 @@
+{
+  "Users": [
+    {
+      "id": 1,
+      "name": "John",
+      "surname": "Doe",
+      "email": "johndoe@example.com",
+      "phone_number": "+391234567890",
+      "password": "hashed_password_1",
+      "role": "manager"
+    },
+    {
+      "id": 2,
+      "name": "Alice",
+      "surname": "Smith",
+      "email": "alicesmith@example.com",
+      "phone_number": "+391234567891",
+      "password": "hashed_password_2",
+      "role": "support"
+    }
+  ],
+  "Customers": [
+    {
+      "ID": 1,
+      "name": "Marco",
+      "surname": "Rossi",
+      "email": "marcorossi@example.com",
+      "phone_number": "+391234567892",
+      "country": "Italy"
+    },
+    {
+      "ID": 2,
+      "name": "Laura",
+      "surname": "Bianchi",
+      "email": "laurabianchi@example.com",
+      "phone_number": "+391234567893",
+      "country": "Italy"
+    }
+  ],
+  "Providers": [
+    {
+      "ID": 1,
+      "company_name": "Tech Solutions",
+      "email": "contact@techsolutions.com",
+      "phone_number": "+391234567894",
+      "address": "Via Roma, 10, Milan, Italy",
+      "country": "Italy"
+    }
+  ],
+  "Products": [
+    {
+      "ID": 1,
+      "name": "Super Gadget",
+      "shortname": "SG01",
+      "description": "An innovative gadget for all tech needs.",
+      "price": 50.99
+    }
+  ],
+  "Sales": [
+    {
+      "ID": 1,
+      "ID_product": 1,
+      "ID_customer": 1,
+      "quantity": 3,
+      "date": "2023-01-15"
+    }
+  ],
+  "Customer_activities": [
+    {
+      "ID": 1,
+      "type": "meeting",
+      "description": "Meeting to discuss new business opportunities.",
+      "date": "2023-02-20",
+      "ID_user": 1,
+      "ID_customer": 1
+    }
+  ],
+  "Provider_activities": [
+    {
+      "ID": 1,
+      "type": "delivery",
+      "description": "Delivery of product batch order #1234.",
+      "date": "2023-03-10",
+      "ID_user": 1,
+      "ID_provider": 1
+    }
+  ],
+
+  "login:": {
+    "responde": {""}
+  }
+}

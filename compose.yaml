@@ -10,7 +10,6 @@ services:
     networks:
       - mynetwork
 
-
   db:
     image: postgres
     environment:
@@ -28,6 +27,8 @@ services:
     image: adminer
     ports:
       - "5050:8080"
+    networks:
+      - mynetwork
 
   angular:
     build: ./frontend
