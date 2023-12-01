@@ -1,9 +1,9 @@
-import { ApplicationConfig, importProvidersFrom } from '@angular/core';
-import { provideRouter } from '@angular/router';
+import { ApplicationConfig, importProvidersFrom } from "@angular/core"
+import { provideRouter } from "@angular/router"
 
-import { routes } from './app.routes';
-import { provideAnimations } from '@angular/platform-browser/animations';
-import { HttpClientJsonpModule, HttpClientModule } from '@angular/common/http';
+import { routes } from "./app.routes"
+import { provideAnimations } from "@angular/platform-browser/animations"
+import { HttpClientJsonpModule, HttpClientModule } from "@angular/common/http"
 
 export const appConfig: ApplicationConfig = {
   providers: [
@@ -12,4 +12,4 @@ export const appConfig: ApplicationConfig = {
     importProvidersFrom(HttpClientModule),
     importProvidersFrom(HttpClientJsonpModule),
   ],
-};
+}

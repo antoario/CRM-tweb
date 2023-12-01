@@ -11,11 +11,11 @@
         [routerLink]="['/logged', item.path]"
         (click)="drawer.close()"
       >
-        <mat-icon matListItemIcon>{{
-          item.data ? item.data["icon"] : ""
-        }}</mat-icon>
+        <mat-icon matListItemIcon>{{ item.data ? item.data["icon"] : "" }}</mat-icon>
         <span matListItemTitle>{{ item.title }}</span>
       </mat-list-item>
+
+
     </mat-action-list>
   </mat-drawer>
 
@@ -29,16 +29,14 @@
         <mat-icon>menu</mat-icon>
       </button>
       <span>Progetto TWEB</span>
-      <button
-        mat-icon-button
-        class="ml-auto"
-        aria-label="Example icon-button with heart icon"
-      >
+      <button mat-icon-button class="ml-auto" aria-label="Example icon-button with heart icon">
         <mat-icon>favorite</mat-icon>
       </button>
       <button mat-icon-button aria-label="Example icon-button with share icon">
         <mat-icon>share</mat-icon>
       </button>
+
+      <button mat-raised-button (click)="logout()" color="primary">Logout</button>
     </mat-toolbar>
 
     <div class="h-full overflow-y-auto">
