@@ -28,7 +28,6 @@ CREATE TABLE CRMtweb.users (
     surname VARCHAR(50) NOT NULL,
     email VARCHAR(100) UNIQUE NOT NULL,
     phone_number VARCHAR(15),
-    username VARCHAR(30) UNIQUE NOT NULL,
     password VARCHAR(100) NOT NULL,
     role VARCHAR(50) NOT NULL
 );
@@ -189,14 +188,14 @@ ALTER SEQUENCE CRMtweb.providers_activities_id_seq OWNED BY CRMtweb.providers_ac
 
 -- Insert data into the users table
 INSERT INTO CRMtweb.users VALUES
-    (1, 'Marco', 'Rossi', 'marco.rossi@email.com', '123-456-7890', 'marco123', 'password1', 'Manager'),
-    (2, 'Anna', 'Bianchi', 'anna.bianchi@email.com', '987-654-3210', 'anna456', 'password2','Manager'),
-    (3, 'Luca', 'Verdi', 'luca.verdi@email.com', '111-222-3333', 'luca789', 'password3', 'Support'),
-    (4, 'Simona', 'Ricci', 'simona.ricci@email.com', '555-444-3333', 'simona456', 'password4', 'Support'),
-    (5, 'Francesco', 'Conti', 'francesco.conti@email.com', '999-888-7777', 'francesco123', 'password5', 'Support'),
-    (6, 'Giovanni', 'Moretti', 'giovanni.moretti@email.com', '888-777-6666', 'giovanni123', 'password6', 'Tester'),
-    (7, 'Maria', 'Santoro', 'maria.santoro@email.com', '555-333-2222', 'maria456', 'password7', 'Tester'),
-    (8, 'Francesca', 'De Luca', 'francesca.deluca@email.com', '333-111-9999', 'francesca789', 'password8', 'Tester');
+    (1, 'Marco', 'Rossi', 'marco.rossi@email.com', '123-456-7890', 'password1', 'Manager'),
+    (2, 'Anna', 'Bianchi', 'anna.bianchi@email.com', '987-654-3210', 'password2','Manager'),
+    (3, 'Luca', 'Verdi', 'luca.verdi@email.com', '111-222-3333', 'password3', 'Support'),
+    (4, 'Simona', 'Ricci', 'simona.ricci@email.com', '555-444-3333', 'password4', 'Support'),
+    (5, 'Francesco', 'Conti', 'francesco.conti@email.com', '999-888-7777', 'password5', 'Support'),
+    (6, 'Giovanni', 'Moretti', 'giovanni.moretti@email.com', '888-777-6666', 'password6', 'Tester'),
+    (7, 'Maria', 'Santoro', 'maria.santoro@email.com', '555-333-2222', 'password7', 'Tester'),
+    (8, 'Francesca', 'De Luca', 'francesca.deluca@email.com', '333-111-9999', 'password8', 'Tester');
 
 -- Insert data into the customers table
 INSERT INTO CRMtweb.customers VALUES
