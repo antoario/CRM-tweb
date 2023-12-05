@@ -187,123 +187,123 @@ ALTER SEQUENCE CRMtweb.providers_activities_id_seq OWNER TO admin;
 ALTER SEQUENCE CRMtweb.providers_activities_id_seq OWNED BY CRMtweb.providers_activities.id;
 
 -- Insert data into the users table
-INSERT INTO CRMtweb.users VALUES
-    (1, 'Marco', 'Rossi', 'marco.rossi@email.com', '123-456-7890', 'password1', 'Manager'),
-    (2, 'Anna', 'Bianchi', 'anna.bianchi@email.com', '987-654-3210', 'password2','Manager'),
-    (3, 'Luca', 'Verdi', 'luca.verdi@email.com', '111-222-3333', 'password3', 'Support'),
-    (4, 'Simona', 'Ricci', 'simona.ricci@email.com', '555-444-3333', 'password4', 'Support'),
-    (5, 'Francesco', 'Conti', 'francesco.conti@email.com', '999-888-7777', 'password5', 'Support'),
-    (6, 'Giovanni', 'Moretti', 'giovanni.moretti@email.com', '888-777-6666', 'password6', 'Tester'),
-    (7, 'Maria', 'Santoro', 'maria.santoro@email.com', '555-333-2222', 'password7', 'Tester'),
-    (8, 'Francesca', 'De Luca', 'francesca.deluca@email.com', '333-111-9999', 'password8', 'Tester');
+INSERT INTO CRMtweb.users (id, name, surname, email, phone_number, password, role) VALUES
+    (nextval('CRMtweb.users_id_seq'), 'Marco', 'Rossi', 'marco.rossi@email.com', '123-456-7890', 'password1', 'Manager'),
+    (nextval('CRMtweb.users_id_seq'), 'Anna', 'Bianchi', 'anna.bianchi@email.com', '987-654-3210', 'password2','Manager'),
+    (nextval('CRMtweb.users_id_seq'), 'Luca', 'Verdi', 'luca.verdi@email.com', '111-222-3333', 'password3', 'Support'),
+    (nextval('CRMtweb.users_id_seq'), 'Simona', 'Ricci', 'simona.ricci@email.com', '555-444-3333', 'password4', 'Support'),
+    (nextval('CRMtweb.users_id_seq'), 'Francesco', 'Conti', 'francesco.conti@email.com', '999-888-7777', 'password5', 'Support'),
+    (nextval('CRMtweb.users_id_seq'), 'Giovanni', 'Moretti', 'giovanni.moretti@email.com', '888-777-6666', 'password6', 'Tester'),
+    (nextval('CRMtweb.users_id_seq'), 'Maria', 'Santoro', 'maria.santoro@email.com', '555-333-2222', 'password7', 'Tester'),
+    (nextval('CRMtweb.users_id_seq'), 'Francesca', 'De Luca', 'francesca.deluca@email.com', '333-111-9999', 'password8', 'Tester');
 
 -- Insert data into the customers table
-INSERT INTO CRMtweb.customers VALUES
-    (1, 'Giovanni', 'Rossi', 'giovanni.rossi@example.com', '123456789', 'Italy'),
-    (2, 'Francesca', 'Russo', 'francesca.russo@example.com', '987654321', 'Italy'),
-    (3, 'Alessandro', 'Ferrari', 'alessandro.ferrari@example.com', '555555555', 'Italy'),
-    (4, 'Maria', 'Bianchi', 'maria.bianchi@example.com', '666666666', 'USA'),
-    (5, 'Luca', 'Romano', 'luca.romano@example.com', '777777777', 'USA'),
-    (6, 'Laura', 'Marini', 'laura.marini@example.com', '888888888', 'USA'),
-    (7, 'Roberto', 'Conti', 'roberto.conti@example.com', '999999999', 'Germany'),
-    (8, 'Anna', 'Ferri', 'anna.ferri@example.com', '111111111', 'Germany'),
-    (9, 'Marco', 'De Luca', 'marco.deluca@example.com', '222222222', 'Germany'),
-    (10, 'Giulia', 'Ricci', 'giulia.ricci@example.com', '333333333', 'France'),
-    (11, 'Paolo', 'Santoro', 'paolo.santoro@example.com', '444444444', 'France'),
-    (12, 'Silvia', 'Lombardi', 'silvia.lombardi@example.com', '555555555', 'France'),
-    (13, 'Davide', 'Barbieri', 'davide.barbieri@example.com', '666666666', 'Spain'),
-    (14, 'Elena', 'Mancini', 'elena.mancini@example.com', '777777777', 'Spain'),
-    (15, 'Simone', 'Martini', 'simone.martini@example.com', '888888888', 'Spain'),
-    (16, 'Valentina', 'Fabbri', 'valentina.fabbri@example.com', '999999999', 'Switzerland'),
-    (17, 'Andrea', 'Galli', 'andrea.galli@example.com', '111111111', 'Switzerland'),
-    (18, 'Chiara', 'Costa', 'chiara.costa@example.com', '222222222', 'Switzerland'),
-    (19, 'Pietro', 'Moretti', 'pietro.moretti@example.com', '333333333', 'Italy'),
-    (20, 'Sara', 'Caruso', 'sara.caruso@example.com', '444444444', 'Switzerland');
+INSERT INTO CRMtweb.customers (id, name, surname, email, phone_number, country) VALUES
+    (nextval('CRMtweb.customers_id_seq'), 'Giovanni', 'Rossi', 'giovanni.rossi@example.com', '123456789', 'Italy'),
+    (nextval('CRMtweb.customers_id_seq'), 'Francesca', 'Russo', 'francesca.russo@example.com', '987654321', 'Italy'),
+    (nextval('CRMtweb.customers_id_seq'), 'Alessandro', 'Ferrari', 'alessandro.ferrari@example.com', '555555555', 'Italy'),
+    (nextval('CRMtweb.customers_id_seq'), 'Maria', 'Bianchi', 'maria.bianchi@example.com', '666666666', 'USA'),
+    (nextval('CRMtweb.customers_id_seq'), 'Luca', 'Romano', 'luca.romano@example.com', '777777777', 'USA'),
+    (nextval('CRMtweb.customers_id_seq'), 'Laura', 'Marini', 'laura.marini@example.com', '888888888', 'USA'),
+    (nextval('CRMtweb.customers_id_seq'), 'Roberto', 'Conti', 'roberto.conti@example.com', '999999999', 'Germany'),
+    (nextval('CRMtweb.customers_id_seq'), 'Anna', 'Ferri', 'anna.ferri@example.com', '111111111', 'Germany'),
+    (nextval('CRMtweb.customers_id_seq'), 'Marco', 'De Luca', 'marco.deluca@example.com', '222222222', 'Germany'),
+    (nextval('CRMtweb.customers_id_seq'), 'Giulia', 'Ricci', 'giulia.ricci@example.com', '333333333', 'France'),
+    (nextval('CRMtweb.customers_id_seq'), 'Paolo', 'Santoro', 'paolo.santoro@example.com', '444444444', 'France'),
+    (nextval('CRMtweb.customers_id_seq'), 'Silvia', 'Lombardi', 'silvia.lombardi@example.com', '555555555', 'France'),
+    (nextval('CRMtweb.customers_id_seq'), 'Davide', 'Barbieri', 'davide.barbieri@example.com', '666666666', 'Spain'),
+    (nextval('CRMtweb.customers_id_seq'), 'Elena', 'Mancini', 'elena.mancini@example.com', '777777777', 'Spain'),
+    (nextval('CRMtweb.customers_id_seq'), 'Simone', 'Martini', 'simone.martini@example.com', '888888888', 'Spain'),
+    (nextval('CRMtweb.customers_id_seq'), 'Valentina', 'Fabbri', 'valentina.fabbri@example.com', '999999999', 'Switzerland'),
+    (nextval('CRMtweb.customers_id_seq'), 'Andrea', 'Galli', 'andrea.galli@example.com', '111111111', 'Switzerland'),
+    (nextval('CRMtweb.customers_id_seq'), 'Chiara', 'Costa', 'chiara.costa@example.com', '222222222', 'Switzerland'),
+    (nextval('CRMtweb.customers_id_seq'), 'Pietro', 'Moretti', 'pietro.moretti@example.com', '333333333', 'Italy'),
+    (nextval('CRMtweb.customers_id_seq'), 'Sara', 'Caruso', 'sara.caruso@example.com', '444444444', 'Switzerland');
 
 -- Insert data into the providers table
-INSERT INTO CRMtweb.providers VALUES
-    (1, 'Azienda Italiana', 'info@aziendaitaliana.com', '123456789', 'Mario Rossi', 'Via Roma, 1', 'Italy'),
-    (2, 'Italia SRL', 'info@italiasrl.com', '987654321', 'Laura Bianchi', 'Via Milano, 2', 'Italy'),
-    (3, 'Produzioni Napoli', 'info@produzioninapoli.it', '555555555', 'Luigi De Luca', 'Via Napoli, 3', 'Italy'),
-    (4, 'Moda Roma', 'info@modaroma.com', '666666666', 'Giulia Ricci', 'Via Roma, 4', 'Italy'),
-    (5, 'Gusto Italiano', 'info@gustoitaliano.it', '777777777', 'Antonio Ferrari', 'Via Firenze, 5', 'USA'),
-    (6, 'Dolce Vita', 'info@dolcevita.com', '888888888', 'Isabella Taylor', 'Via Venezia, 6', 'USA'),
-    (7, 'Tech Innovativa', 'info@techinnovativa.it', '999999999', 'Roberto Conti', 'Via Torino, 7', 'USA'),
-    (8, 'Artigianato Siciliano', 'info@artigianatosiciliano.it', '111111111', 'Elena Mancini', 'Via Palermo, 8', 'France'),
-    (9, 'Motori Italiani', 'info@motoriitaliani.com', '222222222', 'Davide Barbieri', 'Via Bologna, 9', 'France'),
-    (10, 'Viaggi Bella Italia', 'info@viaggibellaitalia.it', '333333333', 'Valentina Fabbri', 'Via Florence, 10', 'France');
+INSERT INTO CRMtweb.providers (id, company_name, email, phone_number, primary_contact, address, country) VALUES
+    (nextval('CRMtweb.providers_id_seq'), 'Azienda Italiana', 'info@aziendaitaliana.com', '123456789', 'Mario Rossi', 'Via Roma, 1', 'Italy'),
+    (nextval('CRMtweb.providers_id_seq'), 'Italia SRL', 'info@italiasrl.com', '987654321', 'Laura Bianchi', 'Via Milano, 2', 'Italy'),
+    (nextval('CRMtweb.providers_id_seq'), 'Produzioni Napoli', 'info@produzioninapoli.it', '555555555', 'Luigi De Luca', 'Via Napoli, 3', 'Italy'),
+    (nextval('CRMtweb.providers_id_seq'), 'Moda Roma', 'info@modaroma.com', '666666666', 'Giulia Ricci', 'Via Roma, 4', 'Italy'),
+    (nextval('CRMtweb.providers_id_seq'), 'Gusto Italiano', 'info@gustoitaliano.it', '777777777', 'Antonio Ferrari', 'Via Firenze, 5', 'USA'),
+    (nextval('CRMtweb.providers_id_seq'), 'Dolce Vita', 'info@dolcevita.com', '888888888', 'Isabella Taylor', 'Via Venezia, 6', 'USA'),
+    (nextval('CRMtweb.providers_id_seq'), 'Tech Innovativa', 'info@techinnovativa.it', '999999999', 'Roberto Conti', 'Via Torino, 7', 'USA'),
+    (nextval('CRMtweb.providers_id_seq'), 'Artigianato Siciliano', 'info@artigianatosiciliano.it', '111111111', 'Elena Mancini', 'Via Palermo, 8', 'France'),
+    (nextval('CRMtweb.providers_id_seq'), 'Motori Italiani', 'info@motoriitaliani.com', '222222222', 'Davide Barbieri', 'Via Bologna, 9', 'France'),
+    (nextval('CRMtweb.providers_id_seq'), 'Viaggi Bella Italia', 'info@viaggibellaitalia.it', '333333333', 'Valentina Fabbri', 'Via Florence, 10', 'France');
 
 -- Insert data into the products table
-INSERT INTO CRMtweb.products VALUES
-    (1, 'Product 1', 'P1', 'Description for Product 1', 19.99),
-    (2, 'Product 2', 'P2', 'Description for Product 2', 29.99),
-    (3, 'Product 3', 'P3', 'Description for Product 3', 39.99),
-    (4, 'Product 4', 'P4', 'Description for Product 4', 49.99),
-    (5, 'Product 5', 'P5', 'Description for Product 5', 59.99),
-    (6, 'Product 6', 'P6', 'Description for Product 6', 69.99),
-    (7, 'Product 7', 'P7', 'Description for Product 7', 79.99),
-    (8, 'Product 8', 'P8', 'Description for Product 8', 89.99),
-    (9, 'Product 9', 'P9', 'Description for Product 9', 99.99),
-    (10, 'Product 10', 'P10', 'Description for Product 10', 109.99),
-    (11, 'Product 11', 'P11', 'Description for Product 11', 119.99),
-    (12, 'Product 12', 'P12', 'Description for Product 12', 129.99),
-    (13, 'Product 13', 'P13', 'Description for Product 13', 139.99),
-    (14, 'Product 14', 'P14', 'Description for Product 14', 149.99),
-    (15, 'Product 15', 'P15', 'Description for Product 15', 159.99),
-    (16, 'Product 16', 'P16', 'Description for Product 16', 169.99),
-    (17, 'Product 17', 'P17', 'Description for Product 17', 179.99),
-    (18, 'Product 18', 'P18', 'Description for Product 18', 189.99),
-    (19, 'Product 19', 'P19', 'Description for Product 19', 199.99),
-    (20, 'Product 20', 'P20', 'Description for Product 20', 209.99);
+INSERT INTO CRMtweb.products (id, name, shortname, description, price) VALUES
+    (nextval('CRMtweb.products_id_seq'), 'Product 1', 'P1', 'Description for Product 1', 19.99),
+    (nextval('CRMtweb.products_id_seq'), 'Product 2', 'P2', 'Description for Product 2', 29.99),
+    (nextval('CRMtweb.products_id_seq'), 'Product 3', 'P3', 'Description for Product 3', 39.99),
+    (nextval('CRMtweb.products_id_seq'), 'Product 4', 'P4', 'Description for Product 4', 49.99),
+    (nextval('CRMtweb.products_id_seq'), 'Product 5', 'P5', 'Description for Product 5', 59.99),
+    (nextval('CRMtweb.products_id_seq'), 'Product 6', 'P6', 'Description for Product 6', 69.99),
+    (nextval('CRMtweb.products_id_seq'), 'Product 7', 'P7', 'Description for Product 7', 79.99),
+    (nextval('CRMtweb.products_id_seq'), 'Product 8', 'P8', 'Description for Product 8', 89.99),
+    (nextval('CRMtweb.products_id_seq'), 'Product 9', 'P9', 'Description for Product 9', 99.99),
+    (nextval('CRMtweb.products_id_seq'), 'Product 10', 'P10', 'Description for Product 10', 109.99),
+    (nextval('CRMtweb.products_id_seq'), 'Product 11', 'P11', 'Description for Product 11', 119.99),
+    (nextval('CRMtweb.products_id_seq'), 'Product 12', 'P12', 'Description for Product 12', 129.99),
+    (nextval('CRMtweb.products_id_seq'), 'Product 13', 'P13', 'Description for Product 13', 139.99),
+    (nextval('CRMtweb.products_id_seq'), 'Product 14', 'P14', 'Description for Product 14', 149.99),
+    (nextval('CRMtweb.products_id_seq'), 'Product 15', 'P15', 'Description for Product 15', 159.99),
+    (nextval('CRMtweb.products_id_seq'), 'Product 16', 'P16', 'Description for Product 16', 169.99),
+    (nextval('CRMtweb.products_id_seq'), 'Product 17', 'P17', 'Description for Product 17', 179.99),
+    (nextval('CRMtweb.products_id_seq'), 'Product 18', 'P18', 'Description for Product 18', 189.99),
+    (nextval('CRMtweb.products_id_seq'), 'Product 19', 'P19', 'Description for Product 19', 199.99),
+    (nextval('CRMtweb.products_id_seq'), 'Product 20', 'P20', 'Description for Product 20', 209.99);
 
 -- Insert data into the sales table
-INSERT INTO CRMtweb.sales VALUES
-     (1, 1, 1, 10, '2023-01-01'),
-     (2, 2, 2, 15, '2023-01-02'),
-     (3, 3, 3, 8, '2023-01-03'),
-     (4, 4, 4, 20, '2023-01-04'),
-     (5, 5, 5, 12, '2023-01-05'),
-     (6, 6, 6, 18, '2023-01-06'),
-     (7, 7, 7, 25, '2023-01-07'),
-     (8, 8, 8, 30, '2023-01-08'),
-     (9, 9, 9, 5, '2023-01-09'),
-     (10, 10, 10, 22, '2023-01-10'),
-     (11, 11, 11, 17, '2023-01-11'),
-     (12, 12, 12, 14, '2023-01-12'),
-     (13, 13, 13, 9, '2023-01-13'),
-     (14, 14, 14, 28, '2023-01-14'),
-     (15, 15, 15, 16, '2023-01-15'),
-     (16, 16, 16, 19, '2023-01-16'),
-     (17, 17, 17, 23, '2023-01-17'),
-     (18, 18, 18, 11, '2023-01-18'),
-     (19, 19, 19, 7, '2023-01-19'),
-     (20, 20, 20, 13, '2023-01-20');
+INSERT INTO CRMtweb.sales (id, id_product, id_customer, quantity, date) VALUES
+     (nextval('CRMtweb.sales_id_seq'), 1, 1, 10, '2023-01-01'),
+     (nextval('CRMtweb.sales_id_seq'), 2, 2, 15, '2023-01-02'),
+     (nextval('CRMtweb.sales_id_seq'), 3, 3, 8, '2023-01-03'),
+     (nextval('CRMtweb.sales_id_seq'), 4, 4, 20, '2023-01-04'),
+     (nextval('CRMtweb.sales_id_seq'), 5, 5, 12, '2023-01-05'),
+     (nextval('CRMtweb.sales_id_seq'), 6, 6, 18, '2023-01-06'),
+     (nextval('CRMtweb.sales_id_seq'), 7, 7, 25, '2023-01-07'),
+     (nextval('CRMtweb.sales_id_seq'), 8, 8, 30, '2023-01-08'),
+     (nextval('CRMtweb.sales_id_seq'), 9, 9, 5, '2023-01-09'),
+     (nextval('CRMtweb.sales_id_seq'), 10, 10, 22, '2023-01-10'),
+     (nextval('CRMtweb.sales_id_seq'), 11, 11, 17, '2023-01-11'),
+     (nextval('CRMtweb.sales_id_seq'), 12, 12, 14, '2023-01-12'),
+     (nextval('CRMtweb.sales_id_seq'), 13, 13, 9, '2023-01-13'),
+     (nextval('CRMtweb.sales_id_seq'), 14, 14, 28, '2023-01-14'),
+     (nextval('CRMtweb.sales_id_seq'), 15, 15, 16, '2023-01-15'),
+     (nextval('CRMtweb.sales_id_seq'), 16, 16, 19, '2023-01-16'),
+     (nextval('CRMtweb.sales_id_seq'), 17, 17, 23, '2023-01-17'),
+     (nextval('CRMtweb.sales_id_seq'), 18, 18, 11, '2023-01-18'),
+     (nextval('CRMtweb.sales_id_seq'), 19, 19, 7, '2023-01-19'),
+     (nextval('CRMtweb.sales_id_seq'), 20, 20, 13, '2023-01-20');
 
 -- Insert data into the customers_activities table
-INSERT INTO CRMtweb.customers_activities VALUES
-    (1, 'Meeting', '2023-10-01', 1, 1),
-    (2, 'Call', '2023-09-15', 2, 2),
-    (3, 'Email', '2023-08-25', 6, 3),
-    (4, 'Meeting', '2023-10-05', 7, 4),
-    (5, 'Call', '2023-09-20', 8, 5),
-    (6, 'Email', '2023-08-30', 1, 6),
-    (7, 'Meeting', '2023-10-10', 2, 7),
-    (8, 'Call', '2023-09-25', 6, 8),
-    (9, 'Email', '2023-08-15', 7, 9),
-    (10, 'Meeting', '2023-10-15', 8, 10);
+INSERT INTO CRMtweb.customers_activities (id, type, date, responsible, customer_id) VALUES
+    (nextval('CRMtweb.customers_activities_id_seq'), 'Meeting', '2023-10-01', 1, 1),
+    (nextval('CRMtweb.customers_activities_id_seq'), 'Call', '2023-09-15', 2, 2),
+    (nextval('CRMtweb.customers_activities_id_seq'), 'Email', '2023-08-25', 6, 3),
+    (nextval('CRMtweb.customers_activities_id_seq'), 'Meeting', '2023-10-05', 7, 4),
+    (nextval('CRMtweb.customers_activities_id_seq'), 'Call', '2023-09-20', 8, 5),
+    (nextval('CRMtweb.customers_activities_id_seq'), 'Email', '2023-08-30', 1, 6),
+    (nextval('CRMtweb.customers_activities_id_seq'), 'Meeting', '2023-10-10', 2, 7),
+    (nextval('CRMtweb.customers_activities_id_seq'), 'Call', '2023-09-25', 6, 8),
+    (nextval('CRMtweb.customers_activities_id_seq'), 'Email', '2023-08-15', 7, 9),
+    (nextval('CRMtweb.customers_activities_id_seq'), 'Meeting', '2023-10-15', 8, 10);
 
 -- Insert data into the providers_activities table
-INSERT INTO CRMtweb.providers_activities VALUES
-    (1, 'Meeting', '2023-10-01', 1, 1),
-    (2, 'Call', '2023-09-15', 2, 2),
-    (3, 'Email', '2023-08-25', 6, 3),
-    (4, 'Meeting', '2023-10-05', 7, 4),
-    (5, 'Call', '2023-09-20', 8, 5),
-    (6, 'Email', '2023-08-30', 1, 6),
-    (7, 'Meeting', '2023-10-10', 2, 7),
-    (8, 'Call', '2023-09-25', 6, 8),
-    (9, 'Email', '2023-08-15', 7, 9),
-    (10, 'Meeting', '2023-10-15', 8, 10);
+INSERT INTO CRMtweb.providers_activities (id, type, date, responsible, provider_id) VALUES
+    (nextval('CRMtweb.providers_activities_id_seq'), 'Meeting', '2023-10-01', 1, 1),
+    (nextval('CRMtweb.providers_activities_id_seq'), 'Call', '2023-09-15', 2, 2),
+    (nextval('CRMtweb.providers_activities_id_seq'), 'Email', '2023-08-25', 6, 3),
+    (nextval('CRMtweb.providers_activities_id_seq'), 'Meeting', '2023-10-05', 7, 4),
+    (nextval('CRMtweb.providers_activities_id_seq'), 'Call', '2023-09-20', 8, 5),
+    (nextval('CRMtweb.providers_activities_id_seq'), 'Email', '2023-08-30', 1, 6),
+    (nextval('CRMtweb.providers_activities_id_seq'), 'Meeting', '2023-10-10', 2, 7),
+    (nextval('CRMtweb.providers_activities_id_seq'), 'Call', '2023-09-25', 6, 8),
+    (nextval('CRMtweb.providers_activities_id_seq'), 'Email', '2023-08-15', 7, 9),
+    (nextval('CRMtweb.providers_activities_id_seq'), 'Meeting', '2023-10-15', 8, 10);
 
 
 
