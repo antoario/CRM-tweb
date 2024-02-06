@@ -24,6 +24,27 @@ server.post("/login", (req, res) => {
         token: "superAdminToken",
       })
       break
+    case "due@gmail.com":
+      res.jsonp({
+        user: {
+          name: "Pinocchio",
+          surname: "Liar",
+          email: "due@gmail.com",
+        },
+        token: "adminToken",
+      })
+      break
+
+    case "tre@gmail.com":
+      res.jsonp({
+        user: {
+          name: "Pulcinella",
+          surname: "Colors",
+          email: "tre@gmail.com",
+        },
+        token: "user",
+      })
+      break
     default:
       res.status(401).jsonp({ error: "Error" })
   }
@@ -34,11 +55,30 @@ server.post("/validateToken", (req, res) => {
 })
 
 server.post("/me", (req, res) => {
-  res.jsonp({
-    name: "John",
-    surname: "Doe",
-    email: "johndoe@example.com",
-  })
+  switch (req.get("authentication")) {
+    case "superAdminToken":
+      res.jsonp({
+        name: "John",
+        surname: "Doe",
+        email: "johndoe@example.com",
+      })
+      break
+    case "adminToken":
+      res.jsonp({
+        name: "Pinocchio",
+        surname: "Liar",
+        email: "due@gmail.com",
+      })
+      break
+
+    case "user":
+      res.jsonp({
+        name: "Pulcinella",
+        surname: "Colors",
+        email: "tre@gmail.com",
+      })
+      break
+  }
 })
 
 server.use(router)

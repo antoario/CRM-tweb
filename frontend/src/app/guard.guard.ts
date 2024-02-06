@@ -14,7 +14,7 @@ export const guardGuard: CanActivateFn = (): Observable<boolean> => {
       return of(false)
     }),
     tap((isLoggedIn) => {
-      return isLoggedIn || router.createUrlTree(["/login"])
+      return isLoggedIn || router.navigate(["/login"])
     })
   )
 }

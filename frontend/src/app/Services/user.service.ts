@@ -1,7 +1,7 @@
 import { Injectable } from "@angular/core"
 import { BehaviorSubject, catchError, map, Observable, of, tap } from "rxjs"
 import { UserData, UserSession } from "../types/UserTypes"
-import { HttpClient } from "@angular/common/http"
+import { HttpClient, HttpHeaders } from "@angular/common/http"
 import { environment } from "../../environments/environment"
 
 @Injectable({
@@ -25,6 +25,7 @@ export class UserService {
           localStorage.removeItem("token")
           return false
         }
+        this.currToken.next(token)
         return true
       })
     )
@@ -50,7 +51,10 @@ export class UserService {
   }
 
   public loadUser() {
-    return this.http.post<UserData | null>(`${environment.apiUrl}/me`, {}).pipe(
+    const token = this.currToken.getValue()
+    if (!token) return of(null)
+    const headers = new HttpHeaders({ authentication: token })
+    return this.http.post<UserData | null>(`${environment.apiUrl}/me`, {}, { headers }).pipe(
       tap((user) => {
         if (!user) throw false
         this.currUser.next(user)
@@ -60,5 +64,11 @@ export class UserService {
 
   getUser() {
     return this.currUser.getValue()
+  }
+
+  logout() {
+    this.currUser.next(null)
+    this.currToken.next(null)
+    localStorage.removeItem("token")
   }
 }

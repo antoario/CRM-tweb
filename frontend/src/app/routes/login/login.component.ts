@@ -8,6 +8,7 @@ import { MatButton } from "@angular/material/button"
 import { FormBuilder, FormsModule, ReactiveFormsModule, Validators } from "@angular/forms"
 import { MatOption, MatSelect, MatSelectChange } from "@angular/material/select"
 import { UserService } from "../../Services/user.service"
+import { Router } from "@angular/router"
 
 @Component({
   selector: "app-login",
@@ -30,7 +31,8 @@ import { UserService } from "../../Services/user.service"
 export class LoginComponent {
   constructor(
     private formBuilder: FormBuilder,
-    private userService: UserService
+    private userService: UserService,
+    private router: Router
   ) {}
 
   loginForm = this.formBuilder.group({
@@ -59,6 +61,9 @@ export class LoginComponent {
         .doLogin(this.loginForm.value as { email: string; password: string })
         .subscribe((val) => {
           console.log(val)
+          if (val) {
+            this.router.navigate(["/"])
+          }
         })
   }
 }

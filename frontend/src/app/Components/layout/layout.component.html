@@ -1,6 +1,11 @@
 <div class="flex h-screen flex-col">
   <mat-toolbar class="sticky top-0 h-16 w-full">
     <a routerLink="/">Nome</a>
+
+    <div class="flex-1"></div>
+    <button mat-icon-button class="example-icon" aria-label="Example icon-button with menu icon" (click)="logout()">
+      <mat-icon>logout</mat-icon>
+    </button>
   </mat-toolbar>
 
   <div class="flex-1 overflow-auto">
