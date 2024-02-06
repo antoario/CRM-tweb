@@ -11,29 +11,36 @@ server.get("/echo", (req, res) => {
   res.jsonp(req.query)
 })
 
-// To handle POST, PUT and PATCH you need to use a body-parser
-// You can use the one used by JSON Server
 server.use(jsonServer.bodyParser)
 server.post("/login", (req, res) => {
-  // Verifica delle credenziali
-  if (req.body.email === "johndoe@example.com") {
-    // Se l'email è corretta, restituisce una risposta fittizia
-    res.jsonp({
-      id: 1,
-      name: "John",
-      surname: "Doe",
-      email: "johndoe@example.com",
-      phone_number: "+391234567890",
-      password: "hashed_password_1",
-      role: "manager",
-      token: "polpette"
-    })
-  } else {
-    // Se l'email non è corretta, restituisce un errore di autenticazione
-    res.status(401).jsonp({ error: "Errore di autenticazione" })
+  switch (req.body.email) {
+    case "johndoe@example.com":
+      res.jsonp({
+        user: {
+          name: "John",
+          surname: "Doe",
+          email: "johndoe@example.com",
+        },
+        token: "superAdminToken",
+      })
+      break
+    default:
+      res.status(401).jsonp({ error: "Error" })
   }
 })
-// Use default router
+
+server.post("/validateToken", (req, res) => {
+  res.jsonp(true)
+})
+
+server.post("/me", (req, res) => {
+  res.jsonp({
+    name: "John",
+    surname: "Doe",
+    email: "johndoe@example.com",
+  })
+})
+
 server.use(router)
 server.listen(3000, () => {
   console.log("JSON Server is running")

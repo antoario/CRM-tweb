@@ -5,9 +5,9 @@ import { MatIconModule } from "@angular/material/icon"
 import { MatListModule } from "@angular/material/list"
 import { MatSidenavModule } from "@angular/material/sidenav"
 import { MatToolbarModule } from "@angular/material/toolbar"
-import { Router, RouterLink, RouterOutlet } from "@angular/router"
-import { routesLogged } from "../../app.routes"
-import { UserService } from "../../guard"
+import { RouterLink, RouterOutlet } from "@angular/router"
+import { UserService } from "../../Services/user.service"
+import { UserData } from "../../types/UserTypes"
 
 @Component({
   selector: "app-logged-home",
@@ -26,17 +26,11 @@ import { UserService } from "../../guard"
   styleUrl: "./logged-home.component.scss",
 })
 export class LoggedHomeComponent {
-  protected readonly routes = routesLogged
+  user: UserData | null = null
 
-  constructor(
-    private userService: UserService,
-    private router: Router
-  ) {
-    // if(userService.getCurrentUserVal())
-  }
-
-  async logout() {
-    this.userService.logout()
-    await this.router.navigate(["/"])
+  constructor(private userService: UserService) {
+    this.userService.loadUser().subscribe((usr) => {
+      if (usr) this.user = usr
+    })
   }
 }

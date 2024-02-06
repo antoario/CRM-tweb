@@ -1,88 +1,150 @@
 {
-  "Users": [
+  "users": [
     {
-      "id": 1,
-      "name": "John",
-      "surname": "Doe",
+      "user_id": "fihfou32d",
+      "role": 10,
+      "nickname": "pinolo",
+      "password": "diedoejdo",
+      "email": "superadmin@example.com",
+      "benefits": ["1", "2"]
+    },
+    {
+      "user_id": "fiuhwe78f",
+      "role": 5,
+      "password": "diedoejdo",
+      "nickname": "giallo",
+      "email": "admin@example.com",
+      "benefits": ["2"]
+    },
+    {
+      "user_id": "23fubew89",
+      "role": 0,
+      "nickname": "rossi",
+      "password": "diedoejdo",
+      "email": "user@example.com",
+      "benefits": ["1", "3"]
+    }
+  ],
+  "departments": [
+    {
+      "department_id": "1",
+      "name": "Human Resources",
+      "description": "Handles company recruitment, policy, and employee relations.",
+      "manager_id": "1"
+    },
+    {
+      "department_id": "2",
+      "name": "IT",
+      "description": "Responsible for managing technology and computer systems.",
+      "manager_id": "2"
+    },
+    {
+      "department_id": "3",
+      "name": "Marketing",
+      "description": "Focuses on advertising and promoting the company's products or services.",
+      "manager_id": "3"
+    }
+  ],
+  "employees": [
+    {
+      "employee_id": "1",
+      "first_name": "John",
+      "last_name": "Doe",
+      "date_of_birth": "1980-01-01",
       "email": "johndoe@example.com",
-      "phone_number": "+391234567890",
-      "password": "hashed_password_1",
-      "role": "manager"
+      "department_id": "1"
     },
     {
-      "id": 2,
-      "name": "Alice",
-      "surname": "Smith",
-      "email": "alicesmith@example.com",
-      "phone_number": "+391234567891",
-      "password": "hashed_password_2",
-      "role": "support"
-    }
-  ],
-  "Customers": [
-    {
-      "ID": 1,
-      "name": "Marco",
-      "surname": "Rossi",
-      "email": "marcorossi@example.com",
-      "phone_number": "+391234567892",
-      "country": "Italy"
+      "employee_id": "2",
+      "first_name": "Jane",
+      "last_name": "Smith",
+      "date_of_birth": "1985-02-15",
+      "email": "janesmith@example.com",
+      "department_id": "2"
     },
     {
-      "ID": 2,
-      "name": "Laura",
-      "surname": "Bianchi",
-      "email": "laurabianchi@example.com",
-      "phone_number": "+391234567893",
-      "country": "Italy"
+      "employee_id": "3",
+      "first_name": "Emily",
+      "last_name": "Johnson",
+      "date_of_birth": "1990-03-22",
+      "email": "emilyjohnson@example.com",
+      "department_id": "3"
     }
   ],
-  "Providers": [
+  "positions": [
     {
-      "ID": 1,
-      "company_name": "Tech Solutions",
-      "email": "contact@techsolutions.com",
-      "phone_number": "+391234567894",
-      "address": "Via Roma, 10, Milan, Italy",
-      "country": "Italy"
+      "position_id": "1",
+      "title": "HR Manager",
+      "description": "Oversees HR department, policy development and compliance.",
+      "level": "Senior",
+      "department_id": "1"
+    },
+    {
+      "position_id": "2",
+      "title": "Software Developer",
+      "description": "Develops and maintains company software.",
+      "level": "Junior",
+      "department_id": "2"
+    },
+    {
+      "position_id": "3",
+      "title": "Marketing Coordinator",
+      "description": "Assists in the development and implementation of marketing plans.",
+      "level": "Junior",
+      "department_id": "3"
     }
   ],
-  "Products": [
+  "projects": [
     {
-      "ID": 1,
-      "name": "Super Gadget",
-      "shortname": "SG01",
-      "description": "An innovative gadget for all tech needs.",
-      "price": 50.99
+      "project_id": "1",
+      "name": "Website Redesign",
+      "description": "Complete overhaul of the corporate website.",
+      "start_date": "2023-01-01",
+      "end_date": "2023-06-01",
+      "department_id": "2"
+    },
+    {
+      "project_id": "2",
+      "name": "Employee Onboarding System",
+      "description": "Develop a new system to improve the onboarding process.",
+      "start_date": "2023-02-15",
+      "end_date": "2023-08-15",
+      "department_id": "1"
     }
   ],
-  "Sales": [
+  "contracts": [
     {
-      "ID": 1,
-      "ID_product": 1,
-      "ID_customer": 1,
-      "quantity": 3,
-      "date": "2023-01-15"
+      "contract_id": "1",
+      "employee_id": "1",
+      "contract_type": "Indefinite Term",
+      "start_date": "2021-01-01",
+      "end_date": null,
+      "salary": 60000
+    },
+    {
+      "contract_id": "2",
+      "employee_id": "2",
+      "contract_type": "Fixed Term",
+      "start_date": "2022-01-01",
+      "end_date": "2024-01-01",
+      "salary": 50000
     }
   ],
-  "Customer_activities": [
+  "benefits": [
     {
-      "ID": 1,
-      "type": "meeting",
-      "description": "Meeting to discuss new business opportunities.",
-      "date": "2023-02-20",
-      "ID_user": 1,
-      "ID_customer": 1
-    }
-  ],
-  "Provider_activities": [
+      "benefit_id": "1",
+      "description": "Health Insurance",
+      "value": "Company provided"
+    },
     {
-      "ID": 1,
-      "type": "delivery",
-      "description": "Delivery of product batch order #1234.",
-      "date": "2023-03-10",
-      "ID_user": 1,
-      "ID_provider": 1
+      "benefit_id": "2",
+      "description": "Gym Membership",
+      "value": "Access to company gym"
+    },
+    {
+      "benefit_id": "3",
+      "description": "Free Lunch",
+      "value": "Lunch vouchers provided"
     }
   ]
 }

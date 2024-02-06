@@ -18,6 +18,8 @@ services:
       POSTGRES_PASSWORD: admin
     volumes:
       - postgres_data:/var/lib/postgresql/data
+      - ./backend/CRM-tweb-SQL.sql:/docker-entrypoint-initdb.d/init-db.sql
+
     ports:
       - "5432:5432"
     networks:

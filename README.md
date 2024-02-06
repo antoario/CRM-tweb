@@ -1,39 +1,48 @@
 # CRM-tweb
 
-## Docker
+This project is designed to develop a streamlined software solution for HR management. The objective is to establish a user-friendly platform for efficient HR operations.
 
-Allora prima di tutto devi aprire la cartella del progetto e fare il build del dockerfile con il comando:
+## Settings up
+
+### Docker
+
+For setting up the application, we use Docker (`compose.yaml`) with these 3 containers:
+
+- `Angular` frontend
+- `Adminer` for managing `SQL` and running queries
+- `Tomcat` backend
+
+To build the project, you have to run
 
 ```bash
-docker compose build
-docker compose up
-```
-
-questo costruirà le immagine e i container che sono 4:
-
-- db (postgres)
-- [admiter](http://localhost:5050/) 
-- [angular](http://localhost:4300/)
-- [tomcat](http://localhost:8080/crmtweb/)
-
-> ovviamente non vanno se i container sono spenti (o non ci sono)
-
-⚠️ se tomcat ti dà errore 404 perchè nella tua cartella non c'è la cartella target compilala (ti ho inviato le foto su whatsapp) poi stoppa (il quadrato) e fai ripartire il container di tomcat. vedrai che funziona.
-
-⚠️⚠️⚠️ se fai docker compose quando NON hai la cartella target nel backend non ti dà errore (ma non ci sarà nulla), appena lo riavvii ti dà errore. per risolvere devi creare il target (fare il build) e fare 
-```bash
-docker-compose down
+docker-compose build
 docker-compose up
 ```
 
-Guarda docker per capire gli url. Sono già tutti configurati.
+This will start the services and run the following services:
 
-## Tomcat
+db (Postgres)
+[adminer](localhost:5050) port 5050
+[angular](localhost:4300) port 4300
+[tomcat](localhost:8080) port 8080
 
-Per tomcat hai già tutto configurato su docker l'unica cosa che devi fare se vuoi lavorare sul tuo pc è andare sulla cartella dove hai installato tomcat e andare a modificare il `context.xml` che si trova in `conf/context.xml` e sostituirlo con questo:
+> You have to run the containers (obviously).
+
+If you make any edits in your project and you want to update the Backend, you can run
+
+```bash
+docker-compose down
+docker-compose up --build
+```
+
+### Tomcat
+
+With Docker, Tomcat is ready to use.
+
+Local Development
+If you prefer running Tomcat on your machine instead of in a Docker container, you have to update context.xml, which is located in conf/context.xml, and replace it with:
 
 ```xml
-
 <?xml version="1.0" encoding="UTF-8"?>
 <!--
   Licensed to the Apache Software Foundation (ASF) under one or more
@@ -71,25 +80,57 @@ Per tomcat hai già tutto configurato su docker l'unica cosa che devi fare se vu
               username="admin" password="admin"
               maxTotal="20" maxIdle="10" maxWaitMillis="-1"/>
 </Context>
-
 ```
-
-in questo modo ti si connette al server senza quella 💩 che avevamo visto. Se vuoi vedere come connetterlo guarda la classe che hai cambiato ieri, l'ho cambiata io. Così direi che è molto meglio.
-
-Ho tolto il login non so come si faccia ed è troppo tardi per guardarla ora ma non dovrebbe essere complicato, cerca di andare avanti con il resto anche in maniera basilare.
-
-### Guardarlo su tomcat
-
-Tutte le volte che farai una build docker prenderà il file war più recente quindi non dovrai fare nulla. basta buildarlo e stoppare e riavviare il container di tomcat.
-
-### intellij
-
-non ti serve scaricare tomcat smart ma devi impostare la cartella giusta dalle impostazioni ti invio le foto su whatsapp.
 
 ## Angular
 
-Non ti preoccupare guardo io
+For Angular, we are using Google Material Components, which are very useful for managing the data received from the backend.
 
-## 😴
+## Tables and Key Fields
 
-Buonanotte
+1. Employees
+   - `Employee ID` (primary key)
+   - `First Name`
+   - `Last Name`
+   - `Date of Birth`
+   - `Email`
+   - `Department ID` (foreign key linking to the Departments table)
+
+2. Departments
+   - `Department ID` (primary key)
+   - `Department Name`
+   - `Description`
+   - `Manager` (could be an employee ID or a name)
+
+3. Positions
+   - `Position ID` (primary key)
+   - `Position Title`
+   - `Description`
+   - `Level` (e.g., Junior, Senior)
+   - `Department ID` (foreign key)
+
+4. Projects
+   - `Project ID` (primary key)
+   - `Project Name`
+   - `Description`
+   - `Start Date`
+   - `End Date`
+   - `Department ID` (foreign key to link projects to specific departments)
+
+5. Contracts
+   - `Contract ID` (primary key)
+   - `Employee ID` (foreign key)
+   - `Contract Type` (e.g., indefinite term, fixed term, part-time)
+   - `Start Date`
+   - `End Date`
+   - `Salary`
+
+6. Benefits (or Additional Compensation)
+   - `Benefit ID` (primary key)
+   - `Description`
+   - `Value` (could be a monetary amount or a qualitative description, like "company gym" or "meal vouchers")
+   - `Employee ID` (foreign key)
+
+<!-- TODO add er image for design schema -->
+
+
