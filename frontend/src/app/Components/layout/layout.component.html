@@ -1,5 +1,11 @@
 <div class="flex h-screen flex-col">
   <mat-toolbar class="sticky top-0 h-16 w-full">
+
+    <button mat-icon-button class="example-icon" aria-label="Example icon-button with menu icon"
+            (click)="drawer.toggle()">
+      <mat-icon>menu</mat-icon>
+    </button>
+    
     <a routerLink="/">Nome</a>
 
     <div class="flex-1"></div>
@@ -8,8 +14,13 @@
     </button>
   </mat-toolbar>
 
-  <div class="flex-1 overflow-auto">
-    <ng-content></ng-content>
-    <router-outlet></router-outlet>
-  </div>
+  <mat-drawer-container class="h-full">
+    <mat-drawer mode="side" #drawer>Drawer content</mat-drawer>
+    <mat-drawer-content>
+      <ng-content></ng-content>
+      <router-outlet></router-outlet>
+    </mat-drawer-content>
+  </mat-drawer-container>
+
 </div>
+

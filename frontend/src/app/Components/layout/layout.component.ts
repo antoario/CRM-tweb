@@ -5,11 +5,21 @@ import { DataRowOutlet } from "@angular/cdk/table"
 import { MatButton, MatIconButton } from "@angular/material/button"
 import { MatIcon } from "@angular/material/icon"
 import { UserService } from "../../Services/user.service"
+import { MatDrawer, MatDrawerContainer, MatSidenavModule } from "@angular/material/sidenav"
 
 @Component({
   selector: "app-layout",
   standalone: true,
-  imports: [RouterOutlet, MatToolbar, DataRowOutlet, RouterLink, MatButton, MatIconButton, MatIcon],
+  imports: [
+    RouterOutlet,
+    MatToolbar,
+    DataRowOutlet,
+    RouterLink,
+    MatButton,
+    MatIconButton,
+    MatIcon,
+    MatSidenavModule,
+  ],
   templateUrl: "./layout.component.html",
   styleUrl: "./layout.component.scss",
 })

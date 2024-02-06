@@ -1,0 +1,40 @@
+<div>
+  <form (ngSubmit)="onSubmit()" [formGroup]="form" class="p-2 flex gap-2 flex-wrap justify-between">
+
+    <div *ngFor="let control of controls" class="basis-[40%]">
+      <!--      {{ control | json }}-->
+      <div [ngSwitch]="control.type">
+
+        <mat-form-field appearance="outline" *ngSwitchCase="'text'" class="w-full">
+          <mat-label>{{ control.label }}</mat-label>
+          <input matInput [formControlName]="control.key"
+                 [id]="control.key" [type]="control.type">
+        </mat-form-field>
+
+        <mat-form-field appearance="outline" *ngSwitchCase="'email'" class="w-full">
+          <mat-label>{{ control.label }}</mat-label>
+          <input matInput [formControlName]="control.key"
+                 [id]="control.key" [type]="control.type">
+        </mat-form-field>
+
+        <mat-form-field appearance="outline" *ngSwitchCase="'select'" class="w-full">
+          <mat-label>Toppings</mat-label>
+          <mat-select [formControlName]="control.key">
+
+            <mat-option *ngFor="let opt of control.controls" value="{{opt}}">{{ opt }}</mat-option>
+          </mat-select>
+        </mat-form-field>
+
+
+      </div>
+    </div>
+
+    <div class="form-row basis-full w-full">
+      <button mat-raised-button type="submit" [disabled]="!form.valid">Save</button>
+    </div>
+  </form>
+
+  <!--  <div *ngIf="payLoad" class="form-row">-->
+  <!--    <strong>Saved the following values</strong><br>{{ payLoad }}-->
+  <!--  </div>-->
+</div>
