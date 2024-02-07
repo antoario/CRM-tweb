@@ -9,6 +9,8 @@ import { ActivatedRoute, Router, RouterLink } from "@angular/router"
 import { JsonPipe, NgForOf, NgOptimizedImage } from "@angular/common"
 import { ReactiveFormsModule } from "@angular/forms"
 import { finalize, map, of, switchMap, tap } from "rxjs"
+import { ComponentPortal, DomPortal } from "@angular/cdk/portal"
+import { Overlay, OverlayModule } from "@angular/cdk/overlay"
 
 @Component({
   selector: "app-add-employees",
@@ -21,22 +23,31 @@ import { finalize, map, of, switchMap, tap } from "rxjs"
     ReactiveFormsModule,
     NgOptimizedImage,
     JsonPipe,
+    OverlayModule,
   ],
   templateUrl: "./add-employees.component.html",
   styleUrl: "./add-employees.component.scss",
 })
-export class AddEmployeesComponent implements OnInit {
+export class AddEmployeesComponent implements OnInit, AfterViewInit {
   addEmployee: Map<string, CustomForm<any>> = new Map()
   new = true
   isValid = false
   idEmp: string = ""
+  domPortal!: DomPortal<any>
+  showSaved = 0
   @ViewChild(FormBuilderComponent) formBuilderComponent!: FormBuilderComponent
   @ViewChild("imageElement") imageElement!: ElementRef<HTMLImageElement>
+  @ViewChild("domPortalContent") domPortalContent!: ElementRef<HTMLElement>
 
   constructor(
     private data: DataService,
-    private active: ActivatedRoute
+    private active: ActivatedRoute,
+    private overlay: Overlay
   ) {}
+
+  ngAfterViewInit() {
+    this.domPortal = new DomPortal(this.domPortalContent)
+  }
 
   ngOnInit() {
     for (const i of addEmployee) {
@@ -80,17 +91,25 @@ export class AddEmployeesComponent implements OnInit {
   }
 
   handleFormSubmit() {
+    let sub
     if (this.new) {
-      this.data
-        .addData(`${environment.apiUrl}/employees`, this.formBuilderComponent.form.value)
-        .subscribe()
+      sub = this.data.addData(
+        `${environment.apiUrl}/employees`,
+        this.formBuilderComponent.form.value
+      )
     } else {
-      this.data
-        .updateData(
-          `${environment.apiUrl}/employees/${this.idEmp}`,
-          this.formBuilderComponent.form.value
-        )
-        .subscribe()
+      sub = this.data.updateData(
+        `${environment.apiUrl}/employees/${this.idEmp}`,
+        this.formBuilderComponent.form.value
+      )
     }
+
+    sub.subscribe(() => {
+      this.showSaved = 1
+      this.isValid = false
+      setTimeout(() => {
+        this.showSaved = 0
+      }, 1000)
+    })
   }
 }

@@ -71,7 +71,10 @@
       "last_name": "Smith",
       "date_of_birth": "1985-02-15",
       "email": "janesmith@example.com",
-      "department_id": "2"
+      "department_id": "2",
+      "img_url": "",
+      "address": "",
+      "position_id": ""
     },
     {
       "id": "3",
@@ -81,7 +84,8 @@
       "email": "emilyjohnson@example.com",
       "department_id": "3",
       "img_url": "https://randomuser.me/api/portraits/lego/4.jpg",
-      "address": "via ricaldone 40"
+      "address": "via ricaldone 40",
+      "position_id": ""
     },
     {
       "firstName": "Mario",

@@ -1,4 +1,4 @@
-<div class="max-w-3xl m-auto mt-10">
+<div class="max-w-3xl m-auto my-10">
   <div>
     <a routerLink="../">
       <button class="button-btn bg-white">back to the list</button>
@@ -12,6 +12,7 @@
         <p class="text-gray-600 text-sm">Here you can manage the employee</p>
       </div>
       <div class="ml-auto">
+        <span class="text-green-600 mx-2 font-medium transition-all" [style.opacity]="showSaved">Saved ✅</span>
         <button (click)="handleFormSubmit()"
                 [disabled]="!isValid"
                 class="button-btn bg-blue-500 text-white disabled:bg-gray-300 transition-all">Save
@@ -40,3 +41,4 @@
   </div>
 
 </div>
+
