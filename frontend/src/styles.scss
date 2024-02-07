@@ -5,3 +5,17 @@
 .mat-mdc-form-field.mat-mdc-form-field.mat-mdc-form-field.mat-mdc-form-field.mat-mdc-form-field .mdc-notched-outline__notch {
   border-right-style: hidden;
 }
+
+@layer components {
+  .good-title {
+    @apply text-lg font-bold;
+  }
+
+  .button-btn {
+    @apply border-gray-300 border rounded py-1 px-3.5 my-3 bg-gray-100
+  }
+
+  .default-size {
+    @apply max-w-4xl m-auto mt-16
+  }
+}

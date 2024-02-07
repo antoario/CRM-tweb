@@ -1,40 +1,39 @@
-<div>
-  <form (ngSubmit)="onSubmit()" [formGroup]="form" class="p-2 flex gap-2 flex-wrap justify-between">
+<form (ngSubmit)="onSubmit()" [formGroup]="form" class="flex gap-2 flex-wrap justify-between">
 
-    <div *ngFor="let control of controls" class="basis-[40%]">
-      <!--      {{ control | json }}-->
-      <div [ngSwitch]="control.type">
-
-        <mat-form-field appearance="outline" *ngSwitchCase="'text'" class="w-full">
-          <mat-label>{{ control.label }}</mat-label>
-          <input matInput [formControlName]="control.key"
-                 [id]="control.key" [type]="control.type">
-        </mat-form-field>
-
-        <mat-form-field appearance="outline" *ngSwitchCase="'email'" class="w-full">
-          <mat-label>{{ control.label }}</mat-label>
-          <input matInput [formControlName]="control.key"
-                 [id]="control.key" [type]="control.type">
-        </mat-form-field>
-
-        <mat-form-field appearance="outline" *ngSwitchCase="'select'" class="w-full">
-          <mat-label>Toppings</mat-label>
-          <mat-select [formControlName]="control.key">
-
-            <mat-option *ngFor="let opt of control.controls" value="{{opt}}">{{ opt }}</mat-option>
-          </mat-select>
-        </mat-form-field>
+  <div *ngFor="let control of controls" class="basis-[49%]">
+    <div [ngSwitch]="control.type">
 
 
+      <div *ngSwitchCase="'text'">
+        <label [for]="control.key" class="form-label">{{ control.label }}
+          @if (control.required) {
+            <span class="text-red-500 text-sm">*</span>
+          }
+        </label>
+        <input [formControlName]="control.key" [id]="control.key"
+               [type]="control.type" class="form-input">
+      </div>
+
+      <div *ngSwitchCase="'email'">
+        <label [for]="control.key" class="form-label">{{ control.label }}
+          @if (control.required) {
+            <span class="text-red-500 text-xs">*</span>
+          }
+        </label>
+        <input [formControlName]="control.key" [id]="control.key"
+               [type]="control.type" class="form-input">
+      </div>
+
+      <div *ngSwitchCase="'select'">
+        <label [for]="control.key" class="form-label">{{ control.label }}
+          @if (control.required) {
+            <span class="text-red-500 text-sm">*</span>
+          }
+        </label>
+        <select [formControlName]="control.key" [id]="control.key" class="form-input">
+          <option *ngFor="let opt of control.options" [ngValue]="opt.key">{{ opt.value }}</option>
+        </select>
       </div>
     </div>
-
-    <div class="form-row basis-full w-full">
-      <button mat-raised-button type="submit" [disabled]="!form.valid">Save</button>
-    </div>
-  </form>
-
-  <!--  <div *ngIf="payLoad" class="form-row">-->
-  <!--    <strong>Saved the following values</strong><br>{{ payLoad }}-->
-  <!--  </div>-->
-</div>
+  </div>
+</form>

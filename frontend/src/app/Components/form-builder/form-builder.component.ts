@@ -1,12 +1,21 @@
-import { Component, EventEmitter, Input, Output } from "@angular/core"
-import { FormField } from "../../types/forms"
+import {
+  Component,
+  EventEmitter,
+  Input,
+  OnChanges,
+  OnDestroy,
+  OnInit,
+  Output,
+  SimpleChanges,
+} from "@angular/core"
 import { FormControl, FormGroup, FormsModule, ReactiveFormsModule, Validators } from "@angular/forms"
-import { addEmployee } from "../../forms/Employees"
 import { JsonPipe, NgForOf, NgSwitch, NgSwitchCase } from "@angular/common"
 import { MatFormField, MatFormFieldModule } from "@angular/material/form-field"
 import { MatInputModule } from "@angular/material/input"
 import { MatButton } from "@angular/material/button"
 import { MatOption, MatSelect } from "@angular/material/select"
+import { CustomForm, TextForm } from "../../types/data"
+import { finalize, Subscription } from "rxjs"
 
 @Component({
   selector: "app-form-builder",
@@ -28,27 +37,44 @@ import { MatOption, MatSelect } from "@angular/material/select"
   templateUrl: "./form-builder.component.html",
   styleUrl: "./form-builder.component.scss",
 })
-export class FormBuilderComponent {
-  @Input() controls: FormField[] = addEmployee
+export class FormBuilderComponent implements OnInit, OnDestroy {
+  @Input() controls: CustomForm<any>[] = []
   @Output() formSubmit: EventEmitter<any> = new EventEmitter<any>()
+  @Output() formChange: EventEmitter<any> = new EventEmitter<any>()
   form!: FormGroup
+  subscription!: Subscription
+
+  addControl(control: CustomForm<any>) {
+    this.form.addControl(control.key, this.generateControl(control))
+    this.controls.push(control)
+  }
 
   ngOnInit() {
     this.form = this.toFormGroup(this.controls)
+
+    this.subscription = this.form.valueChanges.subscribe(() => {
+      this.formChange.emit(this.form.value)
+    })
   }
 
-  toFormGroup(questions: FormField[]) {
+  ngOnDestroy() {
+    this.subscription.unsubscribe()
+  }
+
+  toFormGroup(questions: CustomForm<any>[]) {
     const group: any = {}
 
     questions.forEach((question) => {
-      console.log(question.type)
-      const newFormControl = new FormControl(question.value || "")
-      if (question.type == "email") newFormControl.addValidators(Validators.email)
-      if (question.required) newFormControl.addValidators(Validators.required)
-
-      group[question.key] = newFormControl
+      group[question.key] = this.generateControl(question)
     })
     return new FormGroup(group)
+  }
+
+  private generateControl<T>(control: CustomForm<any>): FormControl<T | null> {
+    const newFormControl = new FormControl<T>(control.value || "")
+    if (control.type == "email") newFormControl.addValidators(Validators.email)
+    if (control.required) newFormControl.addValidators(Validators.required)
+    return newFormControl
   }
 
   onSubmit() {

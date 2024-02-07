@@ -6,6 +6,8 @@ import { MatButton, MatIconButton } from "@angular/material/button"
 import { MatIcon } from "@angular/material/icon"
 import { UserService } from "../../Services/user.service"
 import { MatDrawer, MatDrawerContainer, MatSidenavModule } from "@angular/material/sidenav"
+import { ItemsMenuComponent } from "../subcomponents/items-menu/items-menu.component"
+import { JsonPipe } from "@angular/common"
 
 @Component({
   selector: "app-layout",
@@ -19,6 +21,8 @@ import { MatDrawer, MatDrawerContainer, MatSidenavModule } from "@angular/materi
     MatIconButton,
     MatIcon,
     MatSidenavModule,
+    ItemsMenuComponent,
+    JsonPipe,
   ],
   templateUrl: "./layout.component.html",
   styleUrl: "./layout.component.scss",

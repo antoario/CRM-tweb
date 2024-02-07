@@ -6,6 +6,7 @@ import { guardGuard } from "./guard.guard"
 import { LoggedHomeComponent } from "./routes/logged-home/logged-home.component"
 import { DepartmentsComponent } from "./routes/departments/departments.component"
 import { AddEmployeesComponent } from "./routes/Employees/add-employees/add-employees.component"
+import { EmployeeTableComponent } from "./routes/Employees/employee-table/employee-table.component"
 
 export const routes: Routes = [
   {
@@ -17,7 +18,11 @@ export const routes: Routes = [
       { path: "departments", component: DepartmentsComponent },
       {
         path: "employees",
-        children: [{ path: "add", component: AddEmployeesComponent }],
+        children: [
+          { path: "add", component: AddEmployeesComponent },
+          { path: "", component: EmployeeTableComponent },
+          { path: ":id", component: AddEmployeesComponent },
+        ],
       },
     ],
   },

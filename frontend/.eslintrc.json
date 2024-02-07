@@ -21,6 +21,7 @@
         "plugin:@angular-eslint/template/process-inline-templates"
       ],
       "rules": {
+        "@typescript-eslint/no-explicit-any": "off",
         "@stylistic/js/no-trailing-spaces": [
           "off",
           {
@@ -52,8 +53,7 @@
       "extends": [
         "plugin:@angular-eslint/template/recommended",
         "plugin:@angular-eslint/template/accessibility"
-      ],
-      "rules": {}
+      ]
     }
   ]
 }

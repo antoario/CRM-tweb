@@ -31,6 +31,12 @@ export class UserService {
     )
   }
 
+  public getToken(): string {
+    const token = localStorage.getItem("token")
+    if (!token) throw "token not valid"
+    return token
+  }
+
   public doLogin(emailPass: { email: string; password: string }): Observable<boolean | UserSession> {
     return this.http.post<UserSession | false>(`${environment.apiUrl}/login`, emailPass).pipe(
       tap((response) => {
