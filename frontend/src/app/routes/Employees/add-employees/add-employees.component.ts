@@ -26,7 +26,7 @@ import { finalize, map, of, switchMap, tap } from "rxjs"
   styleUrl: "./add-employees.component.scss",
 })
 export class AddEmployeesComponent implements OnInit {
-  addEmployee: CustomForm<any>[] = []
+  addEmployee: Map<string, CustomForm<any>> = new Map()
   new = true
   isValid = false
   idEmp: string = ""
@@ -39,7 +39,9 @@ export class AddEmployeesComponent implements OnInit {
   ) {}
 
   ngOnInit() {
-    this.addEmployee = [...addEmployee]
+    for (const i of addEmployee) {
+      this.addEmployee.set(i.key, i)
+    }
     const options: optionSelect[] = []
     this.idEmp = this.active.snapshot.params["id"] ?? ""
     this.data
@@ -50,16 +52,9 @@ export class AddEmployeesComponent implements OnInit {
             options.push({ key: i.department_id, value: i.name })
           }
 
-          this.formBuilderComponent.addControl(
-            new SelectForm({
-              options,
-              required: true,
-              key: "department_id",
-              value: "",
-              label: "Department",
-              order: 4,
-            })
-          )
+          const selection = this.addEmployee.get("department_id") as SelectForm
+          selection.setOptions(options)
+          console.log(this.formBuilderComponent.form)
         }),
         switchMap(() =>
           this.active.snapshot.params["id"]
@@ -80,7 +75,6 @@ export class AddEmployeesComponent implements OnInit {
   }
 
   changeVal(val: Employee) {
-    console.log(this.formBuilderComponent.form.value)
     this.isValid = this.formBuilderComponent.form.valid
     this.imageElement.nativeElement.src = val.img_url || ""
   }

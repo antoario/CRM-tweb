@@ -42,7 +42,9 @@ export class CustomForm<T> {
   order: number
   type: string
   options: { key: string; value: string }[]
-  subForm: CustomForm<T>[]
+  subForm: Map<string, CustomForm<T>>
+  width: string
+  subtext: string
 
   constructor(
     options: {
@@ -54,7 +56,9 @@ export class CustomForm<T> {
       controlType?: string
       type?: string
       options?: optionSelect[]
-      subForm?: CustomForm<T>[]
+      subForm?: Map<string, CustomForm<T>>
+      width?: string
+      subtext?: string
     } = {}
   ) {
     this.value = options.value
@@ -64,7 +68,9 @@ export class CustomForm<T> {
     this.order = options.order === undefined ? 1 : options.order
     this.type = options.type || ""
     this.options = options.options || []
-    this.subForm = options.subForm || []
+    this.subForm = options.subForm || new Map<string, CustomForm<T>>()
+    this.width = options.width || "49%"
+    this.subtext = options.subtext || ""
   }
 }
 
@@ -80,6 +86,10 @@ export class SubForm extends CustomForm<any> {
 
 export class EmailQuestion extends CustomForm<string> {
   override type = "email"
+}
+
+export class JustInfo extends CustomForm<string> {
+  override type = "info"
 }
 
 export class DateQuestion extends CustomForm<string> {

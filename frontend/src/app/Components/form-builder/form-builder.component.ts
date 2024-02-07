@@ -9,7 +9,7 @@ import {
   SimpleChanges,
 } from "@angular/core"
 import { FormControl, FormGroup, FormsModule, ReactiveFormsModule, Validators } from "@angular/forms"
-import { JsonPipe, NgForOf, NgSwitch, NgSwitchCase } from "@angular/common"
+import { JsonPipe, KeyValuePipe, NgForOf, NgSwitch, NgSwitchCase } from "@angular/common"
 import { MatFormField, MatFormFieldModule } from "@angular/material/form-field"
 import { MatInputModule } from "@angular/material/input"
 import { MatButton } from "@angular/material/button"
@@ -33,12 +33,13 @@ import { finalize, Subscription } from "rxjs"
     MatButton,
     MatSelect,
     MatOption,
+    KeyValuePipe,
   ],
   templateUrl: "./form-builder.component.html",
   styleUrl: "./form-builder.component.scss",
 })
 export class FormBuilderComponent implements OnInit, OnDestroy {
-  @Input() controls: CustomForm<any>[] = []
+  @Input() controls: Map<string, CustomForm<any>> = new Map()
   @Output() formSubmit: EventEmitter<any> = new EventEmitter<any>()
   @Output() formChange: EventEmitter<any> = new EventEmitter<any>()
   @Input() formGroupPass?: any | FormGroup
@@ -47,14 +48,13 @@ export class FormBuilderComponent implements OnInit, OnDestroy {
 
   addControl(control: CustomForm<any>) {
     this.form.addControl(control.key, this.generateControl(control))
-    this.controls.push(control)
+    this.controls.set(control.key, control)
   }
 
   ngOnInit() {
     this.form = this.toFormGroup(this.controls)
 
     this.subscription = this.form.valueChanges.subscribe(() => {
-      console.log("form", this.form.valid)
       this.formChange.emit(this.form.value)
     })
   }
@@ -63,18 +63,17 @@ export class FormBuilderComponent implements OnInit, OnDestroy {
     this.subscription.unsubscribe()
   }
 
-  toFormGroup(questions: CustomForm<any>[]) {
+  toFormGroup(questions: Map<string, CustomForm<any>>) {
     const group: any = {}
 
-    questions.forEach((control) => {
+    for (const [key, control] of questions) {
+      if (control.type == "info") continue
       if (control.type === "group" && control.subForm) {
-        // Qui gestisci i sottoschemi creando un nuovo FormGroup per essi
         group[control.key] = this.toFormGroup(control.subForm)
       } else {
-        // Per i controlli normali
         group[control.key] = this.generateControl(control)
       }
-    })
+    }
 
     console.log(group)
     return new FormGroup(group)
