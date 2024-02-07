@@ -80,6 +80,7 @@ export class AddEmployeesComponent implements OnInit {
   }
 
   changeVal(val: Employee) {
+    console.log(this.formBuilderComponent.form.value)
     this.isValid = this.formBuilderComponent.form.valid
     this.imageElement.nativeElement.src = val.img_url || ""
   }

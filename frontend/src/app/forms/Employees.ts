@@ -1,4 +1,4 @@
-import { CustomForm, EmailQuestion, TextForm } from "../types/data"
+import { CustomForm, EmailQuestion, SubForm, TextForm } from "../types/data"
 
 export const addEmployee: CustomForm<any>[] = [
   new TextForm({
@@ -12,11 +12,6 @@ export const addEmployee: CustomForm<any>[] = [
     required: true,
   }),
   new TextForm({
-    key: "address",
-    label: "Address",
-    required: true,
-  }),
-  new TextForm({
     key: "last_name",
     label: "Lastname",
     required: true,
@@ -26,5 +21,10 @@ export const addEmployee: CustomForm<any>[] = [
     label: "Email",
     value: "",
     required: false,
+  }),
+
+  new SubForm({
+    key: "address_info",
+    subForm: [new TextForm({ key: "address", label: "Address", required: true })],
   }),
 ]

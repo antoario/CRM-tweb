@@ -1,8 +1,11 @@
-<form (ngSubmit)="onSubmit()" [formGroup]="form" class="flex gap-2 flex-wrap justify-between">
+<form (ngSubmit)="onSubmit()" [formGroup]="formGroupPass || form" class="flex gap-2 flex-wrap justify-between">
 
   <div *ngFor="let control of controls" class="basis-[49%]">
     <div [ngSwitch]="control.type">
 
+      <div *ngSwitchCase="'group'">
+        <app-form-builder [controls]="control.subForm" [formGroupPass]="form.get(control.key)"></app-form-builder>
+      </div>
 
       <div *ngSwitchCase="'text'">
         <label [for]="control.key" class="form-label">{{ control.label }}

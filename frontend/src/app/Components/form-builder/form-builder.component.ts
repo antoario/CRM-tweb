@@ -41,6 +41,7 @@ export class FormBuilderComponent implements OnInit, OnDestroy {
   @Input() controls: CustomForm<any>[] = []
   @Output() formSubmit: EventEmitter<any> = new EventEmitter<any>()
   @Output() formChange: EventEmitter<any> = new EventEmitter<any>()
+  @Input() formGroupPass?: any | FormGroup
   form!: FormGroup
   subscription!: Subscription
 
@@ -53,6 +54,7 @@ export class FormBuilderComponent implements OnInit, OnDestroy {
     this.form = this.toFormGroup(this.controls)
 
     this.subscription = this.form.valueChanges.subscribe(() => {
+      console.log("form", this.form.valid)
       this.formChange.emit(this.form.value)
     })
   }
@@ -64,13 +66,21 @@ export class FormBuilderComponent implements OnInit, OnDestroy {
   toFormGroup(questions: CustomForm<any>[]) {
     const group: any = {}
 
-    questions.forEach((question) => {
-      group[question.key] = this.generateControl(question)
+    questions.forEach((control) => {
+      if (control.type === "group" && control.subForm) {
+        // Qui gestisci i sottoschemi creando un nuovo FormGroup per essi
+        group[control.key] = this.toFormGroup(control.subForm)
+      } else {
+        // Per i controlli normali
+        group[control.key] = this.generateControl(control)
+      }
     })
+
+    console.log(group)
     return new FormGroup(group)
   }
 
-  private generateControl<T>(control: CustomForm<any>): FormControl<T | null> {
+  private generateControl<T>(control: CustomForm<any>) {
     const newFormControl = new FormControl<T>(control.value || "")
     if (control.type == "email") newFormControl.addValidators(Validators.email)
     if (control.required) newFormControl.addValidators(Validators.required)
