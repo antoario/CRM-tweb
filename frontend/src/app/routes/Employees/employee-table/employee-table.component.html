@@ -15,7 +15,6 @@
     <div>
       <div class="gap-3 grid grid-auto-fit-sm">
         @for (emp of employees; track emp.id) {
-          <!--    {{ emp | json }}-->
 
           <a routerLink="./{{emp.id}}"
              class="flex flex-col border border-gray-300 rounded p-5 justify-center gap-3 min-w-56 items-center drop-shadow-sm
@@ -38,13 +37,8 @@
 
               <p>Department: {{ emp.department_id }}</p>
               <p>Position: {{ emp.position || "Unknown" }}</p>
-
-
             </div>
-
-
           </a>
-
         }
       </div>
     </div>

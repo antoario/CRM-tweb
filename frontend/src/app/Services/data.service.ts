@@ -22,11 +22,15 @@ export class DataService {
     return this.http.patch(url, data, { headers: this.buildHeader(this.userService.getToken()) })
   }
 
-  private buildHeader(token: string) {
-    return new HttpHeaders({ authentication: token })
+  removeData(url: string): Observable<any> {
+    return this.http.delete(url, { headers: this.buildHeader(this.userService.getToken()) })
   }
 
   getDataWithAuth<T>(url: string): Observable<T> {
     return this.http.get<T>(url, { headers: this.buildHeader(this.userService.getToken()) })
+  }
+
+  private buildHeader(token: string) {
+    return new HttpHeaders({ authentication: token })
   }
 }

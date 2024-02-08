@@ -42,7 +42,7 @@ export class AddEmployeesComponent implements OnInit, AfterViewInit {
   constructor(
     private data: DataService,
     private active: ActivatedRoute,
-    private overlay: Overlay
+    private router: Router
   ) {}
 
   ngAfterViewInit() {
@@ -88,6 +88,12 @@ export class AddEmployeesComponent implements OnInit, AfterViewInit {
   changeVal(val: Employee) {
     this.isValid = this.formBuilderComponent.form.valid
     this.imageElement.nativeElement.src = val.img_url || ""
+  }
+
+  deleteEmployee() {
+    this.data.removeData(`${environment.apiUrl}/employees/${this.idEmp}`).subscribe(() => {
+      this.router.navigate(["/employees"])
+    })
   }
 
   handleFormSubmit() {
