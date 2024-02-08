@@ -11,6 +11,8 @@ import { ReactiveFormsModule } from "@angular/forms"
 import { finalize, map, of, switchMap, tap } from "rxjs"
 import { ComponentPortal, DomPortal } from "@angular/cdk/portal"
 import { Overlay, OverlayModule } from "@angular/cdk/overlay"
+import { Dialog } from "@angular/cdk/dialog"
+import { ConfirmationDialogComponent } from "../../../Components/confirmation-dialog/confirmation-dialog.component"
 
 @Component({
   selector: "app-add-employees",
@@ -42,7 +44,8 @@ export class AddEmployeesComponent implements OnInit, AfterViewInit {
   constructor(
     private data: DataService,
     private active: ActivatedRoute,
-    private router: Router
+    private router: Router,
+    public dialog: Dialog
   ) {}
 
   ngAfterViewInit() {
@@ -65,7 +68,6 @@ export class AddEmployeesComponent implements OnInit, AfterViewInit {
 
           const selection = this.addEmployee.get("department_id") as SelectForm
           selection.setOptions(options)
-          console.log(this.formBuilderComponent.form)
         }),
         switchMap(() =>
           this.active.snapshot.params["id"]
@@ -91,9 +93,23 @@ export class AddEmployeesComponent implements OnInit, AfterViewInit {
   }
 
   deleteEmployee() {
-    this.data.removeData(`${environment.apiUrl}/employees/${this.idEmp}`).subscribe(() => {
-      this.router.navigate(["/employees"])
+    const dialogRef = this.dialog.open<string>(ConfirmationDialogComponent, {
+      width: "250px",
+      // data: {name: this.name, animal: this.animal},
     })
+
+    dialogRef.closed
+      .pipe(
+        switchMap((val) => {
+          if (val) {
+            this.router.navigate(["/employees"])
+            return this.data.removeData(`${environment.apiUrl}/employees/${this.idEmp}`)
+          } else {
+            return of(null)
+          }
+        })
+      )
+      .subscribe()
   }
 
   handleFormSubmit() {
@@ -110,7 +126,11 @@ export class AddEmployeesComponent implements OnInit, AfterViewInit {
       )
     }
 
-    sub.subscribe(() => {
+    sub.subscribe((val) => {
+      if (val["id"]) {
+        this.router.navigate(["/employees", val["id"]], { replaceUrl: true })
+        this.new = false
+      }
       this.showSaved = 1
       this.isValid = false
       setTimeout(() => {

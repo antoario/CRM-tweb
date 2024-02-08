@@ -55,12 +55,10 @@ export class LoginComponent {
   }
 
   public login() {
-    console.log(this.loginForm.value)
     if (this.loginForm.value.email && this.loginForm.value.password)
       this.userService
         .doLogin(this.loginForm.value as { email: string; password: string })
         .subscribe((val) => {
-          console.log(val)
           if (val) {
             this.router.navigate(["/"])
           }

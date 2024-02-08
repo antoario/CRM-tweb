@@ -39,6 +39,8 @@
               <p>Position: {{ emp.position || "Unknown" }}</p>
             </div>
           </a>
+        } @empty {
+          <p>No employees found</p>
         }
       </div>
     </div>

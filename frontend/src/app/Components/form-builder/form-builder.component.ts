@@ -75,7 +75,6 @@ export class FormBuilderComponent implements OnInit, OnDestroy {
       }
     }
 
-    console.log(group)
     return new FormGroup(group)
   }
 
