@@ -13,8 +13,9 @@
       </div>
       <div class="ml-auto">
 
-        <span class="text-green-600 mx-2 font-medium transition-all" [style.opacity]="showSaved">Saved ✅</span>
-        @if (!new) {
+        <span class="text-green-600 mx-2 font-medium transition-all"
+              [style.opacity]="showSaved">Saved ✅</span>
+        @if (!isNew) {
           <button (click)="deleteEmployee()"
                   class="button-btn bg-red-500 text-white mx-2">Delete
           </button>
