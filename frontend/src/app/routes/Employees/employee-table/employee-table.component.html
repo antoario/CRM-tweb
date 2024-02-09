@@ -7,7 +7,7 @@
           <p class="text-gray-600">Click for more info</p>
         </div>
         <div class="ml-auto">
-          <button routerLink="./add" class="button-btn bg-blue-500 text-white">Add new employee</button>
+          <button class="button-btn bg-blue-500 text-white" routerLink="./add">Add new employee</button>
         </div>
       </div>
     </div>
@@ -15,7 +15,6 @@
     <div>
       <div class="gap-3 grid grid-auto-fit-sm">
         @for (emp of employees; track emp.id) {
-
           <a routerLink="./{{emp.id}}"
              class="flex flex-col border border-gray-300 rounded p-5 justify-center gap-3 min-w-56 items-center drop-shadow-sm
   hover:bg-blue-50 hover:cursor-pointer transition-all
@@ -34,9 +33,8 @@
                 <span>{{ emp.first_name || notDef }} </span>
                 <span class="font-bold">{{ emp.last_name || notDef }}</span>
               </div>
-
-              <p>Department: {{ emp.department_id }}</p>
-              <p>Position: {{ emp.position || "Unknown" }}</p>
+              <p>Department: {{ emp.department_id ? departments.get(emp.department_id)?.name : "N/A" }}</p>
+              <p>Position: {{ emp.position_id ? position.get(emp.position_id)?.title : "😵" }}</p>
             </div>
           </a>
         } @empty {

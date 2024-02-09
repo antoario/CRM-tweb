@@ -1,21 +1,12 @@
-import {
-  Component,
-  EventEmitter,
-  Input,
-  OnChanges,
-  OnDestroy,
-  OnInit,
-  Output,
-  SimpleChanges,
-} from "@angular/core"
+import { Component, EventEmitter, Input, OnDestroy, OnInit, Output } from "@angular/core"
 import { FormControl, FormGroup, FormsModule, ReactiveFormsModule, Validators } from "@angular/forms"
 import { JsonPipe, KeyValuePipe, NgForOf, NgSwitch, NgSwitchCase } from "@angular/common"
 import { MatFormField, MatFormFieldModule } from "@angular/material/form-field"
 import { MatInputModule } from "@angular/material/input"
 import { MatButton } from "@angular/material/button"
 import { MatOption, MatSelect } from "@angular/material/select"
-import { CustomForm, TextForm } from "../../types/data"
-import { finalize, Subscription } from "rxjs"
+import { CustomForm } from "../../types/data"
+import { Subscription } from "rxjs"
 
 @Component({
   selector: "app-form-builder",

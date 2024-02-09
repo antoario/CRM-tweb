@@ -1,13 +1,14 @@
-import { Component } from "@angular/core"
+import { Component, OnInit } from "@angular/core"
 import { Router, RouterLink, RouterOutlet } from "@angular/router"
 import { MatToolbar } from "@angular/material/toolbar"
 import { DataRowOutlet } from "@angular/cdk/table"
 import { MatButton, MatIconButton } from "@angular/material/button"
 import { MatIcon } from "@angular/material/icon"
 import { UserService } from "../../Services/user.service"
-import { MatDrawer, MatDrawerContainer, MatSidenavModule } from "@angular/material/sidenav"
+import { MatSidenavModule } from "@angular/material/sidenav"
 import { ItemsMenuComponent } from "../subcomponents/items-menu/items-menu.component"
 import { JsonPipe } from "@angular/common"
+import { CompanyDataService } from "../../Services/company-data.service"
 
 @Component({
   selector: "app-layout",
@@ -27,11 +28,16 @@ import { JsonPipe } from "@angular/common"
   templateUrl: "./layout.component.html",
   styleUrl: "./layout.component.scss",
 })
-export class LayoutComponent {
+export class LayoutComponent implements OnInit {
   constructor(
     private userService: UserService,
-    private router: Router
+    private router: Router,
+    private dataComp: CompanyDataService
   ) {}
+
+  ngOnInit() {
+    this.dataComp.getAllData().subscribe()
+  }
 
   logout() {
     this.userService.logout()

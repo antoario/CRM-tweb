@@ -1,14 +1,14 @@
 {
   "users": [
     {
-      "user_id": "fihfou32d",
+      "id": "fihfou32d",
       "role": 10,
       "nickname": "pinolo",
       "password": "diedoejdo",
       "email": "superadmin@example.com"
     },
     {
-      "user_id": "fiuhwe78f",
+      "id": "fiuhwe78f",
       "role": 5,
       "password": "diedoejdo",
       "nickname": "giallo",
@@ -18,7 +18,7 @@
       ]
     },
     {
-      "user_id": "23fubew89",
+      "id": "23fubew89",
       "role": 0,
       "nickname": "rossi",
       "password": "diedoejdo",
@@ -51,33 +51,13 @@
   ],
   "employees": [
     {
-      "img_url": "https://randomuser.me/api/portraits/men/28.jpg",
-      "first_name": "Jhon",
-      "last_name": "Pinocchio",
-      "email": "",
-      "address": "",
-      "department_id": "",
-      "position_id": "",
-      "id": 1
-    },
-    {
-      "img_url": "https://randomuser.me/api/portraits/men/28.jpg",
-      "first_name": "Pierino",
-      "last_name": "Querzoli",
-      "email": "",
-      "address": "",
-      "department_id": "",
-      "position_id": "",
-      "id": 2
-    },
-    {
       "img_url": "https://randomuser.me/api/portraits/men/38.jpg",
       "first_name": "Jhon",
       "last_name": "Pinocchio",
       "email": "",
       "address": "",
       "department_id": "",
-      "position_id": "",
+      "position_id": "1",
       "id": 3
     },
     {
@@ -86,48 +66,48 @@
       "last_name": "ddd",
       "email": "",
       "address": "",
-      "department_id": "",
-      "position_id": "",
+      "department_id": "1",
+      "position_id": "2",
       "id": 4
     },
     {
-      "img_url": "https://randomuser.me/api/portraits/lego/4.jpg",
-      "first_name": "Luca",
-      "last_name": "Querzoli",
-      "email": "",
-      "address": "",
-      "department_id": "",
-      "position_id": "",
-      "id": 5
-    },
-    {
-      "img_url": "https://randomuser.me/api/portraits/lego/4.jpg",
-      "first_name": "Luca",
-      "last_name": "Querzoli",
+      "img_url": "https://randomuser.me/api/portraits/women/0.jpg",
+      "first_name": "Pierino",
+      "last_name": "sonoio",
       "email": "",
       "address": "",
       "department_id": "",
       "position_id": "",
       "id": 6
+    },
+    {
+      "img_url": "",
+      "first_name": "prova",
+      "last_name": "Pinocchio",
+      "email": "",
+      "address": "",
+      "department_id": "",
+      "position_id": "",
+      "id": 7
     }
   ],
   "positions": [
     {
-      "position_id": "1",
+      "id": "1",
       "title": "HR Manager",
       "description": "Oversees HR department, policy development and compliance.",
       "level": "Senior",
       "department_id": "1"
     },
     {
-      "position_id": "2",
+      "id": "2",
       "title": "Software Developer",
       "description": "Develops and maintains company software.",
       "level": "Junior",
       "department_id": "2"
     },
     {
-      "position_id": "3",
+      "id": "3",
       "title": "Marketing Coordinator",
       "description": "Assists in the development and implementation of marketing plans.",
       "level": "Junior",
@@ -136,7 +116,7 @@
   ],
   "projects": [
     {
-      "project_id": "1",
+      "id": "1",
       "name": "Website Redesign",
       "description": "Complete overhaul of the corporate website.",
       "start_date": "2023-01-01",
@@ -144,7 +124,7 @@
       "department_id": "2"
     },
     {
-      "project_id": "2",
+      "id": "2",
       "name": "Employee Onboarding System",
       "description": "Develop a new system to improve the onboarding process.",
       "start_date": "2023-02-15",
@@ -154,7 +134,7 @@
   ],
   "contracts": [
     {
-      "contract_id": "1",
+      "id": "1",
       "employee_id": "1",
       "contract_type": "Indefinite Term",
       "start_date": "2021-01-01",
@@ -162,7 +142,7 @@
       "salary": 60000
     },
     {
-      "contract_id": "2",
+      "id": "2",
       "employee_id": "2",
       "contract_type": "Fixed Term",
       "start_date": "2022-01-01",
@@ -172,17 +152,17 @@
   ],
   "benefits": [
     {
-      "benefit_id": "1",
+      "id": "1",
       "description": "Health Insurance",
       "value": "Company provided"
     },
     {
-      "benefit_id": "2",
+      "id": "2",
       "description": "Gym Membership",
       "value": "Access to company gym"
     },
     {
-      "benefit_id": "3",
+      "id": "3",
       "description": "Free Lunch",
       "value": "Lunch vouchers provided"
     }

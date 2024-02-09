@@ -1,5 +1,5 @@
 export interface Department {
-  department_id: string
+  id: string
   name: string
   description: string
   manager_id: string
@@ -14,7 +14,7 @@ export interface Employee {
   department_id: string
   benefits: string[]
   img_url?: string
-  position: string
+  position_id: string
 }
 
 export interface Position {
@@ -26,7 +26,7 @@ export interface Position {
 }
 
 export interface Projects {
-  project_id: string
+  id: string
   name: string
   description: string
   start_date: Date
@@ -99,7 +99,9 @@ export class DateQuestion extends CustomForm<string> {
 export class SelectForm extends CustomForm<string> {
   override type = "select"
 
-  setOptions(options: { key: string; value: string }[]) {
+  setOptions(options: OptionSelect[]) {
     this.options = options
   }
 }
+
+export type OptionSelect = { key: string; value: string }
