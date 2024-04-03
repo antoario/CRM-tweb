@@ -12,6 +12,7 @@ import {
   CdkTable,
 } from "@angular/cdk/table"
 import { RouterLink } from "@angular/router"
+import { Columns } from "../../types"
 
 @Component({
   selector: "app-custom-table",
@@ -35,5 +36,5 @@ import { RouterLink } from "@angular/router"
 export class CustomTableComponent {
   @Input() data: any[] = []
   @Input() columnsDefs: string[] = []
-  @Input() columns: { key: string; label: string }[] = []
+  @Input() columns: Columns[] = []
 }

@@ -25,6 +25,21 @@ export interface Position {
   department_id: string
 }
 
+export interface Benefits {
+  id: string
+  description: string
+  value: string
+}
+
+export interface Contracts {
+  id: string
+  employee_id: string
+  contract_type: string
+  start_date: string
+  end_date: string | null
+  salary: number
+}
+
 export interface Projects {
   id: string
   name: string

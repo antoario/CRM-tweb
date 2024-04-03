@@ -7,3 +7,8 @@ export interface User {
   role: string
   phone_number: string
 }
+
+export interface Columns {
+  key: string
+  label: string
+}

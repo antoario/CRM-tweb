@@ -33,7 +33,7 @@ export class DepartmentsComponent implements OnInit {
     { key: "name", label: "Name" },
     { key: "description", label: "Description" },
   ]
-  columnsDefs: string[] = []
+  columnsDefs: string[] = ["name", "description", "actions"]
 
   constructor(public compData: CompanyDataService) {}
 
@@ -41,8 +41,5 @@ export class DepartmentsComponent implements OnInit {
     this.compData.getDepartments().subscribe((val) => {
       this.departments = Array.from(val.entries()).map(([, val]) => val)
     })
-
-    this.columnsDefs = Array.from(this.columns.entries()).map(([, val]) => val.key)
-    this.columnsDefs.push("actions")
   }
 }

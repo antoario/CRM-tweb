@@ -11,6 +11,7 @@ import { ViewDepartmentComponent } from "./routes/departments/view-department/vi
 import { PositionsComponent } from "./routes/positions/positions.component"
 import { ContractsComponent } from "./routes/contracts/contracts.component"
 import { BenefitsComponent } from "./routes/benefits/benefits.component"
+import { ProjectComponent } from "./routes/project/project.component"
 
 export const routes: Routes = [
   {
@@ -46,6 +47,10 @@ export const routes: Routes = [
       {
         path: "benefits",
         children: [{ path: "", component: BenefitsComponent }],
+      },
+      {
+        path: "projects",
+        children: [{ path: "", component: ProjectComponent }],
       },
     ],
   },
