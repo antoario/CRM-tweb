@@ -9,6 +9,7 @@ import { MatSidenavModule } from "@angular/material/sidenav"
 import { ItemsMenuComponent } from "../subcomponents/items-menu/items-menu.component"
 import { JsonPipe } from "@angular/common"
 import { CompanyDataService } from "../../Services/company-data.service"
+import { MENUITEMS } from "../../menu-items"
 
 @Component({
   selector: "app-layout",
@@ -43,4 +44,6 @@ export class LayoutComponent implements OnInit {
     this.userService.logout()
     this.router.navigate(["/login"])
   }
+
+  MENUITEMS = MENUITEMS
 }

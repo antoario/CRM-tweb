@@ -8,6 +8,9 @@ import { DepartmentsComponent } from "./routes/departments/departments.component
 import { AddEmployeesComponent } from "./routes/Employees/add-employees/add-employees.component"
 import { EmployeeTableComponent } from "./routes/Employees/employee-table/employee-table.component"
 import { ViewDepartmentComponent } from "./routes/departments/view-department/view-department.component"
+import { PositionsComponent } from "./routes/positions/positions.component"
+import { ContractsComponent } from "./routes/contracts/contracts.component"
+import { BenefitsComponent } from "./routes/benefits/benefits.component"
 
 export const routes: Routes = [
   {
@@ -31,6 +34,18 @@ export const routes: Routes = [
           { path: "", component: EmployeeTableComponent },
           { path: ":id", component: AddEmployeesComponent },
         ],
+      },
+      {
+        path: "positions",
+        children: [{ path: "", component: PositionsComponent }],
+      },
+      {
+        path: "contracts",
+        children: [{ path: "", component: ContractsComponent }],
+      },
+      {
+        path: "benefits",
+        children: [{ path: "", component: BenefitsComponent }],
       },
     ],
   },

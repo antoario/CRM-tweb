@@ -17,10 +17,7 @@
           <p class="font-bold">Workspace</p>
           <p class="text-gray-500">Manage part of organization</p>
         </div>
-        @for (menu of [{ text: "Home", link: "/", icon: "home" },
-          { text: "Employee", link: "/employees", icon: "group" },
-          { text: "Departments", link: "/departments", icon: "diversity_2" },
-        ]; track menu.text) {
+        @for (menu of MENUITEMS; track menu.text) {
           <app-items-menu [element]="menu"></app-items-menu>
         }
         <hr class="my-3">

@@ -133,4 +133,3 @@ For Angular, we are using Google Material Components, which are very useful for 
 
 <!-- TODO add er image for design schema -->
 
-

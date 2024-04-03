@@ -1,5 +1,4 @@
 import { Component, OnInit } from "@angular/core"
-import { DepartmentsService } from "../../Services/deparments.service"
 import { CompanyDataService } from "../../Services/company-data.service"
 import { Department } from "../../types/data"
 import { JsonPipe, KeyValuePipe } from "@angular/common"
@@ -7,6 +6,7 @@ import { TableBuilderComponent } from "../../Components/table-builder/table-buil
 import { LayoutSingleComponent } from "../../Components/layout-single/layout-single.component"
 import { CdkCell, CdkCellDef, CdkHeaderCell, CdkTableModule } from "@angular/cdk/table"
 import { RouterLink } from "@angular/router"
+import { CustomTableComponent } from "../../Components/custom-table/custom-table.component"
 
 @Component({
   selector: "app-departments",
@@ -21,6 +21,7 @@ import { RouterLink } from "@angular/router"
     CdkHeaderCell,
     CdkTableModule,
     RouterLink,
+    CustomTableComponent,
   ],
   templateUrl: "./departments.component.html",
   styleUrl: "./departments.component.scss",
