@@ -7,6 +7,7 @@ import { LoggedHomeComponent } from "./routes/logged-home/logged-home.component"
 import { DepartmentsComponent } from "./routes/departments/departments.component"
 import { AddEmployeesComponent } from "./routes/Employees/add-employees/add-employees.component"
 import { EmployeeTableComponent } from "./routes/Employees/employee-table/employee-table.component"
+import { ViewDepartmentComponent } from "./routes/departments/view-department/view-department.component"
 
 export const routes: Routes = [
   {
@@ -15,7 +16,14 @@ export const routes: Routes = [
     canActivate: [guardGuard],
     children: [
       { path: "", component: LoggedHomeComponent },
-      { path: "departments", component: DepartmentsComponent },
+      {
+        path: "departments",
+        children: [
+          { path: "add", component: ViewDepartmentComponent },
+          { path: "", component: DepartmentsComponent },
+          { path: ":id", component: ViewDepartmentComponent },
+        ],
+      },
       {
         path: "employees",
         children: [

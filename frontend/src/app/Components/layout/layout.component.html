@@ -2,7 +2,8 @@
   <div class="w-full bg-blue-500 text-white flex items-center justify-center px-10 py-1 z-50">
     <a routerLink="/">Nome</a>
     <div class="flex-1"></div>
-    <button (click)="logout()" aria-label="Example icon-button with menu icon" class="text-xs" mat-icon-button>
+    <button (click)="logout()" aria-label="Example icon-button with menu icon" class="text-xs"
+            mat-icon-button>
       <mat-icon>logout</mat-icon>
     </button>
 
@@ -17,10 +18,14 @@
           <p class="text-gray-500">Manage part of organization</p>
         </div>
         @for (menu of [{ text: "Home", link: "/", icon: "home" },
-          { text: "Employee", link: "/employees", icon: "group" }
+          { text: "Employee", link: "/employees", icon: "group" },
+          { text: "Departments", link: "/departments", icon: "diversity_2" },
         ]; track menu.text) {
           <app-items-menu [element]="menu"></app-items-menu>
         }
+        <hr class="my-3">
+        <app-items-menu
+          [element]="{text: 'Manage users', link:'./users', icon: 'manage_accounts'}"></app-items-menu>
 
         <div class="mt-auto">
           <button class="button-btn bg-blue-500 text-white" (click)="logout()">Logout</button>

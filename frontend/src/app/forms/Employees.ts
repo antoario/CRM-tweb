@@ -56,10 +56,4 @@ export const addEmployee: CustomForm<any>[] = [
     key: "position_id",
     label: "Position",
   }),
-
-  // new SubForm({
-  //   key: "address_info",
-  //   width: "100%",
-  //   subForm: [new TextForm({ key: "address", label: "Address", required: true })],
-  // }),
 ]

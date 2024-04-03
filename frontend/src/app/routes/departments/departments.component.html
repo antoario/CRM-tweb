@@ -1,4 +1,39 @@
-<div class="p-5">
-  <h1 class="text-2xl font-bold">Your departments</h1>
-  
+<div class="max-w-5xl m-auto my-10">
+  <app-layout-single>
+    <div title class="flex items-center align-middle">
+      <div>
+        <h1 class="text-2xl font-bold">Your departments</h1>
+        <span>Here you can manage your departments</span>
+      </div>
+      <div class="ml-auto">
+        <button class="button-btn bg-blue-500 text-white">Add Department</button>
+      </div>
+    </div>
+
+    <div class="flex flex-col gap-2">
+      <div class="overflow-auto w-full">
+        <table [dataSource]="departments" cdk-table class="table-auto w-full">
+          <!-- Position Column -->
+          @for (col of columns; track col.key) {
+            <ng-container [cdkColumnDef]="col.key">
+              <th cdk-header-cell *cdkHeaderCellDef class="text-left pr-5"> {{ col.label }}</th>
+              <td cdk-cell *cdkCellDef="let element"> {{ element[col.key] }}</td>
+            </ng-container>
+          }
+
+          <ng-container [cdkColumnDef]="'actions'">
+            <th cdk-header-cell *cdkHeaderCellDef class="text-left pr-5"> Actions</th>
+            <td cdk-cell *cdkCellDef="let element" class="flex gap-2">
+              <a routerLink="./{{element.id}}" class="button-btn">View</a>
+              <button class="button-btn bg-red-600 text-white">Delete</button>
+            </td>
+          </ng-container>
+
+          <tr *cdkHeaderRowDef="columnsDefs" cdk-header-row></tr>
+          <tr *cdkRowDef="let row; columns: columnsDefs;" cdk-row></tr>
+        </table>
+      </div>
+    </div>
+
+  </app-layout-single>
 </div>

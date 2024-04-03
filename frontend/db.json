@@ -52,11 +52,11 @@
   "employees": [
     {
       "img_url": "https://randomuser.me/api/portraits/men/38.jpg",
-      "first_name": "Jhon",
-      "last_name": "Pinocchio",
+      "first_name": "Antonino",
+      "last_name": "Ariobazzone",
       "email": "",
       "address": "",
-      "department_id": "",
+      "department_id": "1",
       "position_id": "1",
       "id": 3
     },
@@ -77,7 +77,7 @@
       "email": "",
       "address": "",
       "department_id": "",
-      "position_id": "",
+      "position_id": "3",
       "id": 6
     },
     {
