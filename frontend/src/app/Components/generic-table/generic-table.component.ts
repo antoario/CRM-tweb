@@ -1,4 +1,4 @@
-import { Component, Input, OnInit, ViewChild } from "@angular/core"
+import { Component, EventEmitter, Input, OnInit, Output, ViewChild } from "@angular/core"
 import { CustomForm, Employee } from "../../types/data"
 import { Subscription, tap } from "rxjs"
 import { FormBuilderComponent } from "../form-builder/form-builder.component"
@@ -18,14 +18,15 @@ import { environment } from "../../../environments/environment"
 export class GenericTableComponent implements OnInit {
   @Input() formBuilder: CustomForm<any>[] = []
   @Input() url: string = ""
+  @Output() isNewChange: EventEmitter<any> = new EventEmitter()
+  @Output() isValidChange: EventEmitter<any> = new EventEmitter()
   isNew = true
   isValid = false
   idVal = ""
-  showSaved = 0
   subscription = new Subscription()
   formData: Map<string, CustomForm<any>> = new Map()
-
   @ViewChild(FormBuilderComponent) formBuilderComponent!: FormBuilderComponent
+  @Output() open: EventEmitter<any> = new EventEmitter()
 
   constructor(
     private data: DataService,
@@ -53,5 +54,31 @@ export class GenericTableComponent implements OnInit {
         })
       )
       .subscribe()
+  }
+
+  handleFormSubmit() {
+    let sub
+    if (this.isNew) {
+      sub = this.data.addData(`${environment.apiUrl}/${this.url}`, this.formBuilderComponent.form.value)
+    } else {
+      sub = this.data.updateData(
+        `${environment.apiUrl}/${this.url}/${this.idVal}`,
+        this.formBuilderComponent.form.value
+      )
+    }
+
+    sub.subscribe((val) => {
+      if (val["id"]) {
+        this.router.navigate([`/${this.url}`, val["id"]], { replaceUrl: true })
+        this.isNew = false
+        this.isNewChange.emit(this.isNew)
+      }
+      this.isValid = false
+      this.isValidChange.emit(this.isValid)
+    })
+  }
+
+  changeVal(val: any) {
+    this.isValidChange.emit(this.formBuilderComponent.form.valid && this.formBuilderComponent.form.dirty)
   }
 }

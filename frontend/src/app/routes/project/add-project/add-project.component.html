@@ -1,4 +1,14 @@
 @if (loading) {
+	<app-layout-single>
 
-	<app-generic-table [formBuilder]="controls" [url]="'projects'"></app-generic-table>
+		<div title class="flex align-middle ">
+			<span>Edit project</span>
+			<button class="button-save" (click)="save()" [disabled]="!this.valid">Save</button>
+		</div>
+
+		<app-generic-table (isValidChange)="checkValid($event)" [formBuilder]="controls"
+		                   [url]="'projects'"></app-generic-table>
+	</app-layout-single>
+} @else {
+	<span>Loading</span>
 }

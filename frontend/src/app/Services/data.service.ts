@@ -22,6 +22,10 @@ export class DataService {
     return this.http.patch(url, data, { headers: this.buildHeader(this.userService.getToken()) })
   }
 
+  putData<T>(url: string, data: T, isNew = false) {
+    return this.http.patch(url, data, { headers: this.buildHeader(this.userService.getToken()) })
+  }
+
   removeData(url: string): Observable<any> {
     return this.http.delete(url, { headers: this.buildHeader(this.userService.getToken()) })
   }
