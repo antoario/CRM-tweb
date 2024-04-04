@@ -97,7 +97,8 @@
       "title": "HR Manager",
       "description": "Oversees HR department, policy development and compliance.",
       "level": "Senior",
-      "department_id": "1"
+      "department_id": "2",
+      "": "senior"
     },
     {
       "id": "2",
@@ -130,6 +131,12 @@
       "start_date": "2023-02-15",
       "end_date": "2023-08-15",
       "department_id": "1"
+    },
+    {
+      "name": "Ridisegno la vita",
+      "description": "Complete overhaul of the corporate website.",
+      "department_id": "2",
+      "id": "AT9AFh2"
     }
   ],
   "contracts": [
@@ -164,7 +171,7 @@
     {
       "id": "3",
       "description": "Free Lunch",
-      "value": "Lunch vouchers provided"
+      "value": "Lunch vouchers provide"
     }
   ]
 }

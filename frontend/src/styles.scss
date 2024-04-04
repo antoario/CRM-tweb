@@ -45,7 +45,7 @@
   }
 
   .button-save {
-    @apply button-btn bg-blue-500 text-white disabled:bg-gray-300 transition-all;
+    @apply button-btn bg-blue-500 text-white disabled:bg-gray-300 transition-all cursor-pointer;
   }
 
 }

@@ -14,6 +14,7 @@ import { BenefitsComponent } from "./routes/benefits/benefits.component"
 import { ProjectComponent } from "./routes/project/project.component"
 import { SingleBenefitComponent } from "./routes/benefits/single-benefit/single-benefit.component"
 import { AddProjectComponent } from "./routes/project/add-project/add-project.component"
+import { PositionSingleComponent } from "./routes/positions/position-single/position-single.component"
 
 export const routes: Routes = [
   {
@@ -40,7 +41,11 @@ export const routes: Routes = [
       },
       {
         path: "positions",
-        children: [{ path: "", component: PositionsComponent }],
+        children: [
+          { path: "", component: PositionsComponent },
+          { path: ":id", component: PositionSingleComponent },
+          { path: "add", component: PositionSingleComponent },
+        ],
       },
       {
         path: "contracts",
@@ -57,6 +62,7 @@ export const routes: Routes = [
         path: "projects",
         children: [
           { path: "", component: ProjectComponent },
+          { path: "add", component: AddProjectComponent },
           { path: ":id", component: AddProjectComponent },
         ],
       },

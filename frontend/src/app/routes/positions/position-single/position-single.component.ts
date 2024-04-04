@@ -1,28 +1,21 @@
-import { Component, OnInit, ViewChild } from "@angular/core"
+import { Component, ViewChild } from "@angular/core"
+import { CustomForm, Department, JustInfo, OptionSelect, SelectForm, TextForm } from "../../../types/data"
 import { GenericTableComponent } from "../../../Components/generic-table/generic-table.component"
-import {
-  CustomForm,
-  Department,
-  JustInfo,
-  OptionSelect,
-  Projects,
-  SelectForm,
-  TextForm,
-} from "../../../types/data"
 import { DataService } from "../../../Services/data.service"
 import { environment } from "../../../../environments/environment"
 import { LayoutSingleComponent } from "../../../Components/layout-single/layout-single.component"
 import { RouterLink } from "@angular/router"
 
 @Component({
-  selector: "app-add-project",
+  selector: "app-position-single",
   standalone: true,
   imports: [GenericTableComponent, LayoutSingleComponent, RouterLink],
-  templateUrl: "./add-project.component.html",
-  styleUrl: "./add-project.component.scss",
+  templateUrl: "./position-single.component.html",
+  styleUrl: "./position-single.component.scss",
 })
-export class AddProjectComponent implements OnInit {
+export class PositionSingleComponent {
   valid = false
+  selectionLevel = new SelectForm()
   controls: CustomForm<any>[] = [
     new JustInfo({
       key: "first info",
@@ -33,7 +26,7 @@ export class AddProjectComponent implements OnInit {
     }),
     new TextForm({
       order: 1,
-      key: "name",
+      key: "title",
       label: "Title",
     }),
     new TextForm({
@@ -41,11 +34,18 @@ export class AddProjectComponent implements OnInit {
       key: "description",
       label: "Description",
     }),
+    this.selectionLevel,
   ]
   loading = false
   @ViewChild(GenericTableComponent) genericTable!: GenericTableComponent
 
-  constructor(private dataService: DataService) {}
+  constructor(private dataService: DataService) {
+    this.selectionLevel.setOptions([
+      { key: "junior", value: "Junior" },
+      { key: "senior", value: "Senior" },
+      { key: "hippy", value: "Mega hippy ☮️" },
+    ])
+  }
 
   ngOnInit() {
     this.dataService.getDataWithAuth<Department[]>(`${environment.apiUrl}/departments`).subscribe((val) => {
