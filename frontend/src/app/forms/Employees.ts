@@ -1,4 +1,4 @@
-import { CustomForm, EmailQuestion, JustInfo, SelectForm, SubForm, TextForm } from "../types/data"
+import { CustomForm, EmailQuestion, JustInfo, SelectForm, TextForm } from "../types/data"
 
 export const addEmployee: CustomForm<any>[] = [
   new JustInfo({

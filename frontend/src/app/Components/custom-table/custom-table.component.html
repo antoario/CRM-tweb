@@ -1,20 +1,21 @@
 <table [dataSource]="data" cdk-table class="table-auto w-full">
-  <!-- Position Column -->
-  @for (col of columns; track col.key) {
-    <ng-container [cdkColumnDef]="col.key">
-      <th cdk-header-cell *cdkHeaderCellDef class="text-left pr-5"> {{ col.label }}</th>
-      <td cdk-cell *cdkCellDef="let element"> {{ element[col.key] }}</td>
-    </ng-container>
-  }
+	<!-- Position Column -->
+	@for (col of columns; track col.key) {
+		<ng-container [cdkColumnDef]="col.key">
+			<th cdk-header-cell *cdkHeaderCellDef class="text-left pr-5"> {{ col.label }}
+			</th>
+			<td cdk-cell *cdkCellDef="let element" class="first:pl-2"> {{ element[col.key] }}</td>
+		</ng-container>
+	}
 
-  <ng-container [cdkColumnDef]="'actions'">
-    <th cdk-header-cell *cdkHeaderCellDef class="text-left pr-5"> Actions</th>
-    <td cdk-cell *cdkCellDef="let element" class="flex gap-2">
-      <a routerLink="./{{element.id}}" class="button-btn">View</a>
-      <button class="button-btn bg-red-600 text-white">Delete</button>
-    </td>
-  </ng-container>
+	<ng-container [cdkColumnDef]="'actions'">
+		<th *cdkHeaderCellDef cdk-header-cell class="text-left pr-5"> Actions</th>
+		<td *cdkCellDef="let element" cdk-cell class="flex gap-2">
+			<a class="button-btn" routerLink="./{{element.id}}">View</a>
+			<button class="button-btn bg-red-600 text-white">Delete</button>
+		</td>
+	</ng-container>
 
-  <tr *cdkHeaderRowDef="columnsDefs" cdk-header-row></tr>
-  <tr *cdkRowDef="let row; columns: columnsDefs;" cdk-row></tr>
+	<tr *cdkHeaderRowDef="columnsDefs" cdk-header-row class="border-b-2 border-gray-500"></tr>
+	<tr *cdkRowDef="let row; columns: columnsDefs;" cdk-row class="border-t-2 border-gray-100"></tr>
 </table>

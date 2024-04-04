@@ -17,7 +17,7 @@ export class ProjectComponent implements OnInit {
     { key: "id", label: "id" },
     { key: "name", label: "Name" },
   ]
-  columnsDefs = ["id", "name"]
+  columnsDefs = ["id", "name", "actions"]
 
   constructor(private companyDataService: CompanyDataService) {}
 

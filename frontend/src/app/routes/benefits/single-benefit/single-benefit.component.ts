@@ -1,36 +1,23 @@
-import { Component, ElementRef, OnDestroy, OnInit, ViewChild } from "@angular/core"
-import { FormBuilderComponent } from "../../../Components/form-builder/form-builder.component"
+import { Component, ElementRef, ViewChild } from "@angular/core"
 import { CustomForm, Department, Employee, OptionSelect, Position, SelectForm } from "../../../types/data"
-import { addEmployee } from "../../../forms/Employees"
-import { DataService } from "../../../Services/data.service"
-import { environment } from "../../../../environments/environment"
-import { MatButtonModule } from "@angular/material/button"
-import { ActivatedRoute, Router, RouterLink } from "@angular/router"
-import { JsonPipe, NgForOf, NgOptimizedImage } from "@angular/common"
-import { ReactiveFormsModule } from "@angular/forms"
 import { Observable, of, Subscription, switchMap, tap } from "rxjs"
-import { OverlayModule } from "@angular/cdk/overlay"
+import { FormBuilderComponent } from "../../../Components/form-builder/form-builder.component"
+import { DataService } from "../../../Services/data.service"
+import { ActivatedRoute, Router } from "@angular/router"
 import { Dialog } from "@angular/cdk/dialog"
-import { ConfirmationDialogComponent } from "../../../Components/confirmation-dialog/confirmation-dialog.component"
 import { CompanyDataService } from "../../../Services/company-data.service"
+import { environment } from "../../../../environments/environment"
+import { ConfirmationDialogComponent } from "../../../Components/confirmation-dialog/confirmation-dialog.component"
+import { formBenefits } from "../formBenefits"
 
 @Component({
-  selector: "app-add-employees",
+  selector: "app-single-benefit",
   standalone: true,
-  imports: [
-    FormBuilderComponent,
-    MatButtonModule,
-    RouterLink,
-    NgForOf,
-    ReactiveFormsModule,
-    NgOptimizedImage,
-    JsonPipe,
-    OverlayModule,
-  ],
-  templateUrl: "./add-employees.component.html",
-  styleUrl: "./add-employees.component.scss",
+  imports: [],
+  templateUrl: "./single-benefit.component.html",
+  styleUrl: "./single-benefit.component.scss",
 })
-export class AddEmployeesComponent implements OnInit, OnDestroy {
+export class SingleBenefitComponent {
   addEmployee: Map<string, CustomForm<any>> = new Map()
   isNew = true
   isValid = false
@@ -54,7 +41,7 @@ export class AddEmployeesComponent implements OnInit, OnDestroy {
   }
 
   ngOnInit() {
-    for (const i of addEmployee) {
+    for (const i of formBenefits) {
       this.addEmployee.set(i.key, i)
     }
     this.idEmp = this.active.snapshot.params["id"] ?? ""
@@ -78,6 +65,7 @@ export class AddEmployeesComponent implements OnInit, OnDestroy {
   }
 
   changeVal(val: Employee) {
+    console.log(val)
     this.isValid = this.formBuilderComponent.form.valid
     this.imageElement.nativeElement.src = val.img_url || ""
   }

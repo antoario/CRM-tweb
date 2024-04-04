@@ -15,8 +15,9 @@ export class ContractsComponent implements OnInit {
   columns: Columns[] = [
     { key: "title", label: "Title" },
     { key: "description", label: "Description" },
+    { key: "actions", label: "Description" },
   ]
-  columnsDefs = ["title", "description"]
+  columnsDefs = ["title", "description", "actions"]
   data: any[] = []
 
   constructor(private companyDataService: CompanyDataService) {}

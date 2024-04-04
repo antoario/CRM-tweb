@@ -17,7 +17,7 @@ export class BenefitsComponent implements OnInit {
     { key: "description", label: "Description" },
     { key: "value", label: "Value" },
   ]
-  columnsDefs = ["description", "value"]
+  columnsDefs = ["description", "value", "actions"]
 
   ngOnInit() {
     this.companyDataService.getBenefits().subscribe((val) => {
