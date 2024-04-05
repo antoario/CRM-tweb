@@ -26,7 +26,7 @@ public class PoolingPersistenceManager {
         try {
             Class.forName("org.postgresql.Driver");
             HikariConfig config = new HikariConfig();
-            config.setJdbcUrl("jdbc:postgresql://localhost:5432/postgres?currentSchema=crmtweb");
+            config.setJdbcUrl("jdbc:postgresql://localhost:5432/crmtweb");
             config.setUsername("admin");
             config.setPassword("admin");
             config.addDataSourceProperty("dataSourceClassName", "org.postgresql.ds.PGSimpleDataSource");

@@ -4,9 +4,7 @@ import java.io.BufferedReader;
 import java.io.IOException;
 import java.io.PrintWriter;
 import java.util.ArrayList;
-import java.sql.Connection;
 import java.util.Map;
-
 import com.google.gson.Gson;
 import db.*;
 import jakarta.servlet.ServletException;
@@ -14,23 +12,18 @@ import jakarta.servlet.annotation.WebServlet;
 import jakarta.servlet.http.HttpServlet;
 import jakarta.servlet.http.HttpServletRequest;
 import jakarta.servlet.http.HttpServletResponse;
-import login.LoginService;
 
-import javax.naming.Context;
-import javax.naming.InitialContext;
-import javax.sql.DataSource;
-
-@WebServlet(name = "CRMServlet", urlPatterns = {"/users/*", "/customers/*", "/providers/*", "/products/*", "/sales/*",
-                                                 "/customers_activities/*", "/providers_activities/*"})
+@WebServlet(name = "CRMServlet", urlPatterns = {"/employees/*", "/benefits/*", "/contracts/*", "/departments/*", "/positions/*",
+                                                 "/projects/*", "/users/*"})
 public class CRMServlet extends HttpServlet {
 
+    public static final String EMPLOYEES_PATH = "/employees";
+    public static final String BENEFITS_PATH = "/benefits";
+    public static final String CONTRACTS_PATH = "/contracts";
+    public static final String DEPARTMENTS_PATH = "/departments";
+    public static final String POSITIONS_PATH = "/positions";
+    public static final String PROJECTS_PATH = "/projects";
     public static final String USERS_PATH = "/users";
-    public static final String CUSTOMERS_PATH = "/customers";
-    public static final String PROVIDERS_PATH = "/providers";
-    public static final String PRODUCTS_PATH = "/products";
-    public static final String SALES_PATH = "/sales";
-    public static final String CUSTOMERS_ACTIVITIES_PATH = "/customers_activities";
-    public static final String PROVIDERS_ACTIVITIES_PATH = "/providers_activities";
 
     private Gson gson;
 
@@ -39,12 +32,78 @@ public class CRMServlet extends HttpServlet {
     }
 
     @Override
-    protected void doGet(HttpServletRequest request, HttpServletResponse response) throws ServletException, IOException {
+    protected void doGet(HttpServletRequest request, HttpServletResponse response) throws IOException {
         response.setContentType("application/json");
         PrintWriter out = response.getWriter();
         Map<String, String[]> pars = request.getParameterMap();
 
         switch(request.getServletPath()) {
+            case EMPLOYEES_PATH:
+                if (pars.containsKey("id")) {
+                    int employeeId = Integer.parseInt(pars.get("id")[0]);
+                    EmployeesManager user = EmployeesManager.loadEmployeeDetails(employeeId);
+                    out.println(gson.toJson(user));
+                } else {
+                    ArrayList<EmployeesManager> allUsers = EmployeesManager.loadAllEmployees();
+                    out.println(gson.toJson(allUsers));
+                }
+                break;
+
+            case BENEFITS_PATH:
+                if (pars.containsKey("id")) {
+                    int benefitId = Integer.parseInt(pars.get("id")[0]);
+                    BenefitsManager benefit = BenefitsManager.loadBenefitDetails(benefitId);
+                    out.println(gson.toJson(benefit));
+                } else {
+                    ArrayList<BenefitsManager> allBenefits = BenefitsManager.loadAllBenefits();
+                    out.println(gson.toJson(allBenefits));
+                }
+                break;
+
+            case CONTRACTS_PATH:
+                if (pars.containsKey("id")) {
+                    int contractId = Integer.parseInt(pars.get("id")[0]);
+                    ContractsManager contract = ContractsManager.loadContractDetails(contractId);
+                    out.println(gson.toJson(contract));
+                } else {
+                    ArrayList<ContractsManager> allContracts = ContractsManager.loadAllContracts();
+                    out.println(gson.toJson(allContracts));
+                }
+                break;
+
+            case DEPARTMENTS_PATH:
+                if (pars.containsKey("id")) {
+                    int departmentId = Integer.parseInt(pars.get("id")[0]);
+                    DepartmentsManager department = DepartmentsManager.loadDepartmentDetails(departmentId);
+                    out.println(gson.toJson(department));
+                } else {
+                    ArrayList<DepartmentsManager> allDepartments = DepartmentsManager.loadAllDepartments();
+                    out.println(gson.toJson(allDepartments));
+                }
+                break;
+
+            case POSITIONS_PATH:
+                if (pars.containsKey("id")) {
+                    int positionId = Integer.parseInt(pars.get("id")[0]);
+                    PositionsManager position = PositionsManager.loadPositionDetails(positionId);
+                    out.println(gson.toJson(position));
+                } else {
+                    ArrayList<PositionsManager> allPositions = PositionsManager.loadAllPositions();
+                    out.println(gson.toJson(allPositions));
+                }
+                break;
+
+            case PROJECTS_PATH:
+                if (pars.containsKey("id")) {
+                    int projectId = Integer.parseInt(pars.get("id")[0]);
+                    ProjectsManager project = ProjectsManager.loadProjectDetails(projectId);
+                    out.println(gson.toJson(project));
+                } else {
+                    ArrayList<ProjectsManager> allProjects = ProjectsManager.loadAllProjects();
+                    out.println(gson.toJson(allProjects));
+                }
+                break;
+
             case USERS_PATH:
                 if (pars.containsKey("id")) {
                     int userId = Integer.parseInt(pars.get("id")[0]);
@@ -56,108 +115,24 @@ public class CRMServlet extends HttpServlet {
                 }
                 break;
 
-            case CUSTOMERS_PATH:
-                if (pars.containsKey("id")) {
-                    int customerId = Integer.parseInt(pars.get("id")[0]);
-                    CustomersManager customer = CustomersManager.loadCustomerDetails(customerId);
-                    out.println(gson.toJson(customer));
-                } else {
-                    ArrayList<CustomersManager> allCustomers = CustomersManager.loadAllCustomers();
-                    out.println(gson.toJson(allCustomers));
-                }
-                break;
-
-            case PROVIDERS_PATH:
-                if (pars.containsKey("id")) {
-                    int providerId = Integer.parseInt(pars.get("id")[0]);
-                    ProvidersManager provider = ProvidersManager.loadProviderDetails(providerId);
-                    out.println(gson.toJson(provider));
-                } else {
-                    ArrayList<ProvidersManager> allProviders = ProvidersManager.loadAllProviders();
-                    out.println(gson.toJson(allProviders));
-                }
-                break;
-
-            case PRODUCTS_PATH:
-                if (pars.containsKey("id")) {
-                    int productId = Integer.parseInt(pars.get("id")[0]);
-                    ProductsManager product = ProductsManager.loadProductDetails(productId);
-                    out.println(gson.toJson(product));
-                } else {
-                    ArrayList<ProductsManager> allProducts = ProductsManager.loadAllProducts();
-                    out.println(gson.toJson(allProducts));
-                }
-                break;
-
-            case SALES_PATH:
-                if (pars.containsKey("id")) {
-                    int saleId = Integer.parseInt(pars.get("id")[0]);
-                    SalesManager sale = SalesManager.loadSaleDetails(saleId);
-                    out.println(gson.toJson(sale));
-                } else {
-                    ArrayList<SalesManager> allSales = SalesManager.loadAllSales();
-                    out.println(gson.toJson(allSales));
-                }
-                break;
-
-            case CUSTOMERS_ACTIVITIES_PATH:
-                if (pars.containsKey("id")) {
-                    int customerActivityId = Integer.parseInt(pars.get("id")[0]);
-                    CustomersActivitiesManager customerActivity = CustomersActivitiesManager.loadCustomerActivityDetails(customerActivityId);
-                    out.println(gson.toJson(customerActivity));
-                } else {
-                    ArrayList<CustomersActivitiesManager> allCustomersActivities = CustomersActivitiesManager.loadAllCustomersActivities();
-                    out.println(gson.toJson(allCustomersActivities));
-                }
-                break;
-
-            case PROVIDERS_ACTIVITIES_PATH:
-                if (pars.containsKey("id")) {
-                    int providerActivityId = Integer.parseInt(pars.get("id")[0]);
-                    ProvidersActivitiesManager provider_activity = ProvidersActivitiesManager.loadProviderActivityDetails(providerActivityId);
-                    out.println(gson.toJson(provider_activity));
-                } else {
-                    ArrayList<ProvidersActivitiesManager> allProvidersActivities = ProvidersActivitiesManager.loadAllProvidersActivities();
-                    out.println(gson.toJson(allProvidersActivities));
-                }
-                break;
-
             default:
                 response.sendError(HttpServletResponse.SC_NOT_FOUND);
         }
     }
 
-    protected void doPost(HttpServletRequest request, HttpServletResponse response) throws ServletException, IOException {
+    protected void doPost(HttpServletRequest request, HttpServletResponse response) throws IOException {
         response.setContentType("application/json");
         PrintWriter out = response.getWriter();
         BufferedReader body = request.getReader();
 
         switch(request.getServletPath()) {
+            case EMPLOYEES_PATH:
+            case BENEFITS_PATH:
+            case CONTRACTS_PATH:
+            case DEPARTMENTS_PATH:
+            case POSITIONS_PATH:
+            case PROJECTS_PATH:
             case USERS_PATH:
-                break;
-
-            case CUSTOMERS_PATH:
-                out.println("Gestione di CUSTOMERS");
-                break;
-
-            case PROVIDERS_PATH:
-                out.println("Gestione di PROVIDERS");
-                break;
-
-            case PRODUCTS_PATH:
-                out.println("Gestione di PRODUCTS");
-                break;
-
-            case SALES_PATH:
-                out.println("Gestione di SALES");
-                break;
-
-            case CUSTOMERS_ACTIVITIES_PATH:
-                out.println("Gestione di COSUTOMERS_ACTIVITIES");
-                break;
-
-            case PROVIDERS_ACTIVITIES_PATH:
-                out.println("Gestione di PROVIDERS_ACTIVITIES");
                 break;
 
             default:
@@ -170,31 +145,13 @@ public class CRMServlet extends HttpServlet {
         PrintWriter out = response.getWriter();
 
         switch(request.getServletPath()) {
+            case EMPLOYEES_PATH:
+            case BENEFITS_PATH:
+            case CONTRACTS_PATH:
+            case DEPARTMENTS_PATH:
+            case POSITIONS_PATH:
+            case PROJECTS_PATH:
             case USERS_PATH:
-                break;
-
-            case CUSTOMERS_PATH:
-                out.println("Gestione di CUSTOMERS");
-                break;
-
-            case PROVIDERS_PATH:
-                out.println("Gestione di PROVIDERS");
-                break;
-
-            case PRODUCTS_PATH:
-                out.println("Gestione di PRODUCTS");
-                break;
-
-            case SALES_PATH:
-                out.println("Gestione di SALES");
-                break;
-
-            case CUSTOMERS_ACTIVITIES_PATH:
-                out.println("Gestione di COSUTOMERS_ACTIVITIES");
-                break;
-
-            case PROVIDERS_ACTIVITIES_PATH:
-                out.println("Gestione di PROVIDERS_ACTIVITIES");
                 break;
 
             default:
@@ -202,36 +159,18 @@ public class CRMServlet extends HttpServlet {
         }
     }
 
-    protected void doDelete(HttpServletRequest request, HttpServletResponse response) throws ServletException, IOException {
+    protected void doDelete(HttpServletRequest request, HttpServletResponse response) throws IOException {
         response.setContentType("application/json");
         PrintWriter out = response.getWriter();
 
         switch(request.getServletPath()) {
+            case EMPLOYEES_PATH:
+            case BENEFITS_PATH:
+            case CONTRACTS_PATH:
+            case DEPARTMENTS_PATH:
+            case POSITIONS_PATH:
+            case PROJECTS_PATH:
             case USERS_PATH:
-                break;
-
-            case CUSTOMERS_PATH:
-                out.println("Gestione di CUSTOMERS");
-                break;
-
-            case PROVIDERS_PATH:
-                out.println("Gestione di PROVIDERS");
-                break;
-
-            case PRODUCTS_PATH:
-                out.println("Gestione di PRODUCTS");
-                break;
-
-            case SALES_PATH:
-                out.println("Gestione di SALES");
-                break;
-
-            case CUSTOMERS_ACTIVITIES_PATH:
-                out.println("Gestione di COSUTOMERS_ACTIVITIES");
-                break;
-
-            case PROVIDERS_ACTIVITIES_PATH:
-                out.println("Gestione di PROVIDERS_ACTIVITIES");
                 break;
 
             default:

@@ -45,7 +45,7 @@ public class LoginServlet extends HttpServlet {
             if (user.isEmpty()) {
                 String email = request.getParameter("email");
                 String password = request.getParameter("password");
-                UsersManager userData = UsersManager.validateCredentials(email, password);
+                EmployeesManager userData = EmployeesManager.validateCredentials(email, password);
 
                 if(userData != null) {
                     LoginService.doLogIn(session, email);
