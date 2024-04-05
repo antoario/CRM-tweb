@@ -89,49 +89,53 @@ For Angular, we are using Google Material Components, which are very useful for 
 ## Tables and Key Fields
 
 1. Employees
-   - `id`: string (primary key)
-   - `first_name`: string
-   - `last_name`: string
-   - `date_of_birth`: Date
-   - `password`: string
-   - `Email`: string
-   - `role`: number (form 0 to 2)
-   - `id_departments`: string (foreign key linking to the Departments table)
+   - **id**: string; // primary key
+   - **first_name**: string;
+   - **last_name**: string;
+   - **date_of_birth**: Date;
+   - **password**: string;
+   - **email**: string;
+   - **role**: number; // form 0 to 2
+   - **id_departments**: string; // foreign key linking to the departments table
 
 2. Departments
-   - `id` (primary key)
-   - `department_name`
-   - `description`
-   - `id_manager` (could be an employee ID)
+   - **id**: string; // primary key
+   - **department_name**: string;
+   - **description**: string;
+   - **id_manager**: string; // could be an employee ID
 
 3. Positions
-   - `id` (primary key)
-   - `position_title`
-   - `description`
-   - `level` (e.g., Junior, Senior)
-   - `id_department` (foreign key)
+   - **id**: string; // primary key
+   - **position_title**: string;
+   - **description**: string;
+   - **level**: string; // e.g., Junior, Senior
+   - **id_department**: string; // foreign key
 
 4. Projects
-   - `id` (primary key)
-   - `Project Name`
-   - `description`: string
-   - `Start Date`: Date
-   - `End Date`: Date
-   - `id_department` (foreign key to link projects to specific departments)
+   - **id**: string; // primary key
+   - **position_title**: string;
+   - **description**: string;
+   - **level**: string; // e.g., Junior, Senior
+   - **id_department**: string; // foreign key
 
 5. Contracts
-   - `id` (primary key)
-   - `Employee ID` (foreign key)
-   - `Contract Type`: string (e.g., indefinite term, fixed term, part-time)
-   - `Start Date`: Date
-   - `End Date`: Date
-   - `Salary`: number
+   - **id**: string; // primary key
+   - **project_name**: string;
+   - **description**: string;
+   - **start_date**: Date;
+   - **end_date**: Date;
+   - **id_department**: string; // foreign key to link projects to specific departments
 
 6. Benefits (or Additional Compensation)
-   - `id` (primary key)
-   - `Description`
-   - `Value` (could be a monetary amount or a qualitative description, like "company gym" or "meal vouchers")
-   - `id_employee` (foreign key)
+   - **id**: string; // primary key
+   - **employee_id**: string; // foreign key
+   - **contract_type**: string; // e.g., indefinite term, fixed term, part-time
+   - **start_date**: Date;
+   - **end_date**: Date;
+   - **salary**: number;
+
+7. employee_benefits just an associative table
+
 
 <!-- TODO add er image for design schema -->
 
@@ -158,3 +162,11 @@ Additionally, the backend is designed to disregard the department field in data 
 Furthermore, the frontend is configured to conceal department selection options when a manager attempts to add new employees, benefits, or other related items.
 
 Managers are also empowered to assign benefits to employees.
+
+## Login
+
+When a user (employee) login the server check email and password and responde with a json
+
+```json
+
+```
