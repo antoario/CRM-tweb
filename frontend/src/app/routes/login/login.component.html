@@ -1,37 +1,37 @@
 <app-layout>
-  <div class="flex h-full w-full flex-col items-center justify-center bg-gray-100">
-    <div class="flex flex-col">
-      <span class="mb-2 text-xs text-gray-500">for dev propose</span>
-      <mat-form-field appearance="outline">
-        <mat-label>Select role</mat-label>
-        <mat-select (selectionChange)="setDefinedUser($event)">
-          <mat-option value="superAdmin">Super admin</mat-option>
-          <mat-option value="admin">Admin</mat-option>
-          <mat-option value="user">user</mat-option>
-        </mat-select>
-      </mat-form-field>
-    </div>
+	<div class="flex h-full w-full flex-col items-center justify-center bg-gray-100">
+		<div class="flex flex-col">
+			<span class="mb-2 text-xs text-gray-500">for dev propose</span>
+			<mat-form-field appearance="outline">
+				<mat-label>Select role</mat-label>
+				<mat-select (selectionChange)="setDefinedUser($event)">
+					<mat-option value="superAdmin">Super admin</mat-option>
+					<mat-option value="manager">Admin</mat-option>
+					<mat-option value="employee">user</mat-option>
+				</mat-select>
+			</mat-form-field>
+		</div>
 
-    <form
-      (ngSubmit)="login()"
-      [formGroup]="loginForm"
-      class="flex flex-col border border-gray-500 bg-gray-200 p-10 shadow"
-    >
-      <mat-form-field appearance="outline">
-        <mat-label>Email</mat-label>
-        <input formControlName="email" matInput placeholder="example@testcom" />
-        <mat-icon matSuffix>email</mat-icon>
-      </mat-form-field>
+		<form
+			(ngSubmit)="login()"
+			[formGroup]="loginForm"
+			class="flex flex-col border border-gray-500 bg-gray-200 p-10 shadow"
+		>
+			<mat-form-field appearance="outline">
+				<mat-label>Email</mat-label>
+				<input formControlName="email" matInput placeholder="example@testcom" />
+				<mat-icon matSuffix>email</mat-icon>
+			</mat-form-field>
 
-      <mat-form-field appearance="outline">
-        <mat-label>Password</mat-label>
-        <input formControlName="password" matInput placeholder="password" type="password" />
-        <mat-icon matSuffix>password</mat-icon>
-      </mat-form-field>
+			<mat-form-field appearance="outline">
+				<mat-label>Password</mat-label>
+				<input formControlName="password" matInput placeholder="password" type="password" />
+				<mat-icon matSuffix>password</mat-icon>
+			</mat-form-field>
 
-      <button [disabled]="!loginForm.valid" color="primary" mat-raised-button type="submit">
-        Login
-      </button>
-    </form>
-  </div>
+			<button [disabled]="!loginForm.valid" color="primary" mat-raised-button type="submit">
+				Login
+			</button>
+		</form>
+	</div>
 </app-layout>

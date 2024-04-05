@@ -2,26 +2,26 @@
   "users": [
     {
       "id": "fihfou32d",
-      "role": 10,
-      "nickname": "pinolo",
-      "password": "diedoejdo",
+      "role": 0,
+      "nickname": "admin",
+      "password": "admin",
       "email": "superadmin@example.com"
     },
     {
       "id": "fiuhwe78f",
-      "role": 5,
-      "password": "diedoejdo",
-      "nickname": "giallo",
-      "email": "admin@example.com",
+      "role": 1,
+      "password": "manager",
+      "nickname": "manager",
+      "email": "manager@example.com",
       "benefits": [
         "2"
       ]
     },
     {
       "id": "23fubew89",
-      "role": 0,
-      "nickname": "rossi",
-      "password": "diedoejdo",
+      "role": 2,
+      "nickname": "employee",
+      "password": "emp",
       "email": "user@example.com",
       "benefits": [
         "1",

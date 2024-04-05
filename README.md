@@ -137,9 +137,22 @@ For Angular, we are using Google Material Components, which are very useful for 
 
 There are 3 possible roles in this system with unique capabilities:
 
-- **SuperAdmin**. Who got this role has the opportunity to manage all departments and employees.
-- **DepartmentManager**. Is someone can manage and see only his department add/remove the projects, employees and soo.
-- **Employee**. He can only see the department and his job.
+- **superAdmin**. Who got this role has the opportunity to manage all departments and employees. This role is saved as **0**
+- **manager**. Is someone can manage and see only his department add/remove the projects, employees and soo. This role is saved as **1**
+- **employee**. He can only see the department and his job. This role is saved as **2**
 
+## SuperAdmin
 
+Only the superAdmin can add the benefits
 
+### Manager
+
+The managerial role enables the addition and management of employees within a department.
+
+This process involves both the frontend and backend systems. The frontend sends a token to the backend, which then verifies the user associated with that token. If the user possesses the appropriate access rights, the backend provides information specific to the relevant department.
+
+Additionally, the backend is designed to disregard the department field in data submissions from users holding a managerial role.
+
+Furthermore, the frontend is configured to conceal department selection options when a manager attempts to add new employees, benefits, or other related items.
+
+Managers are also empowered to assign benefits to employees.

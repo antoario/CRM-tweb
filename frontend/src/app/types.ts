@@ -12,3 +12,9 @@ export interface Columns {
   key: string
   label: string
 }
+
+export enum ROLE {
+  superAdmin,
+  manager,
+  employee,
+}

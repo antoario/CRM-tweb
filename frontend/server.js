@@ -14,7 +14,7 @@ server.get("/echo", (req, res) => {
 server.use(jsonServer.bodyParser)
 server.post("/login", (req, res) => {
   switch (req.body.email) {
-    case "johndoe@example.com":
+    case "superadmin@example.com":
       res.jsonp({
         user: {
           name: "John",
@@ -24,25 +24,25 @@ server.post("/login", (req, res) => {
         token: "superAdminToken",
       })
       break
-    case "due@gmail.com":
+    case "manager@example.com":
       res.jsonp({
         user: {
           name: "Pinocchio",
           surname: "Liar",
           email: "due@gmail.com",
         },
-        token: "adminToken",
+        token: "manager",
       })
       break
 
-    case "tre@gmail.com":
+    case "user@example.com":
       res.jsonp({
         user: {
           name: "Pulcinella",
           surname: "Colors",
           email: "tre@gmail.com",
         },
-        token: "user",
+        token: "employee",
       })
       break
     default:
@@ -61,21 +61,24 @@ server.post("/me", (req, res) => {
         name: "John",
         surname: "Doe",
         email: "johndoe@example.com",
+        role: 0,
       })
       break
-    case "adminToken":
+    case "manager":
       res.jsonp({
         name: "Pinocchio",
         surname: "Liar",
         email: "due@gmail.com",
+        role: 1,
       })
       break
 
-    case "user":
+    case "employee":
       res.jsonp({
         name: "Pulcinella",
         surname: "Colors",
         email: "tre@gmail.com",
+        role: 2,
       })
       break
   }

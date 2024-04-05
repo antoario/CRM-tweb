@@ -43,13 +43,13 @@ export class LoginComponent {
   public setDefinedUser(selected: MatSelectChange) {
     switch (selected.value) {
       case "superAdmin":
-        this.loginForm.setValue({ email: "johndoe@example.com", password: "abcdefg" })
+        this.loginForm.setValue({ email: "superadmin@example.com", password: "admin" })
         break
-      case "admin":
-        this.loginForm.setValue({ email: "due@gmail.com", password: "abcdef" })
+      case "manager":
+        this.loginForm.setValue({ email: "manager@example.com", password: "manager" })
         break
-      case "user":
-        this.loginForm.setValue({ email: "tre@gmail.com", password: "abcdef" })
+      case "employee":
+        this.loginForm.setValue({ email: "user@example.com", password: "emp" })
         break
     }
   }

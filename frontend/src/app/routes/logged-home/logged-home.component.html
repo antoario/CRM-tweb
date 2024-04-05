@@ -1,10 +1,17 @@
 @if (this.user) {
-  <div class="p-10">
-    <h1 class="pb-2 text-xl font-bold">Hello {{ user!.name }} {{ user!.surname }}</h1>
-    <ul class="list-inside list-disc underline">
-      <li><a routerLink="./employees">Manage Employee</a></li>
-      <li><a routerLink="./departments">Manage departments</a></li>
-      <li>Manage Projects</li>
-    </ul>
-  </div>
+	<app-layout-single>
+		<div title>
+			<span class="text-xl font-medium">Your information</span>
+		</div>
+
+		<div class="flex flex-col gap-2">
+			<span>Role: <pre class="inline-pre">{{ ROLE[user!.role] }}</pre></span>
+			<span>Name: <span class="font-bold">{{ user!.name }}</span></span>
+			<span>Surname: <span class="font-bold">{{ user!.surname }}</span></span>
+			@if (user!.role === ROLE.manager || user!.role === ROLE.employee) {
+				<span>Your Department id: <pre class="inline-pre">{{ user?.idDepartment }}</pre></span>
+			}
+			<span>Benefits ids: <pre class="inline-pre">{{ user?.benefits || "🥲" | json }}</pre></span>
+		</div>
+	</app-layout-single>
 }

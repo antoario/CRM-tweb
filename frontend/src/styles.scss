@@ -48,4 +48,8 @@
     @apply button-btn bg-blue-500 text-white disabled:bg-gray-300 transition-all cursor-pointer;
   }
 
+  .inline-pre {
+    @apply inline bg-gray-200 p-1 rounded text-sm;
+  }
+
 }
