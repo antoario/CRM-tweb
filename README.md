@@ -133,3 +133,13 @@ For Angular, we are using Google Material Components, which are very useful for 
 
 <!-- TODO add er image for design schema -->
 
+## The roles of users
+
+There are 3 possible roles in this system with unique capabilities:
+
+- **SuperAdmin**. Who got this role has the opportunity to manage all departments and employees.
+- **DepartmentManager**. Is someone can manage and see only his department add/remove the projects, employees and soo.
+- **Employee**. He can only see the department and his job.
+
+
+
