@@ -89,47 +89,49 @@ For Angular, we are using Google Material Components, which are very useful for 
 ## Tables and Key Fields
 
 1. Employees
-   - `Employee ID` (primary key)
-   - `First Name`
-   - `Last Name`
-   - `Date of Birth`
-   - `Email`
-   - `Department ID` (foreign key linking to the Departments table)
+   - `id`: string (primary key)
+   - `first_name`: string
+   - `last_name`: string
+   - `date_of_birth`: Date
+   - `password`: string
+   - `Email`: string
+   - `role`: number (form 0 to 2)
+   - `id_departments`: string (foreign key linking to the Departments table)
 
 2. Departments
-   - `Department ID` (primary key)
-   - `Department Name`
-   - `Description`
-   - `Manager` (could be an employee ID or a name)
+   - `id` (primary key)
+   - `department_name`
+   - `description`
+   - `id_manager` (could be an employee ID)
 
 3. Positions
-   - `Position ID` (primary key)
-   - `Position Title`
-   - `Description`
-   - `Level` (e.g., Junior, Senior)
-   - `Department ID` (foreign key)
+   - `id` (primary key)
+   - `position_title`
+   - `description`
+   - `level` (e.g., Junior, Senior)
+   - `id_department` (foreign key)
 
 4. Projects
-   - `Project ID` (primary key)
+   - `id` (primary key)
    - `Project Name`
-   - `Description`
-   - `Start Date`
-   - `End Date`
-   - `Department ID` (foreign key to link projects to specific departments)
+   - `description`: string
+   - `Start Date`: Date
+   - `End Date`: Date
+   - `id_department` (foreign key to link projects to specific departments)
 
 5. Contracts
-   - `Contract ID` (primary key)
+   - `id` (primary key)
    - `Employee ID` (foreign key)
-   - `Contract Type` (e.g., indefinite term, fixed term, part-time)
-   - `Start Date`
-   - `End Date`
-   - `Salary`
+   - `Contract Type`: string (e.g., indefinite term, fixed term, part-time)
+   - `Start Date`: Date
+   - `End Date`: Date
+   - `Salary`: number
 
 6. Benefits (or Additional Compensation)
-   - `Benefit ID` (primary key)
+   - `id` (primary key)
    - `Description`
    - `Value` (could be a monetary amount or a qualitative description, like "company gym" or "meal vouchers")
-   - `Employee ID` (foreign key)
+   - `id_employee` (foreign key)
 
 <!-- TODO add er image for design schema -->
 
