@@ -141,7 +141,7 @@ There are 3 possible roles in this system with unique capabilities:
 - **manager**. Is someone can manage and see only his department add/remove the projects, employees and soo. This role is saved as **1**
 - **employee**. He can only see the department and his job. This role is saved as **2**
 
-## SuperAdmin
+### SuperAdmin
 
 Only the superAdmin can add the benefits
 
