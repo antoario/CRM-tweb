@@ -89,4 +89,22 @@ public class ProjectsManager {
         }
         return generatedId;
     }
+
+    public static int editProject(ProjectsManager project) {
+        try (Connection conn = persistence.getConnection()) {
+            try (PreparedStatement st = conn.prepareStatement("UPDATE projects SET project_name = ?, description = ?, start_date = ?, end_date = ?, department_id = ? WHERE project_id = ?")) {
+                st.setString(1, project.name);
+                st.setString(2, project.description);
+                st.setDate(3, project.start_date);
+                st.setDate(4, project.end_date);
+                st.setInt(5, project.department_id);
+                st.setInt(6, project.id);
+                st.executeUpdate();
+            }
+        } catch (SQLException ex) {
+            System.err.println("SQL Exception: " + ex.getMessage());
+            ex.printStackTrace(System.err);
+        }
+        return project.id;
+    }
 }

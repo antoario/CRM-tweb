@@ -89,4 +89,23 @@ public class ContractsManager {
         }
         return generatedId;
     }
+
+    public static int editContract(ContractsManager contract) {
+        try (Connection conn = persistence.getConnection()) {
+            try (PreparedStatement st = conn.prepareStatement("UPDATE contracts SET employee_id = ?, contract_type = ?, start_date = ?, " +
+                    "end_date = ?, salary = ? WHERE contract_id = ?")) {
+                st.setInt(1, contract.employee_id);
+                st.setString(2, contract.contract_type);
+                st.setDate(3, contract.start_date);
+                st.setDate(4, contract.end_date);
+                st.setFloat(5, contract.salary);
+                st.setInt(6, contract.id);
+                st.executeUpdate();
+            }
+        } catch (SQLException ex) {
+            System.err.println("SQL Exception: " + ex.getMessage());
+            ex.printStackTrace(System.err);
+        }
+        return contract.id;
+    }
 }

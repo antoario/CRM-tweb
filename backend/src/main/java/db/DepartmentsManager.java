@@ -79,4 +79,20 @@ public class DepartmentsManager {
         }
         return generatedId;
     }
+
+    public static int editDepartment(DepartmentsManager department) {
+        try (Connection conn = persistence.getConnection()) {
+            try (PreparedStatement st = conn.prepareStatement("UPDATE departments SET department_name = ?, description = ?, manager = ? WHERE department_id = ?")) {
+                st.setString(1, department.name);
+                st.setString(2, department.description);
+                st.setString(3, department.manager);
+                st.setInt(4, department.id);
+                st.executeUpdate();
+            }
+        } catch (SQLException ex) {
+            System.err.println("SQL Exception: " + ex.getMessage());
+            ex.printStackTrace(System.err);
+        }
+        return department.id;
+    }
 }

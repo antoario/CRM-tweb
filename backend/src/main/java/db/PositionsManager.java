@@ -84,4 +84,21 @@ public class PositionsManager {
         }
         return generatedId;
     }
+
+    public static int editPosition(PositionsManager position) {
+        try (Connection conn = persistence.getConnection()) {
+            try (PreparedStatement st = conn.prepareStatement("UPDATE positions SET position_title = ?, description = ?, level = ?, department_id = ? WHERE position_id = ?")) {
+                st.setString(1, position.title);
+                st.setString(2, position.description);
+                st.setString(3, position.level);
+                st.setInt(4, position.department_id);
+                st.setInt(5, position.id);
+                st.executeUpdate();
+            }
+        } catch (SQLException ex) {
+            System.err.println("SQL Exception: " + ex.getMessage());
+            ex.printStackTrace(System.err);
+        }
+        return position.id;
+    }
 }

@@ -111,4 +111,22 @@ public class EmployeesManager {
         }
         return generatedId;
     }
+
+    public static int editEmployee(EmployeesManager employee) {
+        try (Connection conn = persistence.getConnection()) {
+            try (PreparedStatement st = conn.prepareStatement("UPDATE employees SET first_name = ?, last_name = ?, date_of_birth = ?, email = ?, department_id = ? WHERE employee_id = ?")) {
+                st.setString(1, employee.first_name);
+                st.setString(2, employee.last_name);
+                st.setDate(3, employee.date_of_birth);
+                st.setString(4, employee.email);
+                st.setInt(5, employee.department_id);
+                st.setInt(6, employee.id);
+                st.executeUpdate();
+            }
+        } catch (SQLException ex) {
+            System.err.println("SQL Exception: " + ex.getMessage());
+            ex.printStackTrace(System.err);
+        }
+        return employee.id;
+    }
 }

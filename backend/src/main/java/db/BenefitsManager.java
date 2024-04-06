@@ -79,4 +79,20 @@ public class BenefitsManager {
         }
         return generatedId;
     }
+
+    public static int editBenefit(BenefitsManager benefit) {
+        try (Connection conn = persistence.getConnection()) {
+            try (PreparedStatement st = conn.prepareStatement("UPDATE benefits SET description = ?, value = ?, employee_id = ? WHERE benefit_id = ?")) {
+                st.setString(1, benefit.description);
+                st.setString(2, benefit.value);
+                st.setInt(3, benefit.employee_id);
+                st.setInt(4, benefit.id);
+                st.executeUpdate();
+            }
+        } catch (SQLException ex) {
+            System.err.println("SQL Exception: " + ex.getMessage());
+            ex.printStackTrace(System.err);
+        }
+        return benefit.id;
+    }
 }
