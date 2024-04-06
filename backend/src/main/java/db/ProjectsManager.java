@@ -1,9 +1,6 @@
 package db;
 
-import java.sql.Connection;
-import java.sql.PreparedStatement;
-import java.sql.ResultSet;
-import java.sql.SQLException;
+import java.sql.*;
 import java.util.ArrayList;
 
 public class ProjectsManager {
@@ -12,11 +9,11 @@ public class ProjectsManager {
     private final int id;
     private final String name;
     private final String description;
-    private final String start_date;
-    private final String end_date;
+    private final Date start_date;
+    private final Date end_date;
     private final int department_id;
 
-    public ProjectsManager(int id, String name, String description, String start_date, String end_date, int department_id) {
+    public ProjectsManager(int id, String name, String description, Date start_date, Date end_date, int department_id) {
         this.id = id;
         this.name = name;
         this.description = description;
@@ -34,8 +31,8 @@ public class ProjectsManager {
                     ProjectsManager temp = new ProjectsManager(rs.getInt("project_id"),
                             rs.getString("project_name"),
                             rs.getString("description"),
-                            rs.getString("start_date"),
-                            rs.getString("end_date"),
+                            rs.getDate("start_date"),
+                            rs.getDate("end_date"),
                             rs.getInt("department_id"));
                     allProjects.add(temp);
                 }
@@ -57,8 +54,8 @@ public class ProjectsManager {
                     project = new ProjectsManager(rs.getInt("project_id"),
                             rs.getString("project_name"),
                             rs.getString("description"),
-                            rs.getString("start_date"),
-                            rs.getString("end_date"),
+                            rs.getDate("start_date"),
+                            rs.getDate("end_date"),
                             rs.getInt("department_id"));
                 }
             }
@@ -67,5 +64,29 @@ public class ProjectsManager {
             ex.printStackTrace(System.err);
         }
         return project;
+    }
+
+    public static int addProject(ProjectsManager project) {
+        int generatedId = -2;
+        try (Connection conn = persistence.getConnection()) {
+            try (PreparedStatement st = conn.prepareStatement("INSERT INTO projects (project_name, description, start_date, end_date, department_id)" +
+                    " VALUES (?, ?, ?, ?, ?)", Statement.RETURN_GENERATED_KEYS)) {
+                st.setString(1, project.name);
+                st.setString(2, project.description);
+                st.setDate(3, project.start_date);
+                st.setDate(4, project.end_date);
+                st.setInt(5, project.department_id);
+                st.executeUpdate();
+
+                ResultSet rs = st.getGeneratedKeys();
+                if (rs.next()) {
+                    generatedId = rs.getInt(1);
+                }
+            }
+        } catch (SQLException ex) {
+            System.err.println("SQL Exception: " + ex.getMessage());
+            ex.printStackTrace(System.err);
+        }
+        return generatedId;
     }
 }

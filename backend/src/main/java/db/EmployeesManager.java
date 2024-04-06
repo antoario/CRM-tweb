@@ -1,9 +1,6 @@
 package db;
 
-import java.sql.Connection;
-import java.sql.PreparedStatement;
-import java.sql.ResultSet;
-import java.sql.SQLException;
+import java.sql.*;
 import java.util.ArrayList;
 
 public class EmployeesManager {
@@ -12,11 +9,11 @@ public class EmployeesManager {
     private final int id;
     private final String first_name;
     private final String last_name;
-    private final String date_of_birth;
+    private final Date date_of_birth;
     private final String email;
     private final int department_id;
 
-    public EmployeesManager(int id, String first_name, String last_name, String date_of_birth, String email, int department_id) {
+    public EmployeesManager(int id, String first_name, String last_name, Date date_of_birth, String email, int department_id) {
         this.id = id;
         this.first_name = first_name;
         this.last_name = last_name;
@@ -35,7 +32,7 @@ public class EmployeesManager {
                     employee = new EmployeesManager(rs.getInt("employee_id"),
                             rs.getString("first_name"),
                             rs.getString("last_name"),
-                            rs.getString("date_of_birth"),
+                            rs.getDate("date_of_birth"),
                             rs.getString("email"),
                             rs.getInt("department_id"));
                 }
@@ -56,7 +53,7 @@ public class EmployeesManager {
                     EmployeesManager temp = new EmployeesManager(rs.getInt("employee_id"),
                             rs.getString("first_name"),
                             rs.getString("last_name"),
-                            rs.getString("date_of_birth"),
+                            rs.getDate("date_of_birth"),
                             rs.getString("email"),
                             rs.getInt("department_id"));
                     allEmployees.add(temp);
@@ -79,7 +76,7 @@ public class EmployeesManager {
                     employee = new EmployeesManager(rs.getInt("employee_id"),
                             rs.getString("first_name"),
                             rs.getString("last_name"),
-                            rs.getString("date_of_birth"),
+                            rs.getDate("date_of_birth"),
                             rs.getString("email"),
                             rs.getInt("department_id"));
                 }
@@ -89,5 +86,29 @@ public class EmployeesManager {
             ex.printStackTrace(System.err);
         }
         return employee;
+    }
+
+    public static int addEmployee(EmployeesManager employee) {
+        int generatedId = -2;
+        try (Connection conn = persistence.getConnection()) {
+            try (PreparedStatement st = conn.prepareStatement("INSERT INTO employees (first_name, last_name, date_of_birth, email, department_id)" +
+                    " VALUES (?, ?, ?, ?, ?)", Statement.RETURN_GENERATED_KEYS)) {
+                st.setString(1, employee.first_name);
+                st.setString(2, employee.last_name);
+                st.setDate(3, employee.date_of_birth);
+                st.setString(4, employee.email);
+                st.setInt(5, employee.department_id);
+                st.executeUpdate();
+
+                ResultSet rs = st.getGeneratedKeys();
+                if (rs.next()) {
+                    generatedId = rs.getInt(1);
+                }
+            }
+        } catch (SQLException ex) {
+            System.err.println("SQL Exception: " + ex.getMessage());
+            ex.printStackTrace(System.err);
+        }
+        return generatedId;
     }
 }

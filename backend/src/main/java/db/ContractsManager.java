@@ -1,9 +1,6 @@
 package db;
 
-import java.sql.Connection;
-import java.sql.PreparedStatement;
-import java.sql.ResultSet;
-import java.sql.SQLException;
+import java.sql.*;
 import java.util.ArrayList;
 
 public class ContractsManager {
@@ -12,11 +9,11 @@ public class ContractsManager {
     private final int id;
     private final int employee_id;
     private final String contract_type;
-    private final String start_date;
-    private final String end_date;
+    private final Date start_date;
+    private final Date end_date;
     private final float salary;
 
-    public ContractsManager(int id, int employee_id, String contract_type, String start_date, String end_date, float salary) {
+    public ContractsManager(int id, int employee_id, String contract_type, Date start_date, Date end_date, float salary) {
         this.id = id;
         this.employee_id = employee_id;
         this.contract_type = contract_type;
@@ -34,8 +31,8 @@ public class ContractsManager {
                     ContractsManager temp = new ContractsManager(rs.getInt("contract_id"),
                             rs.getInt("employee_id"),
                             rs.getString("contract_type"),
-                            rs.getString("start_date"),
-                            rs.getString("end_date"),
+                            rs.getDate("start_date"),
+                            rs.getDate("end_date"),
                             rs.getFloat("salary"));
                     allContracts.add(temp);
                 }
@@ -57,8 +54,8 @@ public class ContractsManager {
                     contract = new ContractsManager(rs.getInt("contract_id"),
                             rs.getInt("employee_id"),
                             rs.getString("contract_type"),
-                            rs.getString("start_date"),
-                            rs.getString("end_date"),
+                            rs.getDate("start_date"),
+                            rs.getDate("end_date"),
                             rs.getFloat("salary"));
                 }
             }
@@ -67,5 +64,29 @@ public class ContractsManager {
             ex.printStackTrace(System.err);
         }
         return contract;
+    }
+
+    public static int addContract(ContractsManager contract) {
+        int generatedId = -2;
+        try (Connection conn = persistence.getConnection()) {
+            try (PreparedStatement st = conn.prepareStatement("INSERT INTO contracts (employee_id, contract_type, start_date, end_date, salary)" +
+                    " VALUES (?, ?, ?, ?, ?)", Statement.RETURN_GENERATED_KEYS)) {
+                st.setInt(1, contract.employee_id);
+                st.setString(2, contract.contract_type);
+                st.setDate(3, contract.start_date);
+                st.setDate(4, contract.end_date);
+                st.setFloat(5, contract.salary);
+                st.executeUpdate();
+
+                ResultSet rs = st.getGeneratedKeys();
+                if (rs.next()) {
+                    generatedId = rs.getInt(1);
+                }
+            }
+        } catch (SQLException ex) {
+            System.err.println("SQL Exception: " + ex.getMessage());
+            ex.printStackTrace(System.err);
+        }
+        return generatedId;
     }
 }

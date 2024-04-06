@@ -7,7 +7,6 @@ import java.util.ArrayList;
 import java.util.Map;
 import com.google.gson.Gson;
 import db.*;
-import jakarta.servlet.ServletException;
 import jakarta.servlet.annotation.WebServlet;
 import jakarta.servlet.http.HttpServlet;
 import jakarta.servlet.http.HttpServletRequest;
@@ -127,11 +126,65 @@ public class CRMServlet extends HttpServlet {
 
         switch(request.getServletPath()) {
             case EMPLOYEES_PATH:
+                if(body != null && body.ready()) {
+                    EmployeesManager employee = gson.fromJson(body, EmployeesManager.class);
+                    int employeeId = EmployeesManager.addEmployee(employee);
+                    out.println(gson.toJson(employeeId));
+                } else {
+                    out.println(gson.toJson(-1));
+                }
+                break;
+
             case BENEFITS_PATH:
+                if(body != null && body.ready()) {
+                    BenefitsManager benefit = gson.fromJson(body, BenefitsManager.class);
+                    int benefitId = BenefitsManager.addBenefit(benefit);
+                    out.println(gson.toJson(benefitId));
+                } else {
+                    out.println(gson.toJson(-1));
+                }
+                break;
+
             case CONTRACTS_PATH:
+                if(body != null && body.ready()) {
+                    ContractsManager contract = gson.fromJson(body, ContractsManager.class);
+                    int contractId = ContractsManager.addContract(contract);
+                    out.println(gson.toJson(contractId));
+                } else {
+                    out.println(gson.toJson(-1));
+                }
+                break;
+
             case DEPARTMENTS_PATH:
+                if(body != null && body.ready()) {
+                    DepartmentsManager department = gson.fromJson(body, DepartmentsManager.class);
+                    int departmentId = DepartmentsManager.addDepartment(department);
+                    out.println(gson.toJson(departmentId));
+                } else {
+                    out.println(gson.toJson(-1));
+                }
+                break;
+
             case POSITIONS_PATH:
+                if(body != null && body.ready()) {
+                    PositionsManager position = gson.fromJson(body, PositionsManager.class);
+                    int positionId = PositionsManager.addPosition(position);
+                    out.println(gson.toJson(positionId));
+                } else {
+                    out.println(gson.toJson(-1));
+                }
+                break;
+
             case PROJECTS_PATH:
+                if(body != null && body.ready()) {
+                    ProjectsManager project = gson.fromJson(body, ProjectsManager.class);
+                    int projectId = ProjectsManager.addProject(project);
+                    out.println(gson.toJson(projectId));
+                } else {
+                    out.println(gson.toJson(-1));
+                }
+                break;
+
             case USERS_PATH:
                 break;
 
@@ -140,7 +193,7 @@ public class CRMServlet extends HttpServlet {
         }
     }
 
-    protected void doPut(HttpServletRequest request, HttpServletResponse response) throws ServletException, IOException {
+    protected void doPut(HttpServletRequest request, HttpServletResponse response) throws IOException {
         response.setContentType("application/json");
         PrintWriter out = response.getWriter();
 

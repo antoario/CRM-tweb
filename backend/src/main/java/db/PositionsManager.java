@@ -1,9 +1,6 @@
 package db;
 
-import java.sql.Connection;
-import java.sql.PreparedStatement;
-import java.sql.ResultSet;
-import java.sql.SQLException;
+import java.sql.*;
 import java.util.ArrayList;
 
 public class PositionsManager {
@@ -63,5 +60,28 @@ public class PositionsManager {
             ex.printStackTrace(System.err);
         }
         return position;
+    }
+
+    public static int addPosition(PositionsManager position) {
+        int generatedId = -2;
+        try (Connection conn = persistence.getConnection()) {
+            try (PreparedStatement st = conn.prepareStatement("INSERT INTO positions (position_title, description, level, department_id)" +
+                    " VALUES (?, ?, ?, ?)", Statement.RETURN_GENERATED_KEYS)) {
+                st.setString(1, position.title);
+                st.setString(2, position.description);
+                st.setString(3, position.level);
+                st.setInt(4, position.department_id);
+                st.executeUpdate();
+
+                ResultSet rs = st.getGeneratedKeys();
+                if (rs.next()) {
+                    generatedId = rs.getInt(1);
+                }
+            }
+        } catch (SQLException ex) {
+            System.err.println("SQL Exception: " + ex.getMessage());
+            ex.printStackTrace(System.err);
+        }
+        return generatedId;
     }
 }
