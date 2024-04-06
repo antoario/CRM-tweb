@@ -7,7 +7,8 @@ import jakarta.servlet.http.*;
 import jakarta.servlet.annotation.*;
 
 import db.*;
-import login.LoginService;
+// import login.LoginService;
+// import login.LoginService;
 
 @WebServlet(name = "LoginServlet", urlPatterns = {"/login", "/logout"})
 public class LoginServlet extends HttpServlet {
@@ -27,9 +28,9 @@ public class LoginServlet extends HttpServlet {
         boolean res;
 
         if (request.getServletPath().equals(LOGOUT_PATH)) {
-            String user = LoginService.getCurrentLogin(request.getSession());
-            res = LoginService.doLogOut(request.getSession(), user);
-            out.println(gson.toJson(res));
+            // String user = LoginService.getCurrentLogin(request.getSession());
+            // res = LoginService.doLogOut(request.getSession(), user);
+            // out.println(gson.toJson(res));
 
         } else response.sendError(HttpServletResponse.SC_NOT_FOUND);
     }
@@ -40,27 +41,27 @@ public class LoginServlet extends HttpServlet {
         HttpSession session = request.getSession();
 
         if (request.getServletPath().equals(LOGIN_PATH)) {
-            String user = LoginService.getCurrentLogin(session);
-
-            if (user.isEmpty()) {
-                String email = request.getParameter("email");
-                String password = request.getParameter("password");
-                EmployeesManager userData = EmployeesManager.validateCredentials(email, password);
-
-                if(userData != null) {
-                    LoginService.doLogIn(session, email);
-                    out.println(gson.toJson(userData));
-                } else sendWrongCredentials(request, response);
-
-            } else sendAlreadyLogged(request, response);
+            // String user = LoginService.getCurrentLogin(session);
+            //
+            // if (user.isEmpty()) {
+            //     String email = request.getParameter("email");
+            //     String password = request.getParameter("password");
+            //     EmployeesManager userData = EmployeesManager.validateCredentials(email, password);
+            //
+            //     if(userData != null) {
+            //         LoginService.doLogIn(session, email);
+            //         out.println(gson.toJson(userData));
+            //     } else sendWrongCredentials(request, response);
+            //
+            // } else sendAlreadyLogged(request, response);
 
         } else response.sendError(HttpServletResponse.SC_NOT_FOUND);
     }
 
     private void sendAlreadyLogged(HttpServletRequest request, HttpServletResponse response) throws IOException {
-        PrintWriter out = response.getWriter();
-        String user = LoginService.getCurrentLogin(request.getSession());
-        out.println(gson.toJson(user));
+        // PrintWriter out = response.getWriter();
+        // String user = LoginService.getCurrentLogin(request.getSession());
+        // out.println(gson.toJson(user));
     }
 
     private void sendWrongCredentials(HttpServletRequest request, HttpServletResponse response) throws IOException {

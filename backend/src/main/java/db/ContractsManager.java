@@ -1,111 +1,67 @@
 package db;
 
-import java.sql.*;
-import java.util.ArrayList;
+import Data.Contract;
 
-public class ContractsManager {
+import java.sql.*;
+import java.time.LocalDate;
+import java.util.ArrayList;
+import java.util.Arrays;
+import java.util.List;
+import java.util.Map;
+
+public class ContractsManager extends BaseManager<Contract>{
     private final static PoolingPersistenceManager persistence = PoolingPersistenceManager.getPersistenceManager();
 
-    private final int id;
-    private final int employee_id;
-    private final String contract_type;
-    private final Date start_date;
-    private final Date end_date;
-    private final float salary;
+    public ContractsManager() {}
 
-    public ContractsManager(int id, int employee_id, String contract_type, Date start_date, Date end_date, float salary) {
-        this.id = id;
-        this.employee_id = employee_id;
-        this.contract_type = contract_type;
-        this.start_date = start_date;
-        this.end_date = end_date;
-        this.salary = salary;
-    }
+    @Override
+    public int addFromParams(Map<String, String[]> params) {
 
-    public static ArrayList<ContractsManager> loadAllContracts() {
-        ArrayList<ContractsManager> allContracts = new ArrayList<>();
-        try (Connection conn = persistence.getConnection()) {
-            try (PreparedStatement st = conn.prepareStatement("SELECT * FROM contracts")) {
-                ResultSet rs = st.executeQuery();
-                while(rs.next()) {
-                    ContractsManager temp = new ContractsManager(rs.getInt("contract_id"),
-                            rs.getInt("employee_id"),
-                            rs.getString("contract_type"),
-                            rs.getDate("start_date"),
-                            rs.getDate("end_date"),
-                            rs.getFloat("salary"));
-                    allContracts.add(temp);
-                }
-            }
-        } catch (SQLException ex) {
-            System.err.println("SQL Exception: " + ex.getMessage());
-            ex.printStackTrace(System.err);
-        }
-        return allContracts;
-    }
+        int employeeId = Integer.parseInt(params.get("employeeId")[0]);
+        String contractType = params.get("contractType")[0];
+        LocalDate startDate = LocalDate.parse(params.get("startDate")[0]);
+        LocalDate endDate = LocalDate.parse(params.get("endDate")[0]);
+        float salary = Float.parseFloat(params.get("salary")[0]);
 
-    public static ContractsManager loadContractDetails(int id) {
-        ContractsManager contract = null;
-        try (Connection conn = persistence.getConnection()) {
-            try (PreparedStatement st = conn.prepareStatement("SELECT * FROM contracts WHERE contract_id = ?")) {
-                st.setInt(1, id);
-                ResultSet rs = st.executeQuery();
-                if (rs.next()) {
-                    contract = new ContractsManager(rs.getInt("contract_id"),
-                            rs.getInt("employee_id"),
-                            rs.getString("contract_type"),
-                            rs.getDate("start_date"),
-                            rs.getDate("end_date"),
-                            rs.getFloat("salary"));
-                }
-            }
-        } catch (SQLException ex) {
-            System.err.println("SQL Exception: " + ex.getMessage());
-            ex.printStackTrace(System.err);
-        }
-        return contract;
-    }
+        Contract contract = new Contract(10, employeeId, contractType,startDate , endDate, salary);
 
-    public static int addContract(ContractsManager contract) {
-        int generatedId = -2;
-        try (Connection conn = persistence.getConnection()) {
-            try (PreparedStatement st = conn.prepareStatement("INSERT INTO contracts (employee_id, contract_type, start_date, end_date, salary)" +
-                    " VALUES (?, ?, ?, ?, ?)", Statement.RETURN_GENERATED_KEYS)) {
-                st.setInt(1, contract.employee_id);
-                st.setString(2, contract.contract_type);
-                st.setDate(3, contract.start_date);
-                st.setDate(4, contract.end_date);
-                st.setFloat(5, contract.salary);
-                st.executeUpdate();
+        // Supponi di avere un metodo add che accetti un'entità e restituisca un ID
+        String query = "INSERT INTO contracts (employee_id, contract_type, start_date, end_date, salary) VALUES (?, ?, ?, ?, ?)";
+        List<Object> values = Arrays.asList(
+                contract.getEmployeeId(),
+                contract.getContractType(),
+                contract.getStartDate(),
+                contract.getEndDate(),
+                contract.getSalary()
+        );
 
-                ResultSet rs = st.getGeneratedKeys();
-                if (rs.next()) {
-                    generatedId = rs.getInt(1);
-                }
-            }
-        } catch (SQLException ex) {
-            System.err.println("SQL Exception: " + ex.getMessage());
-            ex.printStackTrace(System.err);
-        }
-        return generatedId;
+        return addEntity(query, values);
     }
 
     public static int editContract(ContractsManager contract) {
-        try (Connection conn = persistence.getConnection()) {
-            try (PreparedStatement st = conn.prepareStatement("UPDATE contracts SET employee_id = ?, contract_type = ?, start_date = ?, " +
-                    "end_date = ?, salary = ? WHERE contract_id = ?")) {
-                st.setInt(1, contract.employee_id);
-                st.setString(2, contract.contract_type);
-                st.setDate(3, contract.start_date);
-                st.setDate(4, contract.end_date);
-                st.setFloat(5, contract.salary);
-                st.setInt(6, contract.id);
-                st.executeUpdate();
-            }
-        } catch (SQLException ex) {
-            System.err.println("SQL Exception: " + ex.getMessage());
-            ex.printStackTrace(System.err);
-        }
-        return contract.id;
+        // uguale alla post cambiando insert e aggiungendo i dati
+        return 0;
+    }
+
+    @Override
+    protected Contract mapRowToEntity(ResultSet rs) throws SQLException {
+        return new Contract(
+                rs.getInt("id"),
+                rs.getInt("employee_id"),
+                rs.getString("contract_type"),
+                rs.getDate("start_date").toLocalDate(),
+                rs.getDate("end_date").toLocalDate(),
+                rs.getFloat("salary"));
+    }
+
+    @Override
+    protected String getLoadAllQuery() {
+        return "SELECT * FROM contracts";
+    }
+
+    @Override
+    public Contract loadDetails(int id) {
+        String query = "SELECT * FROM contracts WHERE id = ?";
+        return loadById(query, id);
     }
 }

@@ -4,7 +4,10 @@ import java.io.BufferedReader;
 import java.io.IOException;
 import java.io.PrintWriter;
 import java.util.ArrayList;
+import java.util.List;
 import java.util.Map;
+
+import Data.Contract;
 import com.google.gson.Gson;
 import db.*;
 import jakarta.servlet.annotation.WebServlet;
@@ -33,152 +36,55 @@ public class CRMServlet extends HttpServlet {
     protected void doGet(HttpServletRequest request, HttpServletResponse response) throws IOException {
         response.setContentType("application/json");
         PrintWriter out = response.getWriter();
-        Map<String, String[]> pars = request.getParameterMap();
 
-        switch(request.getServletPath()) {
-            case EMPLOYEES_PATH:
-                if (pars.containsKey("id")) {
-                    int employeeId = Integer.parseInt(pars.get("id")[0]);
-                    EmployeesManager user = EmployeesManager.loadEmployeeDetails(employeeId);
-                    out.println(gson.toJson(user));
+        // Ottieni il manager appropriato per il percorso della richiesta
+        BaseManager<?> manager = ManagerFactory.getManager(request.getServletPath());
+
+        // Ottieni i parametri della richiesta
+        String idParam = request.getParameter("id");
+        System.out.println(idParam);
+
+        if (idParam != null) {
+            // Gestione del caricamento dei dettagli di un'entità specifica
+            try {
+                int id = Integer.parseInt(idParam);
+                Object entity = manager.loadDetails(id);
+                if (entity != null) {
+                    out.println(gson.toJson(entity));
                 } else {
-                    ArrayList<EmployeesManager> allUsers = EmployeesManager.loadAllEmployees();
-                    out.println(gson.toJson(allUsers));
+                    response.sendError(HttpServletResponse.SC_NOT_FOUND);
                 }
-                break;
-
-            case BENEFITS_PATH:
-                if (pars.containsKey("id")) {
-                    int benefitId = Integer.parseInt(pars.get("id")[0]);
-                    BenefitsManager benefit = BenefitsManager.loadBenefitDetails(benefitId);
-                    out.println(gson.toJson(benefit));
-                } else {
-                    ArrayList<BenefitsManager> allBenefits = BenefitsManager.loadAllBenefits();
-                    out.println(gson.toJson(allBenefits));
-                }
-                break;
-
-            case CONTRACTS_PATH:
-                if (pars.containsKey("id")) {
-                    int contractId = Integer.parseInt(pars.get("id")[0]);
-                    ContractsManager contract = ContractsManager.loadContractDetails(contractId);
-                    out.println(gson.toJson(contract));
-                } else {
-                    ArrayList<ContractsManager> allContracts = ContractsManager.loadAllContracts();
-                    out.println(gson.toJson(allContracts));
-                }
-                break;
-
-            case DEPARTMENTS_PATH:
-                if (pars.containsKey("id")) {
-                    int departmentId = Integer.parseInt(pars.get("id")[0]);
-                    DepartmentsManager department = DepartmentsManager.loadDepartmentDetails(departmentId);
-                    out.println(gson.toJson(department));
-                } else {
-                    ArrayList<DepartmentsManager> allDepartments = DepartmentsManager.loadAllDepartments();
-                    out.println(gson.toJson(allDepartments));
-                }
-                break;
-
-            case POSITIONS_PATH:
-                if (pars.containsKey("id")) {
-                    int positionId = Integer.parseInt(pars.get("id")[0]);
-                    PositionsManager position = PositionsManager.loadPositionDetails(positionId);
-                    out.println(gson.toJson(position));
-                } else {
-                    ArrayList<PositionsManager> allPositions = PositionsManager.loadAllPositions();
-                    out.println(gson.toJson(allPositions));
-                }
-                break;
-
-            case PROJECTS_PATH:
-                if (pars.containsKey("id")) {
-                    int projectId = Integer.parseInt(pars.get("id")[0]);
-                    ProjectsManager project = ProjectsManager.loadProjectDetails(projectId);
-                    out.println(gson.toJson(project));
-                } else {
-                    ArrayList<ProjectsManager> allProjects = ProjectsManager.loadAllProjects();
-                    out.println(gson.toJson(allProjects));
-                }
-                break;
-
-            default:
-                response.sendError(HttpServletResponse.SC_NOT_FOUND);
+            } catch (NumberFormatException e) {
+                response.sendError(HttpServletResponse.SC_BAD_REQUEST);
+            }
+        } else {
+            // Gestione del caricamento di tutte le entità
+            List<?> entities = manager.loadAll();
+            out.println(gson.toJson(entities));
         }
     }
 
+    @Override
     protected void doPost(HttpServletRequest request, HttpServletResponse response) throws IOException {
         response.setContentType("application/json");
         PrintWriter out = response.getWriter();
-        BufferedReader body = request.getReader();
 
-        switch(request.getServletPath()) {
-            case EMPLOYEES_PATH:
-                if(body != null && body.ready()) {
-                    EmployeesManager employee = gson.fromJson(body, EmployeesManager.class);
-                    int employeeId = EmployeesManager.addEmployee(employee);
-                    out.println(gson.toJson(employeeId));
-                } else {
-                    out.println(gson.toJson(-1));
-                }
-                break;
+        // Ottieni il manager appropriato
+        GenericManager<?> manager = ManagerFactory.getManager(request.getServletPath());
 
-            case BENEFITS_PATH:
-                if(body != null && body.ready()) {
-                    BenefitsManager benefit = gson.fromJson(body, BenefitsManager.class);
-                    int benefitId = BenefitsManager.addBenefit(benefit);
-                    out.println(gson.toJson(benefitId));
-                } else {
-                    out.println(gson.toJson(-1));
-                }
-                break;
+        // Chiama addFromParams passando i parametri della richiesta
+        int resultId = manager.addFromParams(request.getParameterMap());
 
-            case CONTRACTS_PATH:
-                if(body != null && body.ready()) {
-                    ContractsManager contract = gson.fromJson(body, ContractsManager.class);
-                    int contractId = ContractsManager.addContract(contract);
-                    out.println(gson.toJson(contractId));
-                } else {
-                    out.println(gson.toJson(-1));
-                }
-                break;
-
-            case DEPARTMENTS_PATH:
-                if(body != null && body.ready()) {
-                    DepartmentsManager department = gson.fromJson(body, DepartmentsManager.class);
-                    int departmentId = DepartmentsManager.addDepartment(department);
-                    out.println(gson.toJson(departmentId));
-                } else {
-                    out.println(gson.toJson(-1));
-                }
-                break;
-
-            case POSITIONS_PATH:
-                if(body != null && body.ready()) {
-                    PositionsManager position = gson.fromJson(body, PositionsManager.class);
-                    int positionId = PositionsManager.addPosition(position);
-                    out.println(gson.toJson(positionId));
-                } else {
-                    out.println(gson.toJson(-1));
-                }
-                break;
-
-            case PROJECTS_PATH:
-                if(body != null && body.ready()) {
-                    ProjectsManager project = gson.fromJson(body, ProjectsManager.class);
-                    int projectId = ProjectsManager.addProject(project);
-                    out.println(gson.toJson(projectId));
-                } else {
-                    out.println(gson.toJson(-1));
-                }
-                break;
-
-            default:
-                response.sendError(HttpServletResponse.SC_NOT_FOUND);
+        // Restituisci l'ID risultante o un errore se l'ID è -1
+        if (resultId != -1) {
+            out.println(gson.toJson(resultId));
+        } else {
+            out.println(gson.toJson(-1)); // Indica un fallimento
         }
     }
 
     protected void doPut(HttpServletRequest request, HttpServletResponse response) throws IOException {
+        // SIMILE ALLA POST PER I PARAMETRI
         response.setContentType("application/json");
         PrintWriter out = response.getWriter();
         BufferedReader body = request.getReader();
