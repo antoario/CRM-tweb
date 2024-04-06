@@ -9,9 +9,9 @@
 			<span>Name: <span class="font-bold">{{ user!.name }}</span></span>
 			<span>Surname: <span class="font-bold">{{ user!.surname }}</span></span>
 			@if (user!.role === ROLE.manager || user!.role === ROLE.employee) {
-				<span>Your Department id: <pre class="inline-pre">{{ user?.idDepartment }}</pre></span>
+				<span>Your Department id: <pre class="inline-pre">{{ user!.idDepartment }}</pre></span>
 			}
-			<span>Benefits ids: <pre class="inline-pre">{{ user?.benefits || "🥲" | json }}</pre></span>
+			<span>Benefits ids: <pre class="inline-pre">{{ user!.benefits || "🥲" | json }}</pre></span>
 		</div>
 	</app-layout-single>
 }

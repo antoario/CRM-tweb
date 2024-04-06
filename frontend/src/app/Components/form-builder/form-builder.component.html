@@ -1,48 +1,49 @@
 <form (ngSubmit)="onSubmit()" [formGroup]="formGroupPass || form" class="flex gap-2 flex-wrap">
 
-  <div *ngFor="let control of controls | keyvalue" [style.flex-basis]="control.value.width"
-       [style.order]="control.value.order">
-    <div [ngSwitch]="control.value.type">
+	<div *ngFor="let control of controls | keyvalue" [style.flex-basis]="control.value.width"
+	     [style.order]="control.value.order">
+		<div [ngSwitch]="control.value.type">
 
-      <div *ngSwitchCase="'info'" class="mt-5">
-        <p class="font-bold text-lg">{{ control.value.label }}</p>
-        <p class="text-gray-600 text-sm">{{ control.value.subtext }}</p>
-      </div>
+			<div *ngSwitchCase="'info'" class="mt-5">
+				<p class="font-bold text-lg">{{ control.value.label }}</p>
+				<p class="text-gray-600 text-sm">{{ control.value.subtext }}</p>
+			</div>
 
-      <div *ngSwitchCase="'group'">
-        <app-form-builder [controls]="control.value.subForm" [formGroupPass]="form.get(control.key)"></app-form-builder>
-      </div>
+			<div *ngSwitchCase="'group'">
+				<app-form-builder [controls]="control.value.subForm"
+				                  [formGroupPass]="form.get(control.key)"></app-form-builder>
+			</div>
 
-      <div *ngSwitchCase="'text'">
-        <label [for]="control.key" class="form-label">{{ control.value.label }}
-          @if (control.value.required) {
-            <span class="text-red-500 text-sm">*</span>
-          }
-        </label>
-        <input [formControlName]="control.key" [id]="control.key"
-               [type]="control.value.type" class="form-input">
-      </div>
+			<div *ngSwitchCase="'text'">
+				<label [for]="control.key" class="form-label">{{ control.value.label }}
+					@if (control.value.required) {
+						<span class="text-red-500 text-sm">*</span>
+					}
+				</label>
+				<input [formControlName]="control.key" [id]="control.key" [disabled]="control.value.blocked"
+				       [type]="control.value.type" class="form-input">
+			</div>
 
-      <div *ngSwitchCase="'email'">
-        <label [for]="control.key" class="form-label">{{ control.value.label }}
-          @if (control.value.required) {
-            <span class="text-red-500 text-xs">*</span>
-          }
-        </label>
-        <input [formControlName]="control.key" [id]="control.key"
-               [type]="control.value.type" class="form-input">
-      </div>
+			<div *ngSwitchCase="'email'">
+				<label [for]="control.key" class="form-label">{{ control.value.label }}
+					@if (control.value.required) {
+						<span class="text-red-500 text-xs">*</span>
+					}
+				</label>
+				<input [formControlName]="control.key" [id]="control.key"
+				       [type]="control.value.type" class="form-input">
+			</div>
 
-      <div *ngSwitchCase="'select'">
-        <label [for]="control.key" class="form-label">{{ control.value.label }}
-          @if (control.value.required) {
-            <span class="text-red-500 text-sm">*</span>
-          }
-        </label>
-        <select [formControlName]="control.key" [id]="control.key" class="form-input">
-          <option *ngFor="let opt of control.value.options" [ngValue]="opt.key">{{ opt.value }}</option>
-        </select>
-      </div>
-    </div>
-  </div>
+			<div *ngSwitchCase="'select'">
+				<label [for]="control.key" class="form-label">{{ control.value.label }}
+					@if (control.value.required) {
+						<span class="text-red-500 text-sm">*</span>
+					}
+				</label>
+				<select [formControlName]="control.key" [id]="control.key" class="form-input">
+					<option *ngFor="let opt of control.value.options" [ngValue]="opt.key">{{ opt.value }}</option>
+				</select>
+			</div>
+		</div>
+	</div>
 </form>

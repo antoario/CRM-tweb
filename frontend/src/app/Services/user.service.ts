@@ -1,5 +1,5 @@
 import { Injectable } from "@angular/core"
-import { BehaviorSubject, catchError, map, Observable, of, tap } from "rxjs"
+import { BehaviorSubject, catchError, map, Observable, of, ReplaySubject, tap } from "rxjs"
 import { UserData, UserSession } from "../types/UserTypes"
 import { HttpClient, HttpHeaders } from "@angular/common/http"
 import { environment } from "../../environments/environment"
@@ -8,7 +8,7 @@ import { environment } from "../../environments/environment"
   providedIn: "root",
 })
 export class UserService {
-  currUser: BehaviorSubject<UserData | null> = new BehaviorSubject<UserData | null>(null)
+  currUser: ReplaySubject<UserData> = new ReplaySubject(1)
   currToken: BehaviorSubject<string | null> = new BehaviorSubject<string | null>(null)
 
   constructor(private http: HttpClient) {}
@@ -20,7 +20,7 @@ export class UserService {
     return this.http.post<boolean>(`${environment.apiUrl}/validateToken`, { token }).pipe(
       map((val) => {
         if (!val) {
-          this.currUser.next(null)
+          // this.currUser.next(null)
           this.currToken.next(null)
           localStorage.removeItem("token")
           return false
@@ -69,11 +69,11 @@ export class UserService {
   }
 
   getUser() {
-    return this.currUser.getValue()
+    // return this.currUser.getValue()
   }
 
   logout() {
-    this.currUser.next(null)
+    // this.currUser.next(null)
     this.currToken.next(null)
     localStorage.removeItem("token")
   }

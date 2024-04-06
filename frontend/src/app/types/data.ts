@@ -60,6 +60,7 @@ export class CustomForm<T> {
   subForm: Map<string, CustomForm<T>>
   width: string
   subtext: string
+  blocked: boolean
 
   constructor(
     options: {
@@ -74,6 +75,7 @@ export class CustomForm<T> {
       subForm?: Map<string, CustomForm<T>>
       width?: string
       subtext?: string
+      blocked?: boolean
     } = {}
   ) {
     this.value = options.value
@@ -86,6 +88,7 @@ export class CustomForm<T> {
     this.subForm = options.subForm || new Map<string, CustomForm<T>>()
     this.width = options.width || "49%"
     this.subtext = options.subtext || ""
+    this.blocked = options.blocked || false
   }
 }
 

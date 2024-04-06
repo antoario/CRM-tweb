@@ -2,7 +2,7 @@ import { UserService } from "../../Services/user.service"
 import { UserData } from "../../types/UserTypes"
 import { LayoutSingleComponent } from "../../Components/layout-single/layout-single.component"
 import { ROLE } from "../../types"
-import { Component } from "@angular/core"
+import { Component, OnInit } from "@angular/core"
 import { CommonModule } from "@angular/common"
 import { MatButtonModule } from "@angular/material/button"
 import { MatIconModule } from "@angular/material/icon"
@@ -28,11 +28,13 @@ import { RouterLink, RouterOutlet } from "@angular/router"
   templateUrl: "./logged-home.component.html",
   styleUrl: "./logged-home.component.scss",
 })
-export class LoggedHomeComponent {
+export class LoggedHomeComponent implements OnInit {
   user: UserData | null = null
 
-  constructor(private userService: UserService) {
-    this.userService.loadUser().subscribe((usr) => {
+  constructor(private userService: UserService) {}
+
+  ngOnInit() {
+    this.userService.currUser.subscribe((usr) => {
       if (usr) this.user = usr
     })
   }

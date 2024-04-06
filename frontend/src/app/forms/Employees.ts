@@ -39,11 +39,6 @@ export const addEmployee: CustomForm<any>[] = [
     label: "Assign to department",
     subtext: "Add your personal information. You can assign later",
   }),
-  new SelectForm({
-    order: 5,
-    key: "department_id",
-    label: "Department",
-  }),
   new JustInfo({
     order: 6,
     key: "position_info",

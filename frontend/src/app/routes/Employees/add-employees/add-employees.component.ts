@@ -13,6 +13,8 @@ import { OverlayModule } from "@angular/cdk/overlay"
 import { Dialog } from "@angular/cdk/dialog"
 import { ConfirmationDialogComponent } from "../../../Components/confirmation-dialog/confirmation-dialog.component"
 import { CompanyDataService } from "../../../Services/company-data.service"
+import { UserService } from "../../../Services/user.service"
+import { ROLE } from "../../../types"
 
 @Component({
   selector: "app-add-employees",
@@ -31,6 +33,7 @@ import { CompanyDataService } from "../../../Services/company-data.service"
   styleUrl: "./add-employees.component.scss",
 })
 export class AddEmployeesComponent implements OnInit, OnDestroy {
+  loading = false
   addEmployee: Map<string, CustomForm<any>> = new Map()
   isNew = true
   isValid = false
@@ -46,7 +49,8 @@ export class AddEmployeesComponent implements OnInit, OnDestroy {
     private active: ActivatedRoute,
     private router: Router,
     public dialog: Dialog,
-    private compData: CompanyDataService
+    private compData: CompanyDataService,
+    private userService: UserService
   ) {}
 
   ngOnDestroy() {
@@ -57,10 +61,25 @@ export class AddEmployeesComponent implements OnInit, OnDestroy {
     for (const i of addEmployee) {
       this.addEmployee.set(i.key, i)
     }
+    this.subscription.add(
+      this.userService.currUser.subscribe((val) => {
+        this.addEmployee.set(
+          "department_id",
+          new SelectForm({
+            order: 5,
+            key: "department_id",
+            label: "Department",
+            blocked: val ? val?.role >= ROLE.manager : false,
+          })
+        )
+        this.populateSelectOptions<Department>("department_id", this.compData.departments$, "name")
+        this.loading = true
+      })
+    )
     this.idEmp = this.active.snapshot.params["id"] ?? ""
+
     this.initializeForm()
     this.populateSelectOptions<Position>("position_id", this.compData.positions$, "title")
-    this.populateSelectOptions<Department>("department_id", this.compData.departments$, "name")
   }
 
   private initializeForm() {

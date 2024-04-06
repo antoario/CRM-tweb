@@ -58,7 +58,9 @@
       "address": "",
       "department_id": "1",
       "position_id": "1",
-      "id": 3
+      "id": 3,
+      "description": "Focuses on advertising and promoting the company's products or services.",
+      "name": "Marketingg"
     },
     {
       "img_url": "https://randomuser.me/api/portraits/men/28.jpg",

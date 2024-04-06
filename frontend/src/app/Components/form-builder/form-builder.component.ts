@@ -57,7 +57,7 @@ export class FormBuilderComponent implements OnInit, OnDestroy {
   toFormGroup(questions: Map<string, CustomForm<any>>) {
     const group: any = {}
 
-    for (const [key, control] of questions) {
+    for (const [, control] of questions) {
       if (control.type == "info") continue
       if (control.type === "group" && control.subForm) {
         group[control.key] = this.toFormGroup(control.subForm)
@@ -73,6 +73,7 @@ export class FormBuilderComponent implements OnInit, OnDestroy {
     const newFormControl = new FormControl<T>(control.value || "")
     if (control.type == "email") newFormControl.addValidators(Validators.email)
     if (control.required) newFormControl.addValidators(Validators.required)
+    if (control.blocked) newFormControl.disable()
     return newFormControl
   }
 
