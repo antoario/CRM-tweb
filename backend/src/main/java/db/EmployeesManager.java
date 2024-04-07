@@ -1,48 +1,14 @@
 package db;
 
+import Data.Employee;
+
 import java.sql.*;
 import java.util.ArrayList;
 
-public class EmployeesManager {
+public class EmployeesManager extends BaseManager<Employee> {
     private final static PoolingPersistenceManager persistence = PoolingPersistenceManager.getPersistenceManager();
 
-    private final int id;
-    private final String first_name;
-    private final String last_name;
-    private final Date date_of_birth;
-    private final String email;
-    private final int department_id;
-
-    public EmployeesManager(int id, String first_name, String last_name, Date date_of_birth, String email, int department_id) {
-        this.id = id;
-        this.first_name = first_name;
-        this.last_name = last_name;
-        this.date_of_birth = date_of_birth;
-        this.email = email;
-        this.department_id = department_id;
-    }
-
-        public static EmployeesManager validateCredentials(String email, String password) {
-        EmployeesManager employee = null;
-        try (Connection conn = persistence.getConnection()) {
-            try (PreparedStatement st = conn.prepareStatement("SELECT * FROM employees WHERE email = ?")) {
-                st.setString(1, email);
-                ResultSet rs = st.executeQuery();
-                if (rs.next()) {
-                    employee = new EmployeesManager(rs.getInt("employee_id"),
-                            rs.getString("first_name"),
-                            rs.getString("last_name"),
-                            rs.getDate("date_of_birth"),
-                            rs.getString("email"),
-                            rs.getInt("department_id"));
-                }
-            }
-        } catch (SQLException ex) {
-            System.err.println("SQL Exception: " + ex.getMessage());
-            ex.printStackTrace(System.err);
-        }
-        return employee;
-    }
+    public EmployeesManager() {}
 
     public static ArrayList<EmployeesManager> loadAllEmployees() {
         ArrayList<EmployeesManager> allEmployees = new ArrayList<>();

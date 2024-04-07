@@ -5,15 +5,20 @@ import java.util.ArrayList;
 import java.util.List;
 import java.util.Map;
 
-public abstract class BaseManager<T> implements GenericManager<T> {
+public abstract class BaseManager<T> {
     protected final static PoolingPersistenceManager persistence = PoolingPersistenceManager.getPersistenceManager();
 
     protected abstract T mapRowToEntity(ResultSet rs) throws SQLException;
-
     public abstract int addFromParams(Map<String, String[]> params);
 
-    public List<T> loadAll() {
-        List<T> entities = new ArrayList<>();
+    protected abstract String getLoadAllQuery();
+    protected abstract String getLoadByIdQuery();
+    protected abstract String getAddEntityQuery();
+    protected abstract String getUpdateEntityQuery();
+    protected abstract String getDeleteEntityQuery();
+
+    public ArrayList<T> loadAll() {
+        ArrayList<T> entities = new ArrayList<>();
         String query =  getLoadAllQuery();
         try (Connection conn = persistence.getConnection();
              PreparedStatement st = conn.prepareStatement(query)) {
@@ -28,8 +33,9 @@ public abstract class BaseManager<T> implements GenericManager<T> {
         return entities;
     }
 
-    protected T loadById(String query, int id) {
+    public T loadById(int id) {
         T entity = null;
+        String query = getLoadByIdQuery();
         try (Connection conn = persistence.getConnection();
              PreparedStatement st = conn.prepareStatement(query)) {
             st.setInt(1, id);
@@ -46,27 +52,19 @@ public abstract class BaseManager<T> implements GenericManager<T> {
     }
 
     protected int addEntity(String query, List<Object> values) {
-        int generatedId = -1; // O un altro valore di default che indica il fallimento
+        int generatedId = -2;
         try (Connection conn = persistence.getConnection();
              PreparedStatement st = conn.prepareStatement(query, Statement.RETURN_GENERATED_KEYS)) {
 
-            // Imposta i valori nella PreparedStatement
-            for (int i = 0; i < values.size(); i++) {
-                st.setObject(i + 1, values.get(i));
-            }
+            for (int i = 0; i < values.size(); i++) st.setObject(i + 1, values.get(i));
+
 
             int affectedRows = st.executeUpdate();
-            if (affectedRows == 0) {
-                throw new SQLException("Creating entity failed, no rows affected.");
-            }
+            if (affectedRows == 0) throw new SQLException("Creating entity failed, no rows affected.");
 
             try (ResultSet generatedKeys = st.getGeneratedKeys()) {
-                if (generatedKeys.next()) {
-                    generatedId = generatedKeys.getInt(1);
-                }
-                else {
-                    throw new SQLException("Creating entity failed, no ID obtained.");
-                }
+                if (generatedKeys.next()) generatedId = generatedKeys.getInt(1);
+                else throw new SQLException("Creating entity failed, no ID obtained.");
             }
         } catch (SQLException ex) {
             System.err.println("SQL Exception: " + ex.getMessage());
@@ -75,8 +73,31 @@ public abstract class BaseManager<T> implements GenericManager<T> {
         return generatedId;
     }
 
-    protected abstract String getLoadAllQuery();
+    protected  int updateEntity(String query, List<Object> values) {
+        try (Connection conn = persistence.getConnection();
+             PreparedStatement st = conn.prepareStatement(query, Statement.RETURN_GENERATED_KEYS)) {
 
+            for (int i = 0; i < values.size(); i++) st.setObject(i + 1, values.get(i));
+            st.executeUpdate();
+        } catch (SQLException ex) {
+            System.err.println("SQL Exception: " + ex.getMessage());
+            ex.printStackTrace(System.err);
+        }
+        return (int)values.get(0);
+    }
 
-    // Implementazioni di add, edit e loadDetails seguono un approccio simile
+    protected  boolean deleteEntity(String query, List<Object> values) {
+        boolean deleted = false;
+
+        try (Connection conn = persistence.getConnection();
+             PreparedStatement st = conn.prepareStatement(query, Statement.RETURN_GENERATED_KEYS)) {
+
+            for (int i = 0; i < values.size(); i++) st.setObject(i + 1, values.get(i));
+            st.executeUpdate();
+        } catch (SQLException ex) {
+            System.err.println("SQL Exception: " + ex.getMessage());
+            ex.printStackTrace(System.err);
+        }
+        return deleted;
+    }
 }

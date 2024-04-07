@@ -3,30 +3,55 @@ package db;
 import Data.Contract;
 
 import java.sql.*;
-import java.time.LocalDate;
-import java.util.ArrayList;
 import java.util.Arrays;
 import java.util.List;
 import java.util.Map;
 
-public class ContractsManager extends BaseManager<Contract>{
+public class ContractsManager extends BaseManager<Contract> {
     private final static PoolingPersistenceManager persistence = PoolingPersistenceManager.getPersistenceManager();
 
     public ContractsManager() {}
 
     @Override
-    public int addFromParams(Map<String, String[]> params) {
+    protected Contract mapRowToEntity(ResultSet rs) throws SQLException {
+        return new Contract(
+                rs.getInt("id"),
+                rs.getInt("employee_id"),
+                rs.getString("contract_type"),
+                rs.getDate("start_date"),
+                rs.getDate("end_date"),
+                rs.getFloat("salary"));
+    }
+    @Override
+    protected String getLoadAllQuery() {
+        return "SELECT * FROM contracts";
+    }
+    @Override
+    protected String getLoadByIdQuery() {
+        return "SELECT * FROM contracts WHERE contract_id = ? VALUES (?)";
+    }
+    @Override
+    protected String getAddEntityQuery() {
+        return "INSERT INTO contracts (employee_id, contract_type, start_date, end_date, salary) VALUES (?, ?, ?, ?, ?)";
+    }
+    @Override
+    protected String getUpdateEntityQuery() {
+        return "UPDATE contracts";
+    }
+    @Override
+    protected String getDeleteEntityQuery() {
+        return "DELETE * FROM contracts WHERE contract_id = ? VALUES (?)";
+    }
 
+    @Override
+    public int addFromParams(Map<String, String[]> params) {
         int employeeId = Integer.parseInt(params.get("employeeId")[0]);
         String contractType = params.get("contractType")[0];
-        LocalDate startDate = LocalDate.parse(params.get("startDate")[0]);
-        LocalDate endDate = LocalDate.parse(params.get("endDate")[0]);
+        Date startDate = Date.valueOf(params.get("startDate")[0]);
+        Date endDate = Date.valueOf(params.get("endDate")[0]);
         float salary = Float.parseFloat(params.get("salary")[0]);
 
         Contract contract = new Contract(10, employeeId, contractType,startDate , endDate, salary);
-
-        // Supponi di avere un metodo add che accetti un'entità e restituisca un ID
-        String query = "INSERT INTO contracts (employee_id, contract_type, start_date, end_date, salary) VALUES (?, ?, ?, ?, ?)";
         List<Object> values = Arrays.asList(
                 contract.getEmployeeId(),
                 contract.getContractType(),
@@ -35,33 +60,14 @@ public class ContractsManager extends BaseManager<Contract>{
                 contract.getSalary()
         );
 
-        return addEntity(query, values);
+        return addEntity(getAddEntityQuery(), values);
     }
 
-    public static int editContract(ContractsManager contract) {
-        // uguale alla post cambiando insert e aggiungendo i dati
+    private int updateContract() {
         return 0;
     }
 
-    @Override
-    protected Contract mapRowToEntity(ResultSet rs) throws SQLException {
-        return new Contract(
-                rs.getInt("id"),
-                rs.getInt("employee_id"),
-                rs.getString("contract_type"),
-                rs.getDate("start_date").toLocalDate(),
-                rs.getDate("end_date").toLocalDate(),
-                rs.getFloat("salary"));
-    }
-
-    @Override
-    protected String getLoadAllQuery() {
-        return "SELECT * FROM contracts";
-    }
-
-    @Override
-    public Contract loadDetails(int id) {
-        String query = "SELECT * FROM contracts WHERE id = ?";
-        return loadById(query, id);
+    private boolean deleteContract() {
+        return false;
     }
 }

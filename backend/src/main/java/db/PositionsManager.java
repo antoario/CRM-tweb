@@ -1,24 +1,14 @@
 package db;
 
+import Data.Position;
+
 import java.sql.*;
 import java.util.ArrayList;
 
-public class PositionsManager {
+public class PositionsManager extends BaseManager<Position> {
     private final static PoolingPersistenceManager persistence = PoolingPersistenceManager.getPersistenceManager();
 
-    private final int id;
-    private final String title;
-    private final String description;
-    private final String level;
-    private final int department_id;
-
-    public PositionsManager(int id, String title, String description, String level, int department_id) {
-        this.id = id;
-        this.title = title;
-        this.description = description;
-        this.level = level;
-        this.department_id = department_id;
-    }
+    public PositionsManager() {}
 
     public static ArrayList<PositionsManager> loadAllPositions() {
         ArrayList<PositionsManager> allPositions = new ArrayList<>();

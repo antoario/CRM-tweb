@@ -1,7 +1,7 @@
 package Data;
 
+import java.sql.Date;
 import java.time.LocalDate;
-import java.util.Date;
 
 public class Contract {
 
@@ -9,11 +9,11 @@ public class Contract {
     private int id;
     private int employeeId;
     private String contractType;
-    private LocalDate startDate;
-    private LocalDate endDate;
+    private Date startDate;
+    private Date endDate;
     private float salary;
 
-    public Contract(int id, int employeeId, String contractType, LocalDate startDate, LocalDate endDate, float salary) {
+    public Contract(int id, int employeeId, String contractType, Date startDate, Date endDate, float salary) {
         this.id = id;
         this.employeeId = employeeId;
         this.contractType = contractType;
@@ -46,19 +46,19 @@ public class Contract {
         this.contractType = contractType;
     }
 
-    public LocalDate getStartDate() {
+    public Date getStartDate() {
         return startDate;
     }
 
-    public void setStartDate(LocalDate startDate) {
+    public void setStartDate(Date startDate) {
         this.startDate = startDate;
     }
 
-    public LocalDate getEndDate() {
+    public Date getEndDate() {
         return endDate;
     }
 
-    public void setEndDate(LocalDate endDate) {
+    public void setEndDate(Date endDate) {
         this.endDate = endDate;
     }
 

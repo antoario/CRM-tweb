@@ -1,16 +1,22 @@
 package servlet;
 
-import db.BaseManager;
-import db.BenefitsManager;
-import db.ContractsManager;
-import db.EmployeesManager;
+import db.*;
 
 public class ManagerFactory {
     public static BaseManager<?> getManager(String path) {
         switch (path) {
             case "/contracts":
                 return new ContractsManager();
-            // Aggiungi altri casi qui
+            case "/employees":
+                return new EmployeesManager();
+            case "/benefits":
+                return new BenefitsManager();
+            case "/departments":
+                return new DepartmentsManager();
+            case "/positions":
+                return new PositionsManager();
+            case "/projects":
+                return new ProjectsManager();
             default:
                 throw new IllegalArgumentException("Invalid path");
         }

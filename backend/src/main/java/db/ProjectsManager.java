@@ -1,26 +1,14 @@
 package db;
 
+import Data.Project;
+
 import java.sql.*;
 import java.util.ArrayList;
 
-public class ProjectsManager {
+public class ProjectsManager extends BaseManager<Project> {
     private final static PoolingPersistenceManager persistence = PoolingPersistenceManager.getPersistenceManager();
 
-    private final int id;
-    private final String name;
-    private final String description;
-    private final Date start_date;
-    private final Date end_date;
-    private final int department_id;
-
-    public ProjectsManager(int id, String name, String description, Date start_date, Date end_date, int department_id) {
-        this.id = id;
-        this.name = name;
-        this.description = description;
-        this.start_date = start_date;
-        this.end_date = end_date;
-        this.department_id = department_id;
-    }
+    public ProjectsManager() {}
 
     public static ArrayList<ProjectsManager> loadAllProjects() {
         ArrayList<ProjectsManager> allProjects = new ArrayList<>();

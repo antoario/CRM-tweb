@@ -1,22 +1,14 @@
 package db;
 
+import Data.Department;
+
 import java.sql.*;
 import java.util.ArrayList;
 
-public class DepartmentsManager {
+public class DepartmentsManager extends BaseManager<Department> {
     private final static PoolingPersistenceManager persistence = PoolingPersistenceManager.getPersistenceManager();
 
-    private final int id;
-    private final String name;
-    private final String description;
-    private final String manager;
-
-    public DepartmentsManager(int id, String name, String description, String manager) {
-        this.id = id;
-        this.name = name;
-        this.description = description;
-        this.manager = manager;
-    }
+    public DepartmentsManager() {}
 
     public static ArrayList<DepartmentsManager> loadAllDepartments() {
         ArrayList<DepartmentsManager> allDepartments = new ArrayList<>();
