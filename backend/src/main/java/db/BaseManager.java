@@ -82,7 +82,7 @@ public abstract class BaseManager<T> {
 
     public int updateEntity(List<Object> values) {
         doQuery(getUpdateEntityQuery(), values);
-        return (int) values.get(0);
+        return (int) values.get(values.size()-1);
     }
 
     private void doQuery(String query, List<Object> values) {
