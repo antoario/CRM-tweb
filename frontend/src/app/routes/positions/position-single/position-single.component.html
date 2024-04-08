@@ -1,0 +1,16 @@
+<div class="my-3">
+	<a routerLink="../" class="button-btn">back</a>
+</div>
+@if (loading) {
+	<app-layout-single>
+		<div title class="flex align-middle items-center ">
+			<span class="font-bold text-xl">Edit position</span>
+			<button class="button-save ml-auto" (click)="save()" [disabled]="!this.valid">Save</button>
+		</div>
+
+		<app-generic-table (isValidChange)="checkValid($event)" [formBuilder]="controls"
+		                   [url]="'positions'"></app-generic-table>
+	</app-layout-single>
+} @else {
+	<span>Loading</span>
+}

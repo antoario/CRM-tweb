@@ -1,0 +1,17 @@
+@if (this.user) {
+	<app-layout-single>
+		<div title>
+			<span class="text-xl font-medium">Your information</span>
+		</div>
+
+		<div class="flex flex-col gap-2">
+			<span>Role: <pre class="inline-pre">{{ ROLE[user!.role] }}</pre></span>
+			<span>Name: <span class="font-bold">{{ user!.name }}</span></span>
+			<span>Surname: <span class="font-bold">{{ user!.surname }}</span></span>
+			@if (user!.role === ROLE.manager || user!.role === ROLE.employee) {
+				<span>Your Department id: <pre class="inline-pre">{{ user!.idDepartment }}</pre></span>
+			}
+			<span>Benefits ids: <pre class="inline-pre">{{ user!.benefits || "🥲" | json }}</pre></span>
+		</div>
+	</app-layout-single>
+}

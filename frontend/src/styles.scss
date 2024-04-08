@@ -1,0 +1,55 @@
+@import "tailwindcss/base";
+@import "tailwindcss/components";
+@import "tailwindcss/utilities";
+
+.mat-mdc-form-field.mat-mdc-form-field.mat-mdc-form-field.mat-mdc-form-field.mat-mdc-form-field .mdc-notched-outline__notch {
+  border-right-style: hidden;
+}
+
+@layer components {
+  .good-title {
+    @apply text-xl font-bold;
+  }
+
+  .button-btn {
+    @apply border-gray-300 border rounded py-1 px-3.5 my-3 bg-gray-100
+  }
+
+  .default-size {
+    @apply max-w-4xl m-auto mt-16
+  }
+
+  table {
+    @apply table-auto
+  }
+
+  th, td {
+    @apply px-5 py-2 text-gray-600 text-sm
+  }
+
+  tbody tr:hover {
+    @apply bg-blue-50 cursor-pointer
+  }
+
+
+  th:first-child, td:first-child {
+    @apply pl-0
+  }
+
+  thead {
+    @apply border-b-2 border-gray-200
+  }
+
+  thead th {
+    @apply text-black
+  }
+
+  .button-save {
+    @apply button-btn bg-blue-500 text-white disabled:bg-gray-300 transition-all cursor-pointer;
+  }
+
+  .inline-pre {
+    @apply inline bg-gray-200 p-1 rounded text-sm;
+  }
+
+}

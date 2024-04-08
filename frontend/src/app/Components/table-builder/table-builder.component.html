@@ -1,0 +1,12 @@
+<table [dataSource]="dataSource" cdk-table class="table-auto w-full">
+  <!-- Position Column -->
+  @for (col of columns; track col.key) {
+    <ng-container [cdkColumnDef]="col.key">
+      <th cdk-header-cell *cdkHeaderCellDef class="text-left pr-5"> {{ col.label }}</th>
+      <td cdk-cell *cdkCellDef="let element"> {{ element[col.key] }}</td>
+    </ng-container>
+  }
+
+  <tr *cdkHeaderRowDef="columnsDefs" cdk-header-row></tr>
+  <tr *cdkRowDef="let row; columns: columnsDefs;" cdk-row></tr>
+</table>

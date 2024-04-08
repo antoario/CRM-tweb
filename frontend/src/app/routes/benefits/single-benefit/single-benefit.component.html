@@ -1,0 +1,13 @@
+<div class="my-3">
+	<a routerLink="../" class="button-btn">back</a>
+</div>
+
+<app-layout-single>
+	<div title class="flex align-middle items-center ">
+		<span class="font-bold text-xl">Edit Benefit</span>
+		<button class="button-save ml-auto" (click)="save()" [disabled]="!this.valid">Save</button>
+	</div>
+
+	<app-generic-table (isValidChange)="checkValid($event)" [formBuilder]="controls"
+	                   [url]="'benefits'"></app-generic-table>
+</app-layout-single>

@@ -1,0 +1,22 @@
+<div class="max-w-5xl m-auto my-10">
+	<app-layout-single>
+		<div title class="flex items-center align-middle">
+			<div>
+				<h1 class="text-2xl font-bold">The projects</h1>
+				<span>Here you can manage your projects</span>
+			</div>
+			<div class="ml-auto">
+				<a routerLink="./add" class="button-save">Add Projects</a>
+			</div>
+		</div>
+
+		<div class="flex flex-col gap-2">
+			<div class="overflow-auto w-full">
+				<app-custom-table [data]="data" [columnsDefs]="columnsDefs"
+				                  [columns]="columns"
+				></app-custom-table>
+			</div>
+		</div>
+
+	</app-layout-single>
+</div>

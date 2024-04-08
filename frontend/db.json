@@ -1,0 +1,179 @@
+{
+  "users": [
+    {
+      "id": "fihfou32d",
+      "role": 0,
+      "nickname": "admin",
+      "password": "admin",
+      "email": "superadmin@example.com"
+    },
+    {
+      "id": "fiuhwe78f",
+      "role": 1,
+      "password": "manager",
+      "nickname": "manager",
+      "email": "manager@example.com",
+      "benefits": [
+        "2"
+      ]
+    },
+    {
+      "id": "23fubew89",
+      "role": 2,
+      "nickname": "employee",
+      "password": "emp",
+      "email": "user@example.com",
+      "benefits": [
+        "1",
+        "3"
+      ]
+    }
+  ],
+  "departments": [
+    {
+      "id": "1",
+      "name": "Human Resources",
+      "description": "Handles company recruitment, policy, and employee relations.",
+      "manager_id": "1"
+    },
+    {
+      "id": "2",
+      "name": "IT",
+      "description": "Responsible for managing technology and computer systems.",
+      "manager_id": "2"
+    },
+    {
+      "id": "3",
+      "name": "Marketing",
+      "description": "Focuses on advertising and promoting the company's products or services.",
+      "manager_id": "3"
+    }
+  ],
+  "employees": [
+    {
+      "img_url": "https://randomuser.me/api/portraits/men/38.jpg",
+      "first_name": "Antonino",
+      "last_name": "Ariobazzone",
+      "email": "",
+      "address": "",
+      "department_id": "1",
+      "position_id": "1",
+      "id": 3,
+      "description": "Focuses on advertising and promoting the company's products or services.",
+      "name": "Marketingg"
+    },
+    {
+      "img_url": "https://randomuser.me/api/portraits/men/28.jpg",
+      "first_name": "prova",
+      "last_name": "ddd",
+      "email": "",
+      "address": "",
+      "department_id": "1",
+      "position_id": "2",
+      "id": 4
+    },
+    {
+      "img_url": "https://randomuser.me/api/portraits/women/0.jpg",
+      "first_name": "Pierino",
+      "last_name": "sonoio",
+      "email": "",
+      "address": "",
+      "department_id": "",
+      "position_id": "3",
+      "id": 6
+    },
+    {
+      "img_url": "",
+      "first_name": "prova",
+      "last_name": "Pinocchio",
+      "email": "",
+      "address": "",
+      "department_id": "",
+      "position_id": "",
+      "id": 7
+    }
+  ],
+  "positions": [
+    {
+      "id": "1",
+      "title": "HR Manager",
+      "description": "Oversees HR department, policy development and compliance.",
+      "level": "Senior",
+      "department_id": "2",
+      "": "senior"
+    },
+    {
+      "id": "2",
+      "title": "Software Developer",
+      "description": "Develops and maintains company software.",
+      "level": "Junior",
+      "department_id": "2"
+    },
+    {
+      "id": "3",
+      "title": "Marketing Coordinator",
+      "description": "Assists in the development and implementation of marketing plans.",
+      "level": "Junior",
+      "department_id": "3"
+    }
+  ],
+  "projects": [
+    {
+      "id": "1",
+      "name": "Website Redesign",
+      "description": "Complete overhaul of the corporate website.",
+      "start_date": "2023-01-01",
+      "end_date": "2023-06-01",
+      "department_id": "2"
+    },
+    {
+      "id": "2",
+      "name": "Employee Onboarding System",
+      "description": "Develop a new system to improve the onboarding process.",
+      "start_date": "2023-02-15",
+      "end_date": "2023-08-15",
+      "department_id": "1"
+    },
+    {
+      "name": "Ridisegno la vita",
+      "description": "Complete overhaul of the corporate website.",
+      "department_id": "2",
+      "id": "AT9AFh2"
+    }
+  ],
+  "contracts": [
+    {
+      "id": "1",
+      "employee_id": "1",
+      "contract_type": "Indefinite Term",
+      "start_date": "2021-01-01",
+      "end_date": null,
+      "salary": 60000
+    },
+    {
+      "id": "2",
+      "employee_id": "2",
+      "contract_type": "Fixed Term",
+      "start_date": "2022-01-01",
+      "end_date": "2024-01-01",
+      "salary": 50000
+    }
+  ],
+  "benefits": [
+    {
+      "id": "1",
+      "description": "Health Insurance",
+      "value": "Company provided"
+    },
+    {
+      "id": "2",
+      "description": "Gym Membership",
+      "value": "Access to company gym"
+    },
+    {
+      "id": "3",
+      "description": "Free Lunch",
+      "value": "Lunch vouchers provide"
+    }
+  ]
+}

@@ -1,0 +1,21 @@
+<div class="max-w-5xl m-auto my-10">
+  <app-layout-single>
+    <div title class="flex items-center align-middle">
+      <div>
+        <h1 class="text-2xl font-bold">The positions</h1>
+        <span>Here you can manage your departments</span>
+      </div>
+      <div class="ml-auto">
+        <button class="button-btn bg-blue-500 text-white">Add Department</button>
+      </div>
+    </div>
+
+    <div class="flex flex-col gap-2">
+      <div class="overflow-auto w-full">
+        <app-custom-table [data]="data" [columnsDefs]="columnsDefs"
+                          [columns]="columns"></app-custom-table>
+      </div>
+    </div>
+
+  </app-layout-single>
+</div>

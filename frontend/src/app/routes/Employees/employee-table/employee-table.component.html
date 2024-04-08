@@ -1,0 +1,48 @@
+<div class="max-w-4xl m-auto my-10">
+  <app-layout-single>
+    <div title>
+      <div class="flex justify-center items-center">
+        <div>
+          <h1 class="good-title">List of Employees</h1>
+          <p class="text-gray-600">Click for more info</p>
+        </div>
+        <div class="ml-auto">
+          <button class="button-btn bg-blue-500 text-white" routerLink="./add">Add new employee</button>
+        </div>
+      </div>
+    </div>
+
+    <div>
+      <div class="gap-3 grid grid-auto-fit-sm">
+        @for (emp of employees; track emp.id) {
+          <a routerLink="./{{emp.id}}"
+             class="flex flex-col border border-gray-300 rounded p-5 justify-center gap-3 min-w-56 items-center drop-shadow-sm
+  hover:bg-blue-50 hover:cursor-pointer transition-all
+">
+
+            <div class="max-h-24 w-fit aspect-square overflow-hidden rounded-full">
+              <img
+                ngSrc="{{emp.img_url || 'https://static.vecteezy.com/system/resources/thumbnails/009/292/244/small/default-avatar-icon-of-social-media-user-vector.jpg'}}"
+                alt="" fill="fill" sizes="auto" style="position: relative; width: auto" priority="">
+            </div>
+
+            <hr class="w-8/12">
+
+            <div class="flex flex-col text-center">
+              <div>
+                <span>{{ emp.first_name || notDef }} </span>
+                <span class="font-bold">{{ emp.last_name || notDef }}</span>
+              </div>
+              <p>Department: {{ emp.department_id ? departments.get(emp.department_id)?.name : "N/A" }}</p>
+              <p>Position: {{ emp.position_id ? position.get(emp.position_id)?.title : "😵" }}</p>
+            </div>
+          </a>
+        } @empty {
+          <p>No employees found</p>
+        }
+      </div>
+    </div>
+  </app-layout-single>
+</div>
+
+
