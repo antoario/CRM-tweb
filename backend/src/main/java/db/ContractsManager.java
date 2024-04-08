@@ -1,6 +1,7 @@
 package db;
 
 import Data.Contract;
+import utility.SQLbuilder;
 
 import java.sql.Date;
 import java.sql.ResultSet;
@@ -11,6 +12,7 @@ import java.util.Map;
 
 public class ContractsManager extends BaseManager<Contract> {
     private final static PoolingPersistenceManager persistence = PoolingPersistenceManager.getPersistenceManager();
+    SQLbuilder builder = new SQLbuilder("contracts");
 
     public ContractsManager() {
     }
@@ -28,12 +30,12 @@ public class ContractsManager extends BaseManager<Contract> {
 
     @Override
     protected String getLoadAllQuery() {
-        return "SELECT * FROM contracts";
+        return this.builder.getAllData();
     }
 
     @Override
     protected String getLoadByIdQuery() {
-        return "SELECT * FROM contracts WHERE contract_id = ? VALUES (?)";
+        return this.builder.getAllData();
     }
 
     @Override
@@ -48,15 +50,13 @@ public class ContractsManager extends BaseManager<Contract> {
 
     @Override
     protected String getDeleteEntityQuery() {
-        return "DELETE * FROM contracts WHERE contract_id = ? VALUES (?)";
+        return this.builder.getSingle();
     }
 
     @Override
     public int addFromParams(Map<String, Object> params) {
-        // Assumi che i parametri siano stringhe o possano essere convertiti in stringhe.
         int employeeId = Integer.parseInt((String) params.get("employeeId"));
         String contractType = (String) params.get("contractType");
-        // Per le date, assicurati che siano passate come stringhe e poi convertile.
         Date startDate = Date.valueOf((String) params.get("startDate"));
         Date endDate = Date.valueOf((String) params.get("endDate"));
         float salary = Float.parseFloat((String) params.get("salary"));

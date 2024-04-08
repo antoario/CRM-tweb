@@ -1,6 +1,7 @@
 package db;
 
 import Data.Department;
+import utility.SQLbuilder;
 
 import java.sql.*;
 import java.util.ArrayList;
@@ -8,12 +9,20 @@ import java.util.Map;
 
 public class DepartmentsManager extends BaseManager<Department> {
 
+    SQLbuilder builder = new SQLbuilder("departments");
+
     public DepartmentsManager() {
+
     }
 
     @Override
     protected Department mapRowToEntity(ResultSet rs) throws SQLException {
-        return null;
+        return new Department(
+                rs.getInt("id"),
+                rs.getString("name"),
+                rs.getString("description"),
+                rs.getInt("id_manager")
+        );
     }
 
     @Override
@@ -28,17 +37,17 @@ public class DepartmentsManager extends BaseManager<Department> {
 
     @Override
     protected String getLoadAllQuery() {
-        return "SELECT * from departments";
+        return builder.getAllData();
     }
 
     @Override
     protected String getLoadByIdQuery() {
-        return null;
+        return builder.getSingle();
     }
 
     @Override
     protected String getAddEntityQuery() {
-        return null;
+        return "DELETE * FROM departments WHERE id = ? VALUES (?)";
     }
 
     @Override

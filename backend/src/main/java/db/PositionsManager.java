@@ -1,12 +1,15 @@
 package db;
 
 import Data.Position;
+import utility.SQLbuilder;
 
 import java.sql.*;
 import java.util.ArrayList;
 import java.util.Map;
 
 public class PositionsManager extends BaseManager<Position> {
+
+    SQLbuilder builder = new SQLbuilder("positions");
 
     @Override
     protected Position mapRowToEntity(ResultSet rs) throws SQLException {
@@ -25,12 +28,12 @@ public class PositionsManager extends BaseManager<Position> {
 
     @Override
     protected String getLoadAllQuery() {
-        return null;
+        return this.builder.getAllData();
     }
 
     @Override
     protected String getLoadByIdQuery() {
-        return null;
+        return this.builder.getSingle();
     }
 
     @Override

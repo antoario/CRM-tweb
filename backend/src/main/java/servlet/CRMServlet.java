@@ -55,22 +55,18 @@ public class CRMServlet extends HttpServlet {
         response.setContentType("application/json");
         PrintWriter out = response.getWriter();
 
-        // Leggi il corpo della richiesta come stringa
         String requestBody = request.getReader().lines().collect(Collectors.joining(System.lineSeparator()));
 
-        // Ottieni il manager appropriato basato sul percorso della servlet
         BaseManager<?> manager = ManagerFactory.getManager(request.getServletPath());
 
-        // Deserializza il corpo della richiesta in una mappa
         Gson gson = new Gson();
         Type type = new TypeToken<Map<String, Object>>() {
         }.getType();
         Map<String, Object> requestMap = gson.fromJson(requestBody, type);
 
-        // Chiama il metodo generico del manager
+
         int resultId = manager.addFromParams(requestMap);
 
-        // Rispondi al client
         out.println(gson.toJson(resultId != -1 ? resultId : -1));
     }
 
@@ -81,8 +77,6 @@ public class CRMServlet extends HttpServlet {
         BufferedReader body = request.getReader();
 
         BaseManager<?> manager = ManagerFactory.getManager(request.getServletPath());
-
-
     }
 
     protected void doDelete(HttpServletRequest request, HttpServletResponse response) throws IOException {
@@ -107,6 +101,4 @@ public class CRMServlet extends HttpServlet {
 
     }
 
-    public void destroy() {
-    }
 }

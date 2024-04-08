@@ -1,6 +1,7 @@
 package db;
 
 import Data.Benefit;
+import utility.SQLbuilder;
 
 import java.sql.ResultSet;
 import java.sql.SQLException;
@@ -8,6 +9,7 @@ import java.util.Map;
 
 public class BenefitsManager extends BaseManager<Benefit> {
     private final static PoolingPersistenceManager persistence = PoolingPersistenceManager.getPersistenceManager();
+    SQLbuilder builder = new SQLbuilder("benefits");
 
     public BenefitsManager() {
     }
@@ -29,12 +31,12 @@ public class BenefitsManager extends BaseManager<Benefit> {
 
     @Override
     protected String getLoadAllQuery() {
-        return "SELECT * FROM benefits";
+        return this.builder.getAllData();
     }
 
     @Override
     protected String getLoadByIdQuery() {
-        return "SELECT * FROM benefits WHERE benefit_id = ?";
+        return this.builder.getSingle();
     }
 
     @Override
@@ -44,7 +46,7 @@ public class BenefitsManager extends BaseManager<Benefit> {
 
     @Override
     protected String getUpdateEntityQuery() {
-        return "UPDATE benefits SET description = ?, value = ?, employee_id = ? WHERE benefit_id = ?\"";
+        return "UPDATE benefits SET description = ?, value = ?, employee_id = ? WHERE id = ?";
     }
 
     @Override
