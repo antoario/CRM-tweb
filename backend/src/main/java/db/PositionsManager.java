@@ -19,6 +19,11 @@ public class PositionsManager extends BaseManager<Position> {
     }
 
     @Override
+    public int updateFromParams(Map<String, Object> params) {
+        return 0;
+    }
+
+    @Override
     protected String getLoadAllQuery() {
         return null;
     }

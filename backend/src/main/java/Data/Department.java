@@ -4,9 +4,9 @@ public class Department {
     private int id;
     private String name;
     private String description;
-    private String manager;
+    private int manager;
 
-    public Department(int id, String name, String description, String manager) {
+    public Department(int id, String name, String description, int manager) {
         this.id = id;
         this.name = name;
         this.description = description;
@@ -37,11 +37,11 @@ public class Department {
         this.description = description;
     }
 
-    public String getManager() {
+    public int getManager() {
         return manager;
     }
 
-    public void setManager(String manager) {
+    public void setManager(int manager) {
         this.manager = manager;
     }
 }

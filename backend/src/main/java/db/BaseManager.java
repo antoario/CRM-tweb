@@ -12,6 +12,8 @@ public abstract class BaseManager<T> {
 
     public abstract int addFromParams(Map<String, Object> params);
 
+    public abstract int updateFromParams(Map<String, Object> params);
+
     protected abstract String getLoadAllQuery();
 
     protected abstract String getLoadByIdQuery();
@@ -56,10 +58,10 @@ public abstract class BaseManager<T> {
         return entity;
     }
 
-    protected int addEntity(String query, List<Object> values) {
+    protected int addEntity(List<Object> values) {
         int generatedId = -2;
         try (Connection conn = persistence.getConnection();
-             PreparedStatement st = conn.prepareStatement(query, Statement.RETURN_GENERATED_KEYS)) {
+             PreparedStatement st = conn.prepareStatement(getAddEntityQuery(), Statement.RETURN_GENERATED_KEYS)) {
 
             for (int i = 0; i < values.size(); i++) st.setObject(i + 1, values.get(i));
 

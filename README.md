@@ -96,37 +96,36 @@ For Angular, we are using Google Material Components, which are very useful for 
    - **password**: string;
    - **email**: string;
    - **role**: number; // form 0 to 2
-   - **id_departments**: string; // foreign key linking to the departments table
+   - **department_id**: string; // foreign key linking to the departments table
 
 2. Departments
    - **id**: string; // primary key
-   - **department_name**: string;
+   - **name**: string;
    - **description**: string;
-   - **id_manager**: string; // could be an employee ID
+   - **manager_id**: string; // could be an employee ID
 
 3. Positions
    - **id**: string; // primary key
-   - **position_title**: string;
+   - **title**: string;
    - **description**: string;
    - **level**: string; // e.g., Junior, Senior
-   - **id_department**: string; // foreign key
+   - **department_id**: string; // foreign key
 
 4. Projects
    - **id**: string; // primary key
-   - **position_title**: string;
+   - **name**: string;
    - **description**: string;
-   - **level**: string; // e.g., Junior, Senior
-   - **id_department**: string; // foreign key
+   - **start_date**: date;
+   - **end_date**: date;
+   - **department_id**: string; // foreign key
 
-5. Contracts
+5. Benefits
    - **id**: string; // primary key
-   - **project_name**: string;
    - **description**: string;
-   - **start_date**: Date;
-   - **end_date**: Date;
-   - **id_department**: string; // foreign key to link projects to specific departments
+   - **value**: string;
+   - **employee_id**: string; // foreign key to link projects to specific employee
 
-6. Benefits (or Additional Compensation)
+6. Contracts
    - **id**: string; // primary key
    - **employee_id**: string; // foreign key
    - **contract_type**: string; // e.g., indefinite term, fixed term, part-time

@@ -8,20 +8,20 @@ public class Employee {
     String first_name;
     String last_name;
     Date date_of_birth;
-    String password;
     String email;
+    int department_id;
+    String password;
     int role;
-    int id_departments;
 
-    public Employee(int id, String first_name, String last_name, Date date_of_birth, String password, String email, int role, int id_departments) {
+    public Employee(int id, String first_name, String last_name, Date date_of_birth, String email, int department_id,String password, int role) {
         this.id = id;
         this.first_name = first_name;
         this.last_name = last_name;
         this.date_of_birth = date_of_birth;
-        this.password = password;
         this.email = email;
+        this.department_id = department_id;
+        this.password = password;
         this.role = role;
-        this.id_departments = id_departments;
     }
 
     public int getId() {
@@ -33,11 +33,11 @@ public class Employee {
     }
 
     public int getId_departments() {
-        return id_departments;
+        return department_id;
     }
 
     public void setId_departments(int id_departments) {
-        this.id_departments = id_departments;
+        this.department_id = id_departments;
     }
 
     public String getFirst_name() {

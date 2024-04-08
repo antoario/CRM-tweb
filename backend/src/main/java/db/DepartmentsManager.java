@@ -22,6 +22,11 @@ public class DepartmentsManager extends BaseManager<Department> {
     }
 
     @Override
+    public int updateFromParams(Map<String, Object> params) {
+        return 0;
+    }
+
+    @Override
     protected String getLoadAllQuery() {
         return "SELECT * from departments";
     }

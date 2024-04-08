@@ -70,7 +70,12 @@ public class ContractsManager extends BaseManager<Contract> {
                 contract.getSalary()
         );
 
-        return addEntity(getAddEntityQuery(), values);
+        return addEntity(values);
+    }
+
+    @Override
+    public int updateFromParams(Map<String, Object> params) {
+        return 0;
     }
 
 
