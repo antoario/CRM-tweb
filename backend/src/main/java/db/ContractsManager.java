@@ -1,7 +1,7 @@
 package db;
 
 import Data.Contract;
-import com.google.gson.Gson;
+import Data.Employee;
 import utility.SQLbuilder;
 
 import java.sql.Date;
@@ -30,8 +30,52 @@ public class ContractsManager extends BaseManager<Contract> {
     }
 
     @Override
+    public int addFromParams(Map<String, Object> params) {
+        int employeeId = (int) ((Double) params.get("employee_id")).doubleValue();
+        String contractType = (String) params.get("contract_type");
+        Date startDate = (Date) params.get("start_date");
+        Date endDate = (Date) params.get("end_date");
+        float salary = (float) params.get("salary");
+
+        List<Object> values = Arrays.asList(
+                employeeId,
+                contractType,
+                startDate,
+                endDate,
+                salary
+        );
+
+        return addEntity(values);
+    }
+
+    @Override
+    public int updateFromParams(Map<String, Object> params) {
+        int id = (int) ((Double) params.get("id")).doubleValue();
+        int employeeId = (int) ((Double) params.get("employee_id")).doubleValue();
+        String contractType = (String) params.get("contract_type");
+        Date startDate = (Date) params.get("start_date");
+        Date endDate = (Date) params.get("end_date");
+        float salary = (float) params.get("salary");
+
+        List<Object> values = Arrays.asList(
+                employeeId,
+                contractType,
+                startDate,
+                endDate,
+                salary,
+                id
+        );
+
+        return updateEntity(values);
+    }
+
+    protected String getAddEntityQuery() {
+        return "INSERT INTO contracts (employee_id, contract_type, start_date, end_date, salary) VALUES (?, ?, ?, ?, ?)";
+    }
+
+    @Override
     protected String getLoadAllQuery() {
-        return this.builder.getAllData();
+        return "SELECT * FROM contracts";
     }
 
     @Override
@@ -40,43 +84,13 @@ public class ContractsManager extends BaseManager<Contract> {
     }
 
     @Override
-    protected String getAddEntityQuery() {
-        return "INSERT INTO contracts (employee_id, contract_type, start_date, end_date, salary) VALUES (?, ?, ?, ?, ?)";
-    }
-
-    @Override
     protected String getUpdateEntityQuery() {
-        return "UPDATE contracts";
+        return "UPDATE contracts SET employee_id = ?, contract_type = ?, start_date = ?, end_date = ?, salary = ? WHERE id = ?";
     }
 
     @Override
     protected String getDeleteEntityQuery() {
         return this.builder.getSingle();
-    }
-
-    @Override
-    public String addFromParams(Map<String, Object> params) {
-        int employeeId = Integer.parseInt((String) params.get("employeeId"));
-        String contractType = (String) params.get("contractType");
-        Date startDate = Date.valueOf((String) params.get("startDate"));
-        Date endDate = Date.valueOf((String) params.get("endDate"));
-        float salary = Float.parseFloat((String) params.get("salary"));
-
-        Contract contract = new Contract(10, employeeId, contractType, startDate, endDate, salary);
-        List<Object> values = Arrays.asList(
-                contract.getEmployee_id(),
-                contract.getContract_type(),
-                contract.getEmployee_id(),
-                contract.getId(),
-                contract.getSalary()
-        );
-
-        return new Gson().toJson(addEntity(values));
-    }
-
-    @Override
-    public int updateFromParams(Map<String, Object> params) {
-        return 0;
     }
 
 

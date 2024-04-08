@@ -10,7 +10,7 @@ public abstract class BaseManager<T> {
 
     protected abstract T mapRowToEntity(ResultSet rs) throws SQLException;
 
-    public abstract String addFromParams(Map<String, Object> params);
+    public abstract int addFromParams(Map<String, Object> params);
 
     public abstract int updateFromParams(Map<String, Object> params);
 
@@ -82,7 +82,7 @@ public abstract class BaseManager<T> {
 
     public int updateEntity(List<Object> values) {
         doQuery(getUpdateEntityQuery(), values);
-        return (int) values.get(values.size()-1);
+        return (int) values.get(values.size() - 1);
     }
 
     private void doQuery(String query, List<Object> values) {

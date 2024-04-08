@@ -24,7 +24,7 @@ public class EmployeesManager extends BaseManager<Employee> {
     }
 
     @Override
-    public String addFromParams(Map<String, Object> params) {
+    public int addFromParams(Map<String, Object> params) {
         String firstName = (String) params.get("first_name");
         String lastName = (String) params.get("last_name");
         Date dateOfBirth = Date.valueOf((String) params.get("date_of_birth"));
