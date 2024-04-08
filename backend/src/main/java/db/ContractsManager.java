@@ -2,7 +2,9 @@ package db;
 
 import Data.Contract;
 
-import java.sql.*;
+import java.sql.Date;
+import java.sql.ResultSet;
+import java.sql.SQLException;
 import java.util.Arrays;
 import java.util.List;
 import java.util.Map;
@@ -10,7 +12,8 @@ import java.util.Map;
 public class ContractsManager extends BaseManager<Contract> {
     private final static PoolingPersistenceManager persistence = PoolingPersistenceManager.getPersistenceManager();
 
-    public ContractsManager() {}
+    public ContractsManager() {
+    }
 
     @Override
     protected Contract mapRowToEntity(ResultSet rs) throws SQLException {
@@ -22,36 +25,43 @@ public class ContractsManager extends BaseManager<Contract> {
                 rs.getDate("end_date"),
                 rs.getFloat("salary"));
     }
+
     @Override
     protected String getLoadAllQuery() {
         return "SELECT * FROM contracts";
     }
+
     @Override
     protected String getLoadByIdQuery() {
         return "SELECT * FROM contracts WHERE contract_id = ? VALUES (?)";
     }
+
     @Override
     protected String getAddEntityQuery() {
         return "INSERT INTO contracts (employee_id, contract_type, start_date, end_date, salary) VALUES (?, ?, ?, ?, ?)";
     }
+
     @Override
     protected String getUpdateEntityQuery() {
         return "UPDATE contracts";
     }
+
     @Override
     protected String getDeleteEntityQuery() {
         return "DELETE * FROM contracts WHERE contract_id = ? VALUES (?)";
     }
 
     @Override
-    public int addFromParams(Map<String, String[]> params) {
-        int employeeId = Integer.parseInt(params.get("employeeId")[0]);
-        String contractType = params.get("contractType")[0];
-        Date startDate = Date.valueOf(params.get("startDate")[0]);
-        Date endDate = Date.valueOf(params.get("endDate")[0]);
-        float salary = Float.parseFloat(params.get("salary")[0]);
+    public int addFromParams(Map<String, Object> params) {
+        // Assumi che i parametri siano stringhe o possano essere convertiti in stringhe.
+        int employeeId = Integer.parseInt((String) params.get("employeeId"));
+        String contractType = (String) params.get("contractType");
+        // Per le date, assicurati che siano passate come stringhe e poi convertile.
+        Date startDate = Date.valueOf((String) params.get("startDate"));
+        Date endDate = Date.valueOf((String) params.get("endDate"));
+        float salary = Float.parseFloat((String) params.get("salary"));
 
-        Contract contract = new Contract(10, employeeId, contractType,startDate , endDate, salary);
+        Contract contract = new Contract(10, employeeId, contractType, startDate, endDate, salary);
         List<Object> values = Arrays.asList(
                 contract.getEmployeeId(),
                 contract.getContractType(),
@@ -62,6 +72,7 @@ public class ContractsManager extends BaseManager<Contract> {
 
         return addEntity(getAddEntityQuery(), values);
     }
+
 
     private int updateContract() {
         return 0;

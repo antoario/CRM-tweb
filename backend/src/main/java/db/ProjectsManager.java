@@ -4,95 +4,42 @@ import Data.Project;
 
 import java.sql.*;
 import java.util.ArrayList;
+import java.util.Map;
 
 public class ProjectsManager extends BaseManager<Project> {
-    private final static PoolingPersistenceManager persistence = PoolingPersistenceManager.getPersistenceManager();
 
-    public ProjectsManager() {}
-
-    public static ArrayList<ProjectsManager> loadAllProjects() {
-        ArrayList<ProjectsManager> allProjects = new ArrayList<>();
-        try (Connection conn = persistence.getConnection()) {
-            try (PreparedStatement st = conn.prepareStatement("SELECT * FROM projects")) {
-                ResultSet rs = st.executeQuery();
-                while(rs.next()) {
-                    ProjectsManager temp = new ProjectsManager(rs.getInt("project_id"),
-                            rs.getString("project_name"),
-                            rs.getString("description"),
-                            rs.getDate("start_date"),
-                            rs.getDate("end_date"),
-                            rs.getInt("department_id"));
-                    allProjects.add(temp);
-                }
-            }
-        } catch (SQLException ex) {
-            System.err.println("SQL Exception: " + ex.getMessage());
-            ex.printStackTrace(System.err);
-        }
-        return allProjects;
+    @Override
+    protected Project mapRowToEntity(ResultSet rs) throws SQLException {
+        return null;
     }
 
-    public static ProjectsManager loadProjectDetails(int id) {
-        ProjectsManager project = null;
-        try (Connection conn = persistence.getConnection()) {
-            try (PreparedStatement st = conn.prepareStatement("SELECT * FROM projects WHERE project_id = ?")) {
-                st.setInt(1, id);
-                ResultSet rs = st.executeQuery();
-                if (rs.next()) {
-                    project = new ProjectsManager(rs.getInt("project_id"),
-                            rs.getString("project_name"),
-                            rs.getString("description"),
-                            rs.getDate("start_date"),
-                            rs.getDate("end_date"),
-                            rs.getInt("department_id"));
-                }
-            }
-        } catch (SQLException ex) {
-            System.err.println("SQL Exception: " + ex.getMessage());
-            ex.printStackTrace(System.err);
-        }
-        return project;
+    @Override
+    public int addFromParams(Map<String, Object> params) {
+        return 0;
     }
 
-    public static int addProject(ProjectsManager project) {
-        int generatedId = -2;
-        try (Connection conn = persistence.getConnection()) {
-            try (PreparedStatement st = conn.prepareStatement("INSERT INTO projects (project_name, description, start_date, end_date, department_id)" +
-                    " VALUES (?, ?, ?, ?, ?)", Statement.RETURN_GENERATED_KEYS)) {
-                st.setString(1, project.name);
-                st.setString(2, project.description);
-                st.setDate(3, project.start_date);
-                st.setDate(4, project.end_date);
-                st.setInt(5, project.department_id);
-                st.executeUpdate();
-
-                ResultSet rs = st.getGeneratedKeys();
-                if (rs.next()) {
-                    generatedId = rs.getInt(1);
-                }
-            }
-        } catch (SQLException ex) {
-            System.err.println("SQL Exception: " + ex.getMessage());
-            ex.printStackTrace(System.err);
-        }
-        return generatedId;
+    @Override
+    protected String getLoadAllQuery() {
+        return null;
     }
 
-    public static int editProject(ProjectsManager project) {
-        try (Connection conn = persistence.getConnection()) {
-            try (PreparedStatement st = conn.prepareStatement("UPDATE projects SET project_name = ?, description = ?, start_date = ?, end_date = ?, department_id = ? WHERE project_id = ?")) {
-                st.setString(1, project.name);
-                st.setString(2, project.description);
-                st.setDate(3, project.start_date);
-                st.setDate(4, project.end_date);
-                st.setInt(5, project.department_id);
-                st.setInt(6, project.id);
-                st.executeUpdate();
-            }
-        } catch (SQLException ex) {
-            System.err.println("SQL Exception: " + ex.getMessage());
-            ex.printStackTrace(System.err);
-        }
-        return project.id;
+    @Override
+    protected String getLoadByIdQuery() {
+        return null;
+    }
+
+    @Override
+    protected String getAddEntityQuery() {
+        return null;
+    }
+
+    @Override
+    protected String getUpdateEntityQuery() {
+        return null;
+    }
+
+    @Override
+    protected String getDeleteEntityQuery() {
+        return null;
     }
 }

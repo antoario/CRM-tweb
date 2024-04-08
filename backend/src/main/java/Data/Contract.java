@@ -1,10 +1,8 @@
 package Data;
 
 import java.sql.Date;
-import java.time.LocalDate;
 
 public class Contract {
-
 
     private int id;
     private int employeeId;

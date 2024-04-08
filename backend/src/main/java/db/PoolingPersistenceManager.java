@@ -12,14 +12,6 @@ import java.util.Enumeration;
 public class PoolingPersistenceManager {
 
     private static PoolingPersistenceManager instance;
-
-    public static PoolingPersistenceManager getPersistenceManager() {
-        if (instance == null) {
-            instance = new PoolingPersistenceManager();
-        }
-        return instance;
-    }
-
     private HikariDataSource dataSource;
 
     private PoolingPersistenceManager() {
@@ -39,6 +31,13 @@ public class PoolingPersistenceManager {
 
     }
 
+    public static PoolingPersistenceManager getPersistenceManager() {
+        if (instance == null) {
+            instance = new PoolingPersistenceManager();
+        }
+        return instance;
+    }
+
     public Connection getConnection() throws SQLException {
         return dataSource.getConnection();
     }
@@ -50,6 +49,8 @@ public class PoolingPersistenceManager {
             while (en.hasMoreElements()) {
                 DriverManager.deregisterDriver(en.nextElement());
             }
-        } catch (SQLException ex) { ex.printStackTrace(); }
+        } catch (SQLException ex) {
+            ex.printStackTrace();
+        }
     }
 }

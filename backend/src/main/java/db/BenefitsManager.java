@@ -2,14 +2,15 @@ package db;
 
 import Data.Benefit;
 
-import java.sql.*;
-import java.util.ArrayList;
+import java.sql.ResultSet;
+import java.sql.SQLException;
 import java.util.Map;
 
 public class BenefitsManager extends BaseManager<Benefit> {
     private final static PoolingPersistenceManager persistence = PoolingPersistenceManager.getPersistenceManager();
 
-    public BenefitsManager() {}
+    public BenefitsManager() {
+    }
 
     @Override
     protected Benefit mapRowToEntity(ResultSet rs) throws SQLException {
