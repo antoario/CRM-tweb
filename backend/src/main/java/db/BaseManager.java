@@ -109,7 +109,7 @@ public abstract class BaseManager<T> {
                 }
             }
         } catch (SQLException ex) {
-            System.err.println("SQL Exception:: " + ex.getMessage());
+            System.err.println("SQL Exception: " + ex.getMessage());
             ex.printStackTrace(System.err);
         }
         return false;
