@@ -1,132 +1,98 @@
 package db;
 
+import Data.Employee;
+
 import java.sql.*;
-import java.util.ArrayList;
+import java.util.Arrays;
+import java.util.List;
+import java.util.Map;
 
-public class EmployeesManager {
-    private final static PoolingPersistenceManager persistence = PoolingPersistenceManager.getPersistenceManager();
+public class EmployeesManager extends BaseManager<Employee> {
+    public EmployeesManager() {}
 
-    private final int id;
-    private final String first_name;
-    private final String last_name;
-    private final Date date_of_birth;
-    private final String email;
-    private final int department_id;
-
-    public EmployeesManager(int id, String first_name, String last_name, Date date_of_birth, String email, int department_id) {
-        this.id = id;
-        this.first_name = first_name;
-        this.last_name = last_name;
-        this.date_of_birth = date_of_birth;
-        this.email = email;
-        this.department_id = department_id;
+    @Override
+    protected Employee mapRowToEntity(ResultSet rs) throws SQLException {
+        return new Employee(
+                rs.getInt("id"),
+                rs.getString("first_name"),
+                rs.getString("last_name"),
+                rs.getDate("date_of_birth"),
+                rs.getString("email"),
+                rs.getInt("department_id"),
+                rs.getString("password"),
+                rs.getInt("role"));
     }
 
-        public static EmployeesManager validateCredentials(String email, String password) {
-        EmployeesManager employee = null;
-        try (Connection conn = persistence.getConnection()) {
-            try (PreparedStatement st = conn.prepareStatement("SELECT * FROM employees WHERE email = ?")) {
-                st.setString(1, email);
-                ResultSet rs = st.executeQuery();
-                if (rs.next()) {
-                    employee = new EmployeesManager(rs.getInt("employee_id"),
-                            rs.getString("first_name"),
-                            rs.getString("last_name"),
-                            rs.getDate("date_of_birth"),
-                            rs.getString("email"),
-                            rs.getInt("department_id"));
-                }
-            }
-        } catch (SQLException ex) {
-            System.err.println("SQL Exception: " + ex.getMessage());
-            ex.printStackTrace(System.err);
-        }
-        return employee;
+    @Override
+    public int addFromParams(Map<String, Object> params) {
+        String firstName = (String) params.get("first_name");
+        String lastName = (String) params.get("last_name");
+        Date dateOfBirth = Date.valueOf((String) params.get("date_of_birth"));
+        String password = (String) params.get("password");
+        String email = (String) params.get("email");
+        int role = (int) ((Double) params.get("role")).doubleValue();
+        int idDepartment = (int) ((Double) params.get("department_id")).doubleValue();
+
+        List<Object> values = Arrays.asList(
+                firstName,
+                lastName,
+                dateOfBirth,
+                email,
+                idDepartment,
+                password,
+                role
+        );
+
+        return addEntity(values);
     }
 
-    public static ArrayList<EmployeesManager> loadAllEmployees() {
-        ArrayList<EmployeesManager> allEmployees = new ArrayList<>();
-        try (Connection conn = persistence.getConnection()) {
-            try (PreparedStatement st = conn.prepareStatement("SELECT * FROM employees")) {
-                ResultSet rs = st.executeQuery();
-                while(rs.next()) {
-                    EmployeesManager temp = new EmployeesManager(rs.getInt("employee_id"),
-                            rs.getString("first_name"),
-                            rs.getString("last_name"),
-                            rs.getDate("date_of_birth"),
-                            rs.getString("email"),
-                            rs.getInt("department_id"));
-                    allEmployees.add(temp);
-                }
-            }
-        } catch (SQLException ex) {
-            System.err.println("SQL Exception: " + ex.getMessage());
-            ex.printStackTrace(System.err);
-        }
-        return allEmployees;
+    @Override
+    public int updateFromParams(Map<String, Object> params) {
+        int id = (int) ((Double) params.get("id")).doubleValue();
+        String firstName = (String) params.get("first_name");
+        String lastName = (String) params.get("last_name");
+        Date dateOfBirth = Date.valueOf((String) params.get("date_of_birth"));
+        String password = (String) params.get("password");
+        String email = (String) params.get("email");
+        int role = (int) ((Double) params.get("role")).doubleValue();
+        int idDepartment = (int) ((Double) params.get("department_id")).doubleValue();
+
+
+        List<Object> values = Arrays.asList(
+                firstName,
+                lastName,
+                dateOfBirth,
+                email,
+                idDepartment,
+                password,
+                role,
+                id
+        );
+
+        return updateEntity(values);
     }
 
-    public static EmployeesManager loadEmployeeDetails(int id) {
-        EmployeesManager employee = null;
-        try (Connection conn = persistence.getConnection()) {
-            try (PreparedStatement st = conn.prepareStatement("SELECT * FROM employees WHERE employee_id = ?")) {
-                st.setInt(1, id);
-                ResultSet rs = st.executeQuery();
-                if (rs.next()) {
-                    employee = new EmployeesManager(rs.getInt("employee_id"),
-                            rs.getString("first_name"),
-                            rs.getString("last_name"),
-                            rs.getDate("date_of_birth"),
-                            rs.getString("email"),
-                            rs.getInt("department_id"));
-                }
-            }
-        } catch (SQLException ex) {
-            System.err.println("SQL Exception: " + ex.getMessage());
-            ex.printStackTrace(System.err);
-        }
-        return employee;
+    protected String getAddEntityQuery() {
+        return "INSERT INTO employees (first_name, last_name, date_of_birth, email, department_id, password, role) VALUES (?, ?, ?, ?, ?, ?, ?)";
     }
 
-    public static int addEmployee(EmployeesManager employee) {
-        int generatedId = -2;
-        try (Connection conn = persistence.getConnection()) {
-            try (PreparedStatement st = conn.prepareStatement("INSERT INTO employees (first_name, last_name, date_of_birth, email, department_id)" +
-                    " VALUES (?, ?, ?, ?, ?)", Statement.RETURN_GENERATED_KEYS)) {
-                st.setString(1, employee.first_name);
-                st.setString(2, employee.last_name);
-                st.setDate(3, employee.date_of_birth);
-                st.setString(4, employee.email);
-                st.setInt(5, employee.department_id);
-                st.executeUpdate();
-
-                ResultSet rs = st.getGeneratedKeys();
-                if (rs.next()) {
-                    generatedId = rs.getInt(1);
-                }
-            }
-        } catch (SQLException ex) {
-            System.err.println("SQL Exception: " + ex.getMessage());
-            ex.printStackTrace(System.err);
-        }
-        return generatedId;
+    @Override
+    protected String getLoadAllQuery() {
+        return "SELECT * FROM employees";
     }
 
-    public static int editEmployee(EmployeesManager employee) {
-        try (Connection conn = persistence.getConnection()) {
-            try (PreparedStatement st = conn.prepareStatement("UPDATE employees SET first_name = ?, last_name = ?, date_of_birth = ?, email = ?, department_id = ? WHERE employee_id = ?")) {
-                st.setString(1, employee.first_name);
-                st.setString(2, employee.last_name);
-                st.setDate(3, employee.date_of_birth);
-                st.setString(4, employee.email);
-                st.setInt(5, employee.department_id);
-                st.setInt(6, employee.id);
-                st.executeUpdate();
-            }
-        } catch (SQLException ex) {
-            System.err.println("SQL Exception: " + ex.getMessage());
-            ex.printStackTrace(System.err);
-        }
-        return employee.id;
+    @Override
+    protected String getLoadByIdQuery() {
+        return "SELECT * FROM employees WHERE id = ?";
+    }
+
+    @Override
+    protected String getUpdateEntityQuery() {
+        return "UPDATE employees SET first_name = ?, last_name = ?, date_of_birth = ?, email = ?, department_id = ?, password = ?, role = ? WHERE id = ?";
+    }
+
+    @Override
+    protected String getDeleteEntityQuery() {
+        return "DELETE * FROM employees WHERE id = ?";
     }
 }

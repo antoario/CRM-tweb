@@ -1,98 +1,83 @@
 package db;
 
-import java.sql.*;
-import java.util.ArrayList;
+import Data.Benefit;
+import utility.SQLbuilder;
 
-public class BenefitsManager {
+import java.sql.ResultSet;
+import java.sql.SQLException;
+import java.util.Arrays;
+import java.util.List;
+import java.util.Map;
+
+public class BenefitsManager extends BaseManager<Benefit> {
     private final static PoolingPersistenceManager persistence = PoolingPersistenceManager.getPersistenceManager();
+    SQLbuilder builder = new SQLbuilder("benefits");
 
-    private final int id;
-    private final String description;
-    private final String value;
-    private final int employee_id;
-
-    public BenefitsManager(int id, String description, String value, int employee_id) {
-        this.id = id;
-        this.description = description;
-        this.value = value;
-        this.employee_id = employee_id;
+    public BenefitsManager() {
     }
 
-    public static ArrayList<BenefitsManager> loadAllBenefits() {
-        ArrayList<BenefitsManager> allBenefits = new ArrayList<>();
-        try (Connection conn = persistence.getConnection()) {
-            try (PreparedStatement st = conn.prepareStatement("SELECT * FROM benefits")) {
-                ResultSet rs = st.executeQuery();
-                while(rs.next()) {
-                    BenefitsManager temp = new BenefitsManager(rs.getInt("benefit_id"),
-                            rs.getString("description"),
-                            rs.getString("value"),
-                            rs.getInt("employee_id"));
-                    allBenefits.add(temp);
-                }
-            }
-        } catch (SQLException ex) {
-            System.err.println("SQL Exception: " + ex.getMessage());
-            ex.printStackTrace(System.err);
-        }
-        return allBenefits;
+    @Override
+    protected Benefit mapRowToEntity(ResultSet rs) throws SQLException {
+        return new Benefit(
+                rs.getInt("id"),
+                rs.getString("description"),
+                rs.getString("value"),
+                rs.getInt("employee_id"));
     }
 
-    public static BenefitsManager loadBenefitDetails(int id) {
-        BenefitsManager benefit = null;
-        try (Connection conn = persistence.getConnection()) {
-            try (PreparedStatement st = conn.prepareStatement("SELECT * FROM benefits WHERE benefit_id = ?")) {
-                st.setInt(1, id);
-                ResultSet rs = st.executeQuery();
-                if (rs.next()) {
-                    benefit = new BenefitsManager(rs.getInt("benefit_id"),
-                            rs.getString("description"),
-                            rs.getString("value"),
-                            rs.getInt("employee_id"));
-                }
-            }
-        } catch (SQLException ex) {
-            System.err.println("SQL Exception: " + ex.getMessage());
-            ex.printStackTrace(System.err);
-        }
-        return benefit;
+    @Override
+    public int addFromParams(Map<String, Object> params) {
+        String description = (String) params.get("description");
+        String value = (String) params.get("value");
+        int employeeId = (int) ((Double) params.get("employee_id")).doubleValue();
+
+        List<Object> values = Arrays.asList(
+                description,
+                value,
+                employeeId
+        );
+
+        return addEntity(values);
     }
 
-    public static int addBenefit(BenefitsManager benefit) {
-        int generatedId = -2;
-        try (Connection conn = persistence.getConnection()) {
-            try (PreparedStatement st = conn.prepareStatement("INSERT INTO benefits (description, value, employee_id)" +
-                    " VALUES (?, ?, ?)", Statement.RETURN_GENERATED_KEYS)) {
-                st.setString(1, benefit.description);
-                st.setString(2, benefit.value);
-                st.setInt(3, benefit.employee_id);
-                st.executeUpdate();
+    @Override
+    public int updateFromParams(Map<String, Object> params) {
+        int id = (int) ((Double) params.get("id")).doubleValue();
+        String description = (String) params.get("description");
+        String value = (String) params.get("value");
+        int employeeId = (int) ((Double) params.get("employee_id")).doubleValue();
 
-                ResultSet rs = st.getGeneratedKeys();
-                if (rs.next()) {
-                    generatedId = rs.getInt(1);
-                }
-            }
-        } catch (SQLException ex) {
-            System.err.println("SQL Exception: " + ex.getMessage());
-            ex.printStackTrace(System.err);
-        }
-        return generatedId;
+        List<Object> values = Arrays.asList(
+                description,
+                value,
+                employeeId,
+                id
+        );
+
+        return updateEntity(values);
     }
 
-    public static int editBenefit(BenefitsManager benefit) {
-        try (Connection conn = persistence.getConnection()) {
-            try (PreparedStatement st = conn.prepareStatement("UPDATE benefits SET description = ?, value = ?, employee_id = ? WHERE benefit_id = ?")) {
-                st.setString(1, benefit.description);
-                st.setString(2, benefit.value);
-                st.setInt(3, benefit.employee_id);
-                st.setInt(4, benefit.id);
-                st.executeUpdate();
-            }
-        } catch (SQLException ex) {
-            System.err.println("SQL Exception: " + ex.getMessage());
-            ex.printStackTrace(System.err);
-        }
-        return benefit.id;
+    protected String getAddEntityQuery() {
+        return "INSERT INTO benefits (description, value, employee_id) VALUES (?, ?, ?)";
+    }
+
+    @Override
+    protected String getLoadAllQuery() {
+        return this.builder.getAllData();
+    }
+
+    @Override
+    protected String getLoadByIdQuery() {
+        return this.builder.getSingle();
+    }
+
+    @Override
+    protected String getUpdateEntityQuery() {
+        return "UPDATE benefits SET description = ?, value = ?, employee_id = ? WHERE id = ?";
+    }
+
+    @Override
+    protected String getDeleteEntityQuery() {
+        return "DELETE * FROM benefits WHERE id = ?";
     }
 }

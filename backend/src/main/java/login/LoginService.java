@@ -23,7 +23,7 @@ public class LoginService {
     public static boolean doLogOut(HttpSession session, String email) {
         if (session.getAttribute(SESSION_USER_KEY) == null) return true;
 
-        if (((String) session.getAttribute(SESSION_USER_KEY)).equals(email)) {
+        if (session.getAttribute(SESSION_USER_KEY).equals(email)) {
             session.invalidate();
             return true;
         }

@@ -1,98 +1,84 @@
 package db;
 
+import Data.Department;
+import utility.SQLbuilder;
+
 import java.sql.*;
 import java.util.ArrayList;
+import java.util.Arrays;
+import java.util.List;
+import java.util.Map;
 
-public class DepartmentsManager {
-    private final static PoolingPersistenceManager persistence = PoolingPersistenceManager.getPersistenceManager();
+public class DepartmentsManager extends BaseManager<Department> {
 
-    private final int id;
-    private final String name;
-    private final String description;
-    private final String manager;
+    SQLbuilder builder = new SQLbuilder("departments");
 
-    public DepartmentsManager(int id, String name, String description, String manager) {
-        this.id = id;
-        this.name = name;
-        this.description = description;
-        this.manager = manager;
+    public DepartmentsManager() {
+
     }
 
-    public static ArrayList<DepartmentsManager> loadAllDepartments() {
-        ArrayList<DepartmentsManager> allDepartments = new ArrayList<>();
-        try (Connection conn = persistence.getConnection()) {
-            try (PreparedStatement st = conn.prepareStatement("SELECT * FROM departments")) {
-                ResultSet rs = st.executeQuery();
-                while(rs.next()) {
-                    DepartmentsManager temp = new DepartmentsManager(rs.getInt("department_id"),
-                            rs.getString("department_name"),
-                            rs.getString("description"),
-                            rs.getString("manager"));
-                    allDepartments.add(temp);
-                }
-            }
-        } catch (SQLException ex) {
-            System.err.println("SQL Exception: " + ex.getMessage());
-            ex.printStackTrace(System.err);
-        }
-        return allDepartments;
+    @Override
+    protected Department mapRowToEntity(ResultSet rs) throws SQLException {
+        return new Department(
+                rs.getInt("id"),
+                rs.getString("name"),
+                rs.getString("description"),
+                rs.getInt("manager"));
     }
 
-    public static DepartmentsManager loadDepartmentDetails(int id) {
-        DepartmentsManager department = null;
-        try (Connection conn = persistence.getConnection()) {
-            try (PreparedStatement st = conn.prepareStatement("SELECT * FROM departments WHERE department_id = ?")) {
-                st.setInt(1, id);
-                ResultSet rs = st.executeQuery();
-                if (rs.next()) {
-                    department = new DepartmentsManager(rs.getInt("department_id"),
-                            rs.getString("department_name"),
-                            rs.getString("description"),
-                            rs.getString("manager"));
-                }
-            }
-        } catch (SQLException ex) {
-            System.err.println("SQL Exception: " + ex.getMessage());
-            ex.printStackTrace(System.err);
-        }
-        return department;
+    @Override
+    public int addFromParams(Map<String, Object> params) {
+        String name = (String) params.get("name");
+        String description = (String) params.get("description");
+        int manager = (int) ((Double) params.get("manager")).doubleValue();
+
+        List<Object> values = Arrays.asList(
+                name,
+                description,
+                manager
+        );
+
+        return addEntity(values);
     }
 
-    public static int addDepartment(DepartmentsManager department) {
-        int generatedId = -2;
-        try (Connection conn = persistence.getConnection()) {
-            try (PreparedStatement st = conn.prepareStatement("INSERT INTO departments (department_name, description, manager)" +
-                    " VALUES (?, ?, ?)", Statement.RETURN_GENERATED_KEYS)) {
-                st.setString(1, department.name);
-                st.setString(2, department.description);
-                st.setString(3, department.manager);
-                st.executeUpdate();
+    @Override
+    public int updateFromParams(Map<String, Object> params) {
+        int id = (int) ((Double) params.get("id")).doubleValue();
+        String name = (String) params.get("name");
+        String description = (String) params.get("description");
+        int manager = (int) ((Double) params.get("manager")).doubleValue();
 
-                ResultSet rs = st.getGeneratedKeys();
-                if (rs.next()) {
-                    generatedId = rs.getInt(1);
-                }
-            }
-        } catch (SQLException ex) {
-            System.err.println("SQL Exception: " + ex.getMessage());
-            ex.printStackTrace(System.err);
-        }
-        return generatedId;
+        List<Object> values = Arrays.asList(
+                name,
+                description,
+                manager,
+                id
+        );
+
+        return updateEntity(values);
     }
 
-    public static int editDepartment(DepartmentsManager department) {
-        try (Connection conn = persistence.getConnection()) {
-            try (PreparedStatement st = conn.prepareStatement("UPDATE departments SET department_name = ?, description = ?, manager = ? WHERE department_id = ?")) {
-                st.setString(1, department.name);
-                st.setString(2, department.description);
-                st.setString(3, department.manager);
-                st.setInt(4, department.id);
-                st.executeUpdate();
-            }
-        } catch (SQLException ex) {
-            System.err.println("SQL Exception: " + ex.getMessage());
-            ex.printStackTrace(System.err);
-        }
-        return department.id;
+    protected String getAddEntityQuery() {
+        return "INSERT INTO departments (name, description, manager) VALUES (?, ?, ?)";
+    }
+
+    @Override
+    protected String getLoadAllQuery() {
+        return builder.getAllData();
+    }
+
+    @Override
+    protected String getLoadByIdQuery() {
+        return builder.getSingle();
+    }
+
+    @Override
+    protected String getUpdateEntityQuery() {
+        return "UPDATE departments SET name = ?, description = ?, manager = ? WHERE id = ?";
+    }
+
+    @Override
+    protected String getDeleteEntityQuery() {
+        return "DELETE * FROM departments WHERE id = ?";
     }
 }
