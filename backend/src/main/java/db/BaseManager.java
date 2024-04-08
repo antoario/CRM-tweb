@@ -82,7 +82,7 @@ public abstract class BaseManager<T> {
 
     public int updateEntity(List<Object> values) {
         doQuery(getUpdateEntityQuery(), values);
-        return (int) values.get(values.size()-1);
+        return (int) values.get(values.size() - 1);
     }
 
     private void doQuery(String query, List<Object> values) {
@@ -109,7 +109,7 @@ public abstract class BaseManager<T> {
                 }
             }
         } catch (SQLException ex) {
-            System.err.println("SQL Exception: " + ex.getMessage());
+            System.err.println("SQL Exception:: " + ex.getMessage());
             ex.printStackTrace(System.err);
         }
         return false;
