@@ -18,7 +18,7 @@ public class BenefitsManager extends BaseManager<Benefit> {
     }
 
     @Override
-    public int addFromParams(Map<String, String[]> params) {
+    public int addFromParams(Map<String, Object> params) {
         return 0;
     }
 

@@ -76,9 +76,9 @@ public class CRMServlet extends HttpServlet {
 
 
     protected void doPut(HttpServletRequest request, HttpServletResponse response) throws IOException {
-        // SIMILE ALLA POST PER I PARAMETRI
         response.setContentType("application/json");
         PrintWriter out = response.getWriter();
+        BufferedReader body = request.getReader();
 
         BaseManager<?> manager = ManagerFactory.getManager(request.getServletPath());
 
