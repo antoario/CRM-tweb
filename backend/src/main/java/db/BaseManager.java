@@ -1,7 +1,11 @@
 package db;
 
+import com.google.gson.Gson;
+import utility.Response;
+
 import java.sql.*;
 import java.util.ArrayList;
+import java.util.Arrays;
 import java.util.List;
 import java.util.Map;
 
@@ -9,10 +13,6 @@ public abstract class BaseManager<T> {
     protected final static PoolingPersistenceManager persistence = PoolingPersistenceManager.getPersistenceManager();
 
     protected abstract T mapRowToEntity(ResultSet rs) throws SQLException;
-
-    public abstract int addFromParams(Map<String, Object> params);
-
-    public abstract int updateFromParams(Map<String, Object> params);
 
     protected abstract String getLoadAllQuery();
 
@@ -24,7 +24,9 @@ public abstract class BaseManager<T> {
 
     protected abstract String getDeleteEntityQuery();
 
-    public ArrayList<T> loadAll() {
+    protected abstract List<Object> getUpdateFromParams(Map<String, Object> params);
+
+    public String loadAll() {
         ArrayList<T> entities = new ArrayList<>();
         String query = getLoadAllQuery();
         try (Connection conn = persistence.getConnection();
@@ -37,7 +39,19 @@ public abstract class BaseManager<T> {
             System.err.println("SQL Exception: " + ex.getMessage());
             ex.printStackTrace(System.err);
         }
-        return entities;
+        return new Gson().toJson(entities);
+    }
+
+    public String addFromParams(Map<String, Object> params) {
+        Response res = addEntity(getUpdateFromParams(params));
+        return new Gson().toJson(res);
+    }
+
+    public String updateFromParams(Map<String, Object> params) {
+        record Data(int id, String message) {
+        }
+        Response res = new Response(0, new Data(updateEntity(getUpdateFromParams(params)), "Update successful"));
+        return new Gson().toJson(res);
     }
 
     public T loadById(int id) {
@@ -58,13 +72,15 @@ public abstract class BaseManager<T> {
         return entity;
     }
 
-    protected int addEntity(List<Object> values) {
+    protected Response addEntity(List<Object> values) {
         int generatedId = -2;
         try (Connection conn = persistence.getConnection();
              PreparedStatement st = conn.prepareStatement(getAddEntityQuery(), Statement.RETURN_GENERATED_KEYS)) {
 
-            for (int i = 0; i < values.size(); i++) st.setObject(i + 1, values.get(i));
-
+            for (int i = 0; i < values.size() - 1; i++) {
+                if (values.get(i) == "id") continue;
+                st.setObject(i + 1, values.get(i));
+            }
 
             int affectedRows = st.executeUpdate();
             if (affectedRows == 0) throw new SQLException("Creating entity failed, no rows affected.");
@@ -76,8 +92,9 @@ public abstract class BaseManager<T> {
         } catch (SQLException ex) {
             System.err.println("SQL Exception: " + ex.getMessage());
             ex.printStackTrace(System.err);
+            return new Response(-1, new ResponseDataFail(ex.getMessage()));
         }
-        return generatedId;
+        return new Response(0, new ResponseData(generatedId, "Success"));
     }
 
     public int updateEntity(List<Object> values) {
@@ -113,5 +130,11 @@ public abstract class BaseManager<T> {
             ex.printStackTrace(System.err);
         }
         return false;
+    }
+
+    record ResponseData(int id, String message) {
+    }
+
+    record ResponseDataFail(String message) {
     }
 }

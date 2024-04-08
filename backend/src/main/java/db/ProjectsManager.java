@@ -1,13 +1,15 @@
 package db;
 
 import Data.Project;
+
 import java.sql.*;
 import java.util.Arrays;
 import java.util.List;
 import java.util.Map;
 
 public class ProjectsManager extends BaseManager<Project> {
-    public ProjectsManager() {}
+    public ProjectsManager() {
+    }
 
     @Override
     protected Project mapRowToEntity(ResultSet rs) throws SQLException {
@@ -19,46 +21,7 @@ public class ProjectsManager extends BaseManager<Project> {
                 rs.getDate("end_date"),
                 rs.getInt("department_id"));
     }
-
-    @Override
-    public int addFromParams(Map<String, Object> params) {
-        String name = (String) params.get("name");
-        String description = (String) params.get("description");
-        Date startDate = Date.valueOf((String) params.get("start_date"));
-        Date endDate = Date.valueOf((String) params.get("end_date"));
-        int idDepartment = (int) ((Double) params.get("department_id")).doubleValue();
-
-        List<Object> values = Arrays.asList(
-                name,
-                description,
-                startDate,
-                endDate,
-                idDepartment
-        );
-
-        return addEntity(values);
-    }
-
-    @Override
-    public int updateFromParams(Map<String, Object> params) {
-        int id = (int) ((Double) params.get("id")).doubleValue();
-        String name = (String) params.get("name");
-        String description = (String) params.get("description");
-        Date startDate = Date.valueOf((String) params.get("start_date"));
-        Date endDate = Date.valueOf((String) params.get("end_date"));
-        int idDepartment = (int) ((Double) params.get("department_id")).doubleValue();
-
-        List<Object> values = Arrays.asList(
-                name,
-                description,
-                startDate,
-                endDate,
-                idDepartment,
-                id
-        );
-
-        return updateEntity(values);
-    }
+    
 
     protected String getAddEntityQuery() {
         return "INSERT INTO projects (name,  description, start_date, end_date, department_id) VALUES (?, ?, ?, ?, ?)";
@@ -82,5 +45,24 @@ public class ProjectsManager extends BaseManager<Project> {
     @Override
     protected String getDeleteEntityQuery() {
         return "DELETE * FROM projects WHERE id = ?";
+    }
+
+    @Override
+    protected List<Object> getUpdateFromParams(Map<String, Object> params) {
+        int id = (int) ((Double) params.get("id")).doubleValue();
+        String name = (String) params.get("name");
+        String description = (String) params.get("description");
+        Date startDate = Date.valueOf((String) params.get("start_date"));
+        Date endDate = Date.valueOf((String) params.get("end_date"));
+        int idDepartment = (int) ((Double) params.get("department_id")).doubleValue();
+
+        return Arrays.asList(
+                name,
+                description,
+                startDate,
+                endDate,
+                idDepartment,
+                id
+        );
     }
 }

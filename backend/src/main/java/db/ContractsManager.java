@@ -1,7 +1,6 @@
 package db;
 
 import Data.Contract;
-import Data.Employee;
 import utility.SQLbuilder;
 
 import java.sql.Date;
@@ -12,7 +11,6 @@ import java.util.List;
 import java.util.Map;
 
 public class ContractsManager extends BaseManager<Contract> {
-    private final static PoolingPersistenceManager persistence = PoolingPersistenceManager.getPersistenceManager();
     SQLbuilder builder = new SQLbuilder("contracts");
 
     public ContractsManager() {
@@ -27,46 +25,6 @@ public class ContractsManager extends BaseManager<Contract> {
                 rs.getDate("start_date"),
                 rs.getDate("end_date"),
                 rs.getFloat("salary"));
-    }
-
-    @Override
-    public int addFromParams(Map<String, Object> params) {
-        int employeeId = (int) ((Double) params.get("employee_id")).doubleValue();
-        String contractType = (String) params.get("contract_type");
-        Date startDate = (Date) params.get("start_date");
-        Date endDate = (Date) params.get("end_date");
-        float salary = (float) params.get("salary");
-
-        List<Object> values = Arrays.asList(
-                employeeId,
-                contractType,
-                startDate,
-                endDate,
-                salary
-        );
-
-        return addEntity(values);
-    }
-
-    @Override
-    public int updateFromParams(Map<String, Object> params) {
-        int id = (int) ((Double) params.get("id")).doubleValue();
-        int employeeId = (int) ((Double) params.get("employee_id")).doubleValue();
-        String contractType = (String) params.get("contract_type");
-        Date startDate = (Date) params.get("start_date");
-        Date endDate = (Date) params.get("end_date");
-        float salary = (float) params.get("salary");
-
-        List<Object> values = Arrays.asList(
-                employeeId,
-                contractType,
-                startDate,
-                endDate,
-                salary,
-                id
-        );
-
-        return updateEntity(values);
     }
 
     protected String getAddEntityQuery() {
@@ -91,6 +49,25 @@ public class ContractsManager extends BaseManager<Contract> {
     @Override
     protected String getDeleteEntityQuery() {
         return this.builder.getSingle();
+    }
+
+    @Override
+    protected List<Object> getUpdateFromParams(Map<String, Object> params) {
+        int id = (int) ((Double) params.get("id")).doubleValue();
+        int employeeId = (int) ((Double) params.get("employee_id")).doubleValue();
+        String contractType = (String) params.get("contract_type");
+        Date startDate = (Date) params.get("start_date");
+        Date endDate = (Date) params.get("end_date");
+        float salary = (float) params.get("salary");
+
+        return Arrays.asList(
+                employeeId,
+                contractType,
+                startDate,
+                endDate,
+                salary,
+                id
+        );
     }
 
 

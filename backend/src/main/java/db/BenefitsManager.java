@@ -10,7 +10,6 @@ import java.util.List;
 import java.util.Map;
 
 public class BenefitsManager extends BaseManager<Benefit> {
-    private final static PoolingPersistenceManager persistence = PoolingPersistenceManager.getPersistenceManager();
     SQLbuilder builder = new SQLbuilder("benefits");
 
     public BenefitsManager() {
@@ -23,38 +22,6 @@ public class BenefitsManager extends BaseManager<Benefit> {
                 rs.getString("description"),
                 rs.getString("value"),
                 rs.getInt("employee_id"));
-    }
-
-    @Override
-    public int addFromParams(Map<String, Object> params) {
-        String description = (String) params.get("description");
-        String value = (String) params.get("value");
-        int employeeId = (int) ((Double) params.get("employee_id")).doubleValue();
-
-        List<Object> values = Arrays.asList(
-                description,
-                value,
-                employeeId
-        );
-
-        return addEntity(values);
-    }
-
-    @Override
-    public int updateFromParams(Map<String, Object> params) {
-        int id = (int) ((Double) params.get("id")).doubleValue();
-        String description = (String) params.get("description");
-        String value = (String) params.get("value");
-        int employeeId = (int) ((Double) params.get("employee_id")).doubleValue();
-
-        List<Object> values = Arrays.asList(
-                description,
-                value,
-                employeeId,
-                id
-        );
-
-        return updateEntity(values);
     }
 
     protected String getAddEntityQuery() {
@@ -79,5 +46,20 @@ public class BenefitsManager extends BaseManager<Benefit> {
     @Override
     protected String getDeleteEntityQuery() {
         return "DELETE * FROM benefits WHERE id = ?";
+    }
+
+    @Override
+    protected List<Object> getUpdateFromParams(Map<String, Object> params) {
+        int id = (int) ((Double) params.get("id")).doubleValue();
+        String description = (String) params.get("description");
+        String value = (String) params.get("value");
+        int employeeId = (int) ((Double) params.get("employee_id")).doubleValue();
+
+        return Arrays.asList(
+                description,
+                value,
+                employeeId,
+                id
+        );
     }
 }

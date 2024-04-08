@@ -12,8 +12,6 @@ import java.io.BufferedReader;
 import java.io.IOException;
 import java.io.PrintWriter;
 import java.lang.reflect.Type;
-import java.nio.Buffer;
-import java.util.ArrayList;
 import java.util.Map;
 import java.util.stream.Collectors;
 
@@ -45,8 +43,7 @@ public class CRMServlet extends HttpServlet {
                 response.sendError(HttpServletResponse.SC_BAD_REQUEST);
             }
         } else {
-            ArrayList<?> entities = manager.loadAll();
-            out.println(gson.toJson(entities));
+            out.println(manager.loadAll());
         }
     }
 
@@ -63,8 +60,7 @@ public class CRMServlet extends HttpServlet {
         }.getType();
         Map<String, Object> requestMap = gson.fromJson(requestBody, type);
 
-        int resultId = manager.addFromParams(requestMap);
-        out.println(gson.toJson(resultId));
+        out.println(manager.addFromParams(requestMap));
     }
 
 
@@ -79,8 +75,8 @@ public class CRMServlet extends HttpServlet {
         }.getType();
         Map<String, Object> requestMap = gson.fromJson(body, type);
 
-        int resultId = manager.updateFromParams(requestMap);
-        out.println(gson.toJson(resultId));
+        String resultId = manager.updateFromParams(requestMap);
+        out.println(resultId);
     }
 
     protected void doDelete(HttpServletRequest request, HttpServletResponse response) throws IOException {
@@ -99,8 +95,7 @@ public class CRMServlet extends HttpServlet {
                 response.sendError(HttpServletResponse.SC_BAD_REQUEST);
             }
         } else {
-            ArrayList<?> entities = manager.loadAll();
-            out.println(gson.toJson(entities));
+            out.println(manager.loadAll());
         }
 
     }
