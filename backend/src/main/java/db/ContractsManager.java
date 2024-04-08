@@ -63,10 +63,10 @@ public class ContractsManager extends BaseManager<Contract> {
 
         Contract contract = new Contract(10, employeeId, contractType, startDate, endDate, salary);
         List<Object> values = Arrays.asList(
-                contract.getEmployeeId(),
-                contract.getContractType(),
-                contract.getStartDate(),
-                contract.getEndDate(),
+                contract.getEmployee_id(),
+                contract.getContract_type(),
+                contract.getEmployee_id(),
+                contract.getId(),
                 contract.getSalary()
         );
 
