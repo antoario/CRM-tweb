@@ -7,6 +7,7 @@ import jakarta.servlet.annotation.WebServlet;
 import jakarta.servlet.http.HttpServlet;
 import jakarta.servlet.http.HttpServletRequest;
 import jakarta.servlet.http.HttpServletResponse;
+import utility.Response;
 
 import java.io.BufferedReader;
 import java.io.IOException;
@@ -55,16 +56,19 @@ public class CRMServlet extends HttpServlet {
         response.setContentType("application/json");
         PrintWriter out = response.getWriter();
 
-        // Leggi il corpo della richiesta come stringa
         String requestBody = request.getReader().lines().collect(Collectors.joining(System.lineSeparator()));
+
         BaseManager<?> manager = ManagerFactory.getManager(request.getServletPath());
 
+        Gson gson = new Gson();
         Type type = new TypeToken<Map<String, Object>>() {
         }.getType();
         Map<String, Object> requestMap = gson.fromJson(requestBody, type);
 
-        int resultId = manager.addFromParams(requestMap);
-        out.println(gson.toJson(resultId));
+
+        String res = manager.addFromParams(requestMap);
+
+        out.println(res);
     }
 
 
@@ -74,13 +78,6 @@ public class CRMServlet extends HttpServlet {
         BufferedReader body = request.getReader();
 
         BaseManager<?> manager = ManagerFactory.getManager(request.getServletPath());
-
-        Type type = new TypeToken<Map<String, Object>>() {
-        }.getType();
-        Map<String, Object> requestMap = gson.fromJson(body, type);
-
-        int resultId = manager.updateFromParams(requestMap);
-        out.println(gson.toJson(resultId));
     }
 
     protected void doDelete(HttpServletRequest request, HttpServletResponse response) throws IOException {
@@ -105,6 +102,4 @@ public class CRMServlet extends HttpServlet {
 
     }
 
-    public void destroy() {
-    }
 }

@@ -1,86 +1,49 @@
 package db;
 
 import Data.Project;
+
 import java.sql.*;
-import java.util.Arrays;
-import java.util.List;
 import java.util.Map;
 
 public class ProjectsManager extends BaseManager<Project> {
-    public ProjectsManager() {}
 
     @Override
     protected Project mapRowToEntity(ResultSet rs) throws SQLException {
-        return new Project(
-                rs.getInt("id"),
-                rs.getString("name"),
-                rs.getString("description"),
-                rs.getDate("start_date"),
-                rs.getDate("end_date"),
-                rs.getInt("department_id"));
+        return null;
     }
 
     @Override
-    public int addFromParams(Map<String, Object> params) {
-        String name = (String) params.get("name");
-        String description = (String) params.get("description");
-        Date startDate = Date.valueOf((String) params.get("start_date"));
-        Date endDate = Date.valueOf((String) params.get("end_date"));
-        int idDepartment = (int) ((Double) params.get("department_id")).doubleValue();
-
-        List<Object> values = Arrays.asList(
-                name,
-                description,
-                startDate,
-                endDate,
-                idDepartment
-        );
-
-        return addEntity(values);
+    public String addFromParams(Map<String, Object> params) {
+        return 0;
     }
 
     @Override
     public int updateFromParams(Map<String, Object> params) {
-        int id = (int) ((Double) params.get("id")).doubleValue();
-        String name = (String) params.get("name");
-        String description = (String) params.get("description");
-        Date startDate = Date.valueOf((String) params.get("start_date"));
-        Date endDate = Date.valueOf((String) params.get("end_date"));
-        int idDepartment = (int) ((Double) params.get("department_id")).doubleValue();
-
-        List<Object> values = Arrays.asList(
-                name,
-                description,
-                startDate,
-                endDate,
-                idDepartment,
-                id
-        );
-
-        return updateEntity(values);
-    }
-
-    protected String getAddEntityQuery() {
-        return "INSERT INTO projects (name,  description, start_date, end_date, department_id) VALUES (?, ?, ?, ?, ?)";
+        return 0;
     }
 
     @Override
     protected String getLoadAllQuery() {
-        return "SELECT * FROM projects";
+        return null;
     }
 
     @Override
     protected String getLoadByIdQuery() {
-        return "SELECT * FROM projects WHERE id = ?";
+        return null;
+    }
+
+    @Override
+    protected String getAddEntityQuery() {
+        return null;
     }
 
     @Override
     protected String getUpdateEntityQuery() {
-        return "UPDATE projects SET name = ?, description = ?, start_date = ?, end_date = ?, department_id = ? WHERE id = ?";
+        return null;
     }
 
     @Override
     protected String getDeleteEntityQuery() {
-        return "DELETE * FROM projects WHERE id = ?";
+        return null;
     }
 }

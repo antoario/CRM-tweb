@@ -10,7 +10,7 @@ public abstract class BaseManager<T> {
 
     protected abstract T mapRowToEntity(ResultSet rs) throws SQLException;
 
-    public abstract int addFromParams(Map<String, Object> params);
+    public abstract String addFromParams(Map<String, Object> params);
 
     public abstract int updateFromParams(Map<String, Object> params);
 

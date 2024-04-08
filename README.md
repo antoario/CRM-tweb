@@ -89,6 +89,7 @@ For Angular, we are using Google Material Components, which are very useful for 
 ## Tables and Key Fields
 
 1. Employees
+
    - **id**: string; // primary key
    - **first_name**: string;
    - **last_name**: string;
@@ -99,12 +100,14 @@ For Angular, we are using Google Material Components, which are very useful for 
    - **department_id**: string; // foreign key linking to the departments table
 
 2. Departments
+
    - **id**: string; // primary key
    - **name**: string;
    - **description**: string;
    - **manager_id**: string; // could be an employee ID
 
 3. Positions
+
    - **id**: string; // primary key
    - **title**: string;
    - **description**: string;
@@ -112,6 +115,7 @@ For Angular, we are using Google Material Components, which are very useful for 
    - **department_id**: string; // foreign key
 
 4. Projects
+
    - **id**: string; // primary key
    - **name**: string;
    - **description**: string;
@@ -120,12 +124,14 @@ For Angular, we are using Google Material Components, which are very useful for 
    - **department_id**: string; // foreign key
 
 5. Benefits
+
    - **id**: string; // primary key
    - **description**: string;
    - **value**: string;
    - **employee_id**: string; // foreign key to link projects to specific employee
 
 6. Contracts
+
    - **id**: string; // primary key
    - **employee_id**: string; // foreign key
    - **contract_type**: string; // e.g., indefinite term, fixed term, part-time
@@ -134,7 +140,6 @@ For Angular, we are using Google Material Components, which are very useful for 
    - **salary**: number;
 
 7. employee_benefits just an associative table
-
 
 <!-- TODO add er image for design schema -->
 
@@ -162,10 +167,28 @@ Furthermore, the frontend is configured to conceal department selection options 
 
 Managers are also empowered to assign benefits to employees.
 
+## Generalized response
+
+Like login the response are like this
+
+```typescript
+{
+  code: number,
+  data: Object // change is form the query
+}
+```
+
 ## Login
 
 When a user (employee) login the server check email and password and responde with a json
 
-```json
-
+```typescript
+{
+  code: number,
+  token: string | "",
+  data: {
+    id: number,
+    role: number
+  }
+}
 ```
