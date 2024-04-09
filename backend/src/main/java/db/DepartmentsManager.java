@@ -21,7 +21,7 @@ public class DepartmentsManager extends BaseManager<Department> {
                 rs.getInt("id"),
                 rs.getString("name"),
                 rs.getString("description"),
-                rs.getInt("manager"));
+                rs.getInt("manager_id"));
     }
 
     protected String getAddEntityQuery() {

@@ -44,11 +44,15 @@ public abstract class BaseManager<T> {
     }
 
     public String addFromParams(Map<String, Object> params) {
-        Response res = addEntity(getUpdateFromParams(params));
-        return new Gson().toJson(res);
+        try {
+            Response res = addEntity(getUpdateFromParams(params));
+            return new Gson().toJson(res);
+        } catch (Exception ex) {
+            return new Gson().toJson(new Response(-1, ex.getMessage()));
+        }
     }
 
-    public String updateFromParams(Map<String, Object> params) {
+    public String updateFromParams(Map<String, Object> params) throws SQLException {
         record Data(int id, String message) {
         }
         Response res = new Response(0, new Data(updateEntity(getUpdateFromParams(params)), "Update successful"));
@@ -98,21 +102,17 @@ public abstract class BaseManager<T> {
         return new Response(0, new ResponseData(generatedId, "Success"));
     }
 
-    public int updateEntity(List<Object> values) {
+    public int updateEntity(List<Object> values) throws SQLException {
         doQuery(getUpdateEntityQuery(), values);
         return (int) values.get(values.size() - 1);
     }
 
-    private void doQuery(String query, List<Object> values) {
-        try (Connection conn = persistence.getConnection();
-             PreparedStatement st = conn.prepareStatement(query, Statement.RETURN_GENERATED_KEYS)) {
+    private void doQuery(String query, List<Object> values) throws SQLException {
+        Connection conn = persistence.getConnection();
+        PreparedStatement st = conn.prepareStatement(query, Statement.RETURN_GENERATED_KEYS);
+        for (int i = 0; i < values.size(); i++) st.setObject(i + 1, values.get(i));
 
-            for (int i = 0; i < values.size(); i++) st.setObject(i + 1, values.get(i));
-            st.executeUpdate();
-        } catch (SQLException ex) {
-            System.err.println("SQL Exception: " + ex.getMessage());
-            ex.printStackTrace(System.err);
-        }
+        System.out.println("Numero di righe aggiornate: " + st.executeUpdate());
     }
 
     public boolean deleteEntity(int id) throws SQLException {

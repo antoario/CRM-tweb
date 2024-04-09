@@ -1,3 +1,5 @@
+import { Employee } from "./data"
+
 export interface UserData {
   email: string
   first_name: string
@@ -8,6 +10,6 @@ export interface UserData {
 }
 
 export interface UserSession {
-  user: UserData
+  user: Employee
   token: string
 }

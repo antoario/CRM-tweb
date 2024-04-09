@@ -48,7 +48,7 @@ export class LoginComponent {
       case "manager":
         this.loginForm.setValue({ email: "luca.bianchi@example.com", password: "password123" })
         break
-      case "SuperAdmin":
+      case "superAdmin":
         this.loginForm.setValue({ email: "sofia.verdi@example.com", password: "password123" })
         break
     }

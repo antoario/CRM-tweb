@@ -1,6 +1,5 @@
 import { Injectable } from "@angular/core"
 import { HttpClient, HttpHeaders } from "@angular/common/http"
-import { UserService } from "./user.service"
 import { Observable, of } from "rxjs"
 
 @Injectable({
@@ -9,10 +8,10 @@ import { Observable, of } from "rxjs"
 export class DataService {
   constructor(private http: HttpClient) {}
 
-  addData(url: string, data: any): Observable<any> {
+  addData<T>(url: string, data: T): Observable<T | null> {
     const token = this.getToken()
     if (!token) return of(null)
-    return this.http.post(url, data, { headers: this.buildHeader(token) })
+    return this.http.post<T>(url, data, { headers: this.buildHeader(token) })
   }
 
   private getToken(): string {
@@ -22,8 +21,9 @@ export class DataService {
     return ""
   }
 
-  updateData(url: string, data: any): Observable<any> {
-    return this.http.patch(url, data, { headers: this.buildHeader(this.getToken()) })
+  updateData<T>(url: string, data: T): Observable<T> {
+    console.log(data)
+    return this.http.put<T>(url, data, { headers: this.buildHeader(this.getToken()) })
   }
 
   putData<T>(url: string, data: T, isNew = false) {

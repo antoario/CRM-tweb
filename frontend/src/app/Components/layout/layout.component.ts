@@ -10,9 +10,8 @@ import { ItemsMenuComponent } from "../subcomponents/items-menu/items-menu.compo
 import { JsonPipe, NgIf } from "@angular/common"
 import { CompanyDataService } from "../../Services/company-data.service"
 import { MENUITEMS } from "../../menu-items"
-import { User } from "../../types"
-import { UserData } from "../../types/UserTypes"
 import { map } from "rxjs"
+import { Employee } from "../../types/data"
 
 @Component({
   selector: "app-layout",
@@ -34,7 +33,7 @@ import { map } from "rxjs"
   styleUrl: "./layout.component.scss",
 })
 export class LayoutComponent implements OnInit {
-  user!: UserData
+  user!: Employee
 
   constructor(
     private userService: UserService,
@@ -43,7 +42,6 @@ export class LayoutComponent implements OnInit {
   ) {}
 
   ngOnInit() {
-    this.dataComp.getAllData().subscribe()
     this.userService
       .loadUser()
       .pipe(

@@ -1,15 +1,16 @@
 import { Injectable } from "@angular/core"
 import { BehaviorSubject, catchError, map, Observable, of, ReplaySubject, tap } from "rxjs"
-import { UserData, UserSession } from "../types/UserTypes"
-import { HttpClient, HttpHeaders } from "@angular/common/http"
+import { UserSession } from "../types/UserTypes"
+import { HttpClient } from "@angular/common/http"
 import { environment } from "../../environments/environment"
 import { DataService } from "./data.service"
+import { Employee } from "../types/data"
 
 @Injectable({
   providedIn: "root",
 })
 export class UserService {
-  currUser: ReplaySubject<UserData> = new ReplaySubject(1)
+  currUser: ReplaySubject<Employee> = new ReplaySubject(1)
   currToken: BehaviorSubject<string | null> = new BehaviorSubject<string | null>(null)
 
   constructor(
@@ -60,10 +61,10 @@ export class UserService {
     )
   }
 
-  public loadUser(): Observable<UserData | null> {
+  public loadUser(): Observable<Employee | null> {
     const token = this.currToken.getValue()
     if (!token) return of(null)
-    return this.dataService.getDataWithAuth<UserData>(`${environment.apiUrl}/me`)
+    return this.dataService.getDataWithAuth<Employee>(`${environment.apiUrl}/me`)
   }
 
   getUser() {

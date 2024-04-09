@@ -18,7 +18,6 @@ import java.util.stream.Collectors;
 @WebServlet(name = "LoginServlet", urlPatterns = {"/login", "/validateToken"})
 public class LoginServlet extends HttpServlet {
 
-
     public void init() {
     }
 

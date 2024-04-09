@@ -15,6 +15,7 @@ import java.io.BufferedReader;
 import java.io.IOException;
 import java.io.PrintWriter;
 import java.lang.reflect.Type;
+import java.sql.SQLException;
 import java.util.Map;
 import java.util.stream.Collectors;
 
@@ -75,7 +76,7 @@ public class CRMServlet extends HttpServlet {
         Map<String, Object> requestMap = gson.fromJson(body.requestBody(), body.type());
 
         switch (result.getRole()) {
-            case 0:
+            case 2:
                 this.printResult(out, -1, "you don't have right role");
                 return;
             case 1:
@@ -115,7 +116,13 @@ public class CRMServlet extends HttpServlet {
         }.getType();
         Map<String, Object> requestMap = gson.fromJson(body, type);
 
-        String resultId = manager.updateFromParams(requestMap);
+        String resultId = null;
+        try {
+            resultId = manager.updateFromParams(requestMap);
+        } catch (SQLException e) {
+            out.println(new Gson().toJson(new Response(-1, e.getMessage())));
+            e.printStackTrace();
+        }
         out.println(resultId);
     }
 
@@ -128,7 +135,7 @@ public class CRMServlet extends HttpServlet {
         AuthenticationResult result = getAuthenticationResult(preToken, out);
         if (result == null) return;
 
-        if (result.getRole() == 0) {
+        if (result.getRole() == 2) {
             this.printResult(out, -1, "you don't have right role");
             return;
         }
