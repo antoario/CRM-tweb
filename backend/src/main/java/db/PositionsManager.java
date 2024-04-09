@@ -45,7 +45,7 @@ public class PositionsManager extends BaseManager<Position> {
 
     @Override
     protected String getDeleteEntityQuery() {
-        return "DELETE * FROM positions WHERE id = ?";
+        return "DELETE FROM positions WHERE id = ?";
     }
 
     @Override

@@ -45,7 +45,7 @@ public class BenefitsManager extends BaseManager<Benefit> {
 
     @Override
     protected String getDeleteEntityQuery() {
-        return "DELETE * FROM benefits WHERE id = ?";
+        return "DELETE FROM benefits WHERE id = ?";
     }
 
     @Override

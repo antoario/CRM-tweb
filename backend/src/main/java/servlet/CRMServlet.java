@@ -43,6 +43,10 @@ public class CRMServlet extends HttpServlet {
 
         BaseManager<?> manager = ManagerFactory.getManager(request.getServletPath());
         String idParam = request.getParameter("id");
+        String preToken = request.getHeader("Authorization");
+
+        AuthenticationResult result = getAuthenticationResult(preToken, out);
+        if (result == null) return;
 
         if (idParam != null) {
             try {
@@ -64,11 +68,8 @@ public class CRMServlet extends HttpServlet {
         PrintWriter out = response.getWriter();
         String preToken = request.getHeader("Authorization");
 
-        AuthenticationResult result = LoginHelper.authenticate(preToken, loginHelper);
-        if (!result.isSuccess()) {
-            this.printResult(out, -1, result.getErrorMessage());
-            return;
-        }
+        AuthenticationResult result = getAuthenticationResult(preToken, out);
+        if (result == null) return;
 
         RequestBody body = getRequestBody(request);
         Map<String, Object> requestMap = gson.fromJson(body.requestBody(), body.type());
@@ -78,10 +79,12 @@ public class CRMServlet extends HttpServlet {
                 this.printResult(out, -1, "you don't have right role");
                 return;
             case 1:
-                int departmentIdFromRequest = ((Double) requestMap.get("department_id")).intValue();
-                if (departmentIdFromRequest != result.getDepartment_id()) {
-                    this.printResult(out, -1, "you cannot add data on different department");
-                    return;
+                if (requestMap.get("department_id") != null) {
+                    int departmentIdFromRequest = ((Double) requestMap.get("department_id")).intValue();
+                    if (departmentIdFromRequest != result.getDepartment_id()) {
+                        this.printResult(out, -1, "you cannot add data on different department");
+                        return;
+                    }
                 }
         }
 
@@ -89,7 +92,17 @@ public class CRMServlet extends HttpServlet {
             out.println(body.manager().addFromParams(requestMap));
         } catch (Exception ex) {
             this.printResult(out, -1, ex.getMessage());
+            ex.printStackTrace();
         }
+    }
+
+    private AuthenticationResult getAuthenticationResult(String preToken, PrintWriter out) {
+        AuthenticationResult result = LoginHelper.authenticate(preToken, loginHelper);
+        if (!result.isSuccess()) {
+            this.printResult(out, -1, result.getErrorMessage());
+            return null;
+        }
+        return result;
     }
 
     protected void doPut(HttpServletRequest request, HttpServletResponse response) throws IOException {
@@ -109,20 +122,25 @@ public class CRMServlet extends HttpServlet {
     protected void doDelete(HttpServletRequest request, HttpServletResponse response) throws IOException {
         response.setContentType("application/json");
         PrintWriter out = response.getWriter();
+        int idParam = Integer.parseInt(request.getParameter("id"));
+        String preToken = request.getHeader("Authorization");
 
-        BaseManager<?> manager = ManagerFactory.getManager(request.getServletPath());
-        String idParam = request.getParameter("id");
+        AuthenticationResult result = getAuthenticationResult(preToken, out);
+        if (result == null) return;
 
-        if (idParam != null) {
-            try {
-                Object entity = manager.deleteEntity(idParam);
-                if (entity != null) out.println(gson.toJson(entity));
-                else response.sendError(HttpServletResponse.SC_NOT_FOUND);
-            } catch (NumberFormatException e) {
-                response.sendError(HttpServletResponse.SC_BAD_REQUEST);
-            }
-        } else {
-            out.println(manager.loadAll());
+        if (result.getRole() == 0) {
+            this.printResult(out, -1, "you don't have right role");
+            return;
+        }
+
+        RequestBody body = getRequestBody(request);
+
+        try {
+            body.manager.deleteEntity(idParam);
+            out.println(new Gson().toJson(new Response(0, "Successfully deleted")));
+        } catch (Exception ex) {
+            this.printResult(out, -1, ex.getMessage());
+            ex.printStackTrace();
         }
 
     }

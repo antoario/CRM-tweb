@@ -1,5 +1,6 @@
 package db;
 
+import com.auth0.jwt.exceptions.JWTVerificationException;
 import com.google.gson.Gson;
 import utility.Response;
 
@@ -114,22 +115,14 @@ public abstract class BaseManager<T> {
         }
     }
 
-    public boolean deleteEntity(String id) {
-        T entity = null;
+    public boolean deleteEntity(int id) throws SQLException {
         String query = getDeleteEntityQuery();
         try (Connection conn = persistence.getConnection();
              PreparedStatement st = conn.prepareStatement(query)) {
-            st.setString(1, id);
-            try (ResultSet rs = st.executeQuery()) {
-                if (rs.next()) {
-                    entity = mapRowToEntity(rs);
-                }
-            }
-        } catch (SQLException ex) {
-            System.err.println("SQL Exception: " + ex.getMessage());
-            ex.printStackTrace(System.err);
+            st.setInt(1, id);
+            int rowsAffected = st.executeUpdate(); // Usa executeUpdate() per operazioni di modifica dei dati
+            return rowsAffected > 0;
         }
-        return false;
     }
 
     record ResponseData(int id, String message) {

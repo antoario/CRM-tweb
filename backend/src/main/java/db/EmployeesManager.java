@@ -46,7 +46,7 @@ public class EmployeesManager extends BaseManager<Employee> {
 
     @Override
     protected String getDeleteEntityQuery() {
-        return "DELETE * FROM employees WHERE id = ?";
+        return "DELETE FROM employees WHERE id = ?";
     }
 
 

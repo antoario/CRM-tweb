@@ -21,7 +21,7 @@ public class ProjectsManager extends BaseManager<Project> {
                 rs.getDate("end_date"),
                 rs.getInt("department_id"));
     }
-    
+
 
     protected String getAddEntityQuery() {
         return "INSERT INTO projects (name,  description, start_date, end_date, department_id) VALUES (?, ?, ?, ?, ?)";
@@ -44,7 +44,7 @@ public class ProjectsManager extends BaseManager<Project> {
 
     @Override
     protected String getDeleteEntityQuery() {
-        return "DELETE * FROM projects WHERE id = ?";
+        return "DELETE FROM projects WHERE id = ?";
     }
 
     @Override

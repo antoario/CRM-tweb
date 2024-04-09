@@ -45,7 +45,7 @@ public class DepartmentsManager extends BaseManager<Department> {
 
     @Override
     protected String getDeleteEntityQuery() {
-        return "DELETE * FROM departments WHERE id = ?";
+        return "DELETE FROM departments WHERE id = ?";
     }
 
     @Override
