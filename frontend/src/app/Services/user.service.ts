@@ -63,7 +63,7 @@ export class UserService {
   public loadUser(): Observable<UserData | null> {
     const token = this.currToken.getValue()
     if (!token) return of(null)
-    return this.dataService.getDataWithAuth<UserData>(`${environment.apiUrl}/employee?id=${3}`)
+    return this.dataService.getDataWithAuth<UserData>(`${environment.apiUrl}/me`)
   }
 
   getUser() {

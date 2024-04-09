@@ -1,9 +1,9 @@
 export interface UserData {
   email: string
-  name: string
-  surname: string
+  first_name: string
+  last_name: string
   role: number
-  idDepartment?: string
+  id_department?: string
   benefits: []
 }
 

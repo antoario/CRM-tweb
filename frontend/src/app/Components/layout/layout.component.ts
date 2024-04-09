@@ -12,6 +12,7 @@ import { CompanyDataService } from "../../Services/company-data.service"
 import { MENUITEMS } from "../../menu-items"
 import { User } from "../../types"
 import { UserData } from "../../types/UserTypes"
+import { map } from "rxjs"
 
 @Component({
   selector: "app-layout",
@@ -43,9 +44,17 @@ export class LayoutComponent implements OnInit {
 
   ngOnInit() {
     this.dataComp.getAllData().subscribe()
-    this.userService.loadUser().subscribe((usr) => {
-      if (usr) this.user = usr
-    })
+    this.userService
+      .loadUser()
+      .pipe(
+        map((usr) => {
+          if (usr) {
+            this.userService.currUser.next(usr)
+            this.user = usr
+          }
+        })
+      )
+      .subscribe()
   }
 
   logout() {
