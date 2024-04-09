@@ -35,6 +35,6 @@ export class DataService {
   }
 
   private buildHeader(token: string) {
-    return new HttpHeaders({ authentication: token })
+    return new HttpHeaders({ Authorization: token })
   }
 }
