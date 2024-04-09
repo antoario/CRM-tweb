@@ -35,6 +35,11 @@ public class EmployeesManager extends BaseManager<Employee> {
     }
 
     @Override
+    protected String getLoadAllManagerQuery() {
+        return "SELECT * FROM employees WHERE department_id = ?";
+    }
+
+    @Override
     protected String getLoadByIdQuery() {
         return "SELECT * FROM employees WHERE id = ?";
     }

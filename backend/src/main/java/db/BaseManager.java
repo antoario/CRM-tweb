@@ -17,6 +17,8 @@ public abstract class BaseManager<T> {
 
     protected abstract String getLoadAllQuery();
 
+    protected abstract String getLoadAllManagerQuery();
+
     protected abstract String getLoadByIdQuery();
 
     protected abstract String getAddEntityQuery();
@@ -77,6 +79,23 @@ public abstract class BaseManager<T> {
         return entity;
     }
 
+    public String loadManagerView(int department_id) {
+        ArrayList<T> entities = new ArrayList<>();
+        String query = getLoadAllManagerQuery();
+        try (Connection conn = persistence.getConnection();
+             PreparedStatement st = conn.prepareStatement(query)) {
+            st.setInt(1, department_id);
+            ResultSet rs = st.executeQuery();
+            while (rs.next()) {
+                entities.add(mapRowToEntity(rs));
+            }
+        } catch (SQLException ex) {
+            System.err.println("SQL Exception: " + ex.getMessage());
+            ex.printStackTrace(System.err);
+        }
+        return new Gson().toJson(entities);
+    }
+
     protected Response addEntity(List<Object> values) {
         int generatedId = -2;
         try (Connection conn = persistence.getConnection();
@@ -122,6 +141,18 @@ public abstract class BaseManager<T> {
             st.setInt(1, id);
             int rowsAffected = st.executeUpdate();
             return rowsAffected > 0;
+        }
+    }
+
+    private void doManagerQuery(String query, List<Object> values) {
+        try (Connection conn = persistence.getConnection();
+             PreparedStatement st = conn.prepareStatement(query, Statement.RETURN_GENERATED_KEYS)) {
+
+            for (int i = 0; i < values.size(); i++) st.setObject(i + 1, values.get(i));
+            st.executeUpdate();
+        } catch (SQLException ex) {
+            System.err.println("SQL Exception: " + ex.getMessage());
+            ex.printStackTrace(System.err);
         }
     }
 

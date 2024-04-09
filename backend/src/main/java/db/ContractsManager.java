@@ -37,6 +37,11 @@ public class ContractsManager extends BaseManager<Contract> {
     }
 
     @Override
+    protected String getLoadAllManagerQuery() {
+        return "SELECT * FROM employees WHERE department_id = ?";
+    }
+
+    @Override
     protected String getLoadByIdQuery() {
         return this.builder.getAllData();
     }

@@ -34,6 +34,11 @@ public class BenefitsManager extends BaseManager<Benefit> {
     }
 
     @Override
+    protected String getLoadAllManagerQuery() {
+        return "SELECT * FROM benefits WHERE employee_id = ?";
+    }
+
+    @Override
     protected String getLoadByIdQuery() {
         return this.builder.getSingle();
     }
