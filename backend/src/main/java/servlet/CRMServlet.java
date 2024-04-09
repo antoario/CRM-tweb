@@ -7,6 +7,9 @@ import jakarta.servlet.annotation.WebServlet;
 import jakarta.servlet.http.HttpServlet;
 import jakarta.servlet.http.HttpServletRequest;
 import jakarta.servlet.http.HttpServletResponse;
+import utility.AuthenticationResult;
+import utility.LoginHelper;
+import utility.Response;
 
 import java.io.BufferedReader;
 import java.io.IOException;
@@ -18,7 +21,16 @@ import java.util.stream.Collectors;
 @WebServlet(name = "CRMServlet", urlPatterns = {"/employees/*", "/benefits/*", "/contracts/*", "/departments/*", "/positions/*",
         "/projects/*"})
 public class CRMServlet extends HttpServlet {
+    LoginHelper loginHelper = new LoginHelper();
     private Gson gson;
+
+    private static RequestBody getRequestBody(HttpServletRequest request) throws IOException {
+        String requestBody = request.getReader().lines().collect(Collectors.joining(System.lineSeparator()));
+        BaseManager<?> manager = ManagerFactory.getManager(request.getServletPath());
+        Type type = new TypeToken<Map<String, Object>>() {
+        }.getType();
+        return new RequestBody(requestBody, manager, type);
+    }
 
     public void init() {
         gson = new Gson();
@@ -31,7 +43,6 @@ public class CRMServlet extends HttpServlet {
 
         BaseManager<?> manager = ManagerFactory.getManager(request.getServletPath());
         String idParam = request.getParameter("id");
-        System.out.println(idParam);
 
         if (idParam != null) {
             try {
@@ -51,18 +62,35 @@ public class CRMServlet extends HttpServlet {
     protected void doPost(HttpServletRequest request, HttpServletResponse response) throws IOException {
         response.setContentType("application/json");
         PrintWriter out = response.getWriter();
+        String preToken = request.getHeader("Authorization");
 
-        // Leggi il corpo della richiesta come stringa
-        String requestBody = request.getReader().lines().collect(Collectors.joining(System.lineSeparator()));
-        BaseManager<?> manager = ManagerFactory.getManager(request.getServletPath());
+        AuthenticationResult result = LoginHelper.authenticate(preToken, loginHelper);
+        if (!result.isSuccess()) {
+            this.printResult(out, -1, result.getErrorMessage());
+            return;
+        }
 
-        Type type = new TypeToken<Map<String, Object>>() {
-        }.getType();
-        Map<String, Object> requestMap = gson.fromJson(requestBody, type);
+        RequestBody body = getRequestBody(request);
+        Map<String, Object> requestMap = gson.fromJson(body.requestBody(), body.type());
 
-        out.println(manager.addFromParams(requestMap));
+        switch (result.getRole()) {
+            case 0:
+                this.printResult(out, -1, "you don't have right role");
+                return;
+            case 1:
+                int departmentIdFromRequest = ((Double) requestMap.get("department_id")).intValue();
+                if (departmentIdFromRequest != result.getDepartment_id()) {
+                    this.printResult(out, -1, "you cannot add data on different department");
+                    return;
+                }
+        }
+
+        try {
+            out.println(body.manager().addFromParams(requestMap));
+        } catch (Exception ex) {
+            this.printResult(out, -1, ex.getMessage());
+        }
     }
-
 
     protected void doPut(HttpServletRequest request, HttpServletResponse response) throws IOException {
         response.setContentType("application/json");
@@ -70,7 +98,6 @@ public class CRMServlet extends HttpServlet {
         BufferedReader body = request.getReader();
 
         BaseManager<?> manager = ManagerFactory.getManager(request.getServletPath());
-
         Type type = new TypeToken<Map<String, Object>>() {
         }.getType();
         Map<String, Object> requestMap = gson.fromJson(body, type);
@@ -101,5 +128,29 @@ public class CRMServlet extends HttpServlet {
     }
 
     public void destroy() {
+    }
+
+    private Map<String, Object> extractRequestMap(HttpServletRequest request) throws IOException {
+        if ("application/json".equalsIgnoreCase(request.getContentType())) {
+            String requestBody = request.getReader().lines().collect(Collectors.joining(System.lineSeparator()));
+            Type type = new TypeToken<Map<String, Object>>() {
+            }.getType();
+            return new Gson().fromJson(requestBody, type);
+        } else if ("application/x-www-form-urlencoded".equalsIgnoreCase(request.getContentType())) {
+            return request.getParameterMap().entrySet().stream()
+                    .collect(Collectors.toMap(
+                            Map.Entry::getKey,
+                            e -> e.getValue()[0]
+                    ));
+        } else {
+            throw new IOException("Unsupported Content-Type: " + request.getContentType());
+        }
+    }
+
+    private void printResult(PrintWriter out, int code, String message) {
+        out.println(new Gson().toJson(new Response(code, message)));
+    }
+
+    private record RequestBody(String requestBody, BaseManager<?> manager, Type type) {
     }
 }
