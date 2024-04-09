@@ -2,11 +2,13 @@ package utility;
 
 import com.auth0.jwt.JWT;
 import com.auth0.jwt.algorithms.Algorithm;
+import com.auth0.jwt.exceptions.JWTDecodeException;
 import com.auth0.jwt.exceptions.JWTVerificationException;
 import com.auth0.jwt.interfaces.DecodedJWT;
 import com.auth0.jwt.interfaces.JWTVerifier;
 import com.google.gson.Gson;
 import db.PoolingPersistenceManager;
+
 import java.sql.*;
 
 public class LoginHelper {
@@ -22,6 +24,15 @@ public class LoginHelper {
             return new AuthenticationResult("Token verification failed: " + ex.getMessage());
         } catch (Exception ex) {
             return new AuthenticationResult("Authentication failed: " + ex.getMessage());
+        }
+    }
+
+    public boolean validateToken(String token) {
+        try {
+            this.checkLogin(token);
+            return true;
+        } catch (Exception ex) {
+            return false;
         }
     }
 
@@ -59,11 +70,14 @@ public class LoginHelper {
                 .withClaimPresence("id")
                 .withClaimPresence("role")
                 .build();
-
         return verifier.verify(token);
     }
 
-    public record dataLogged(int id, int role) {}
+    public record dataLogged(int id, int role) {
+    }
 
-    public record LoginResponse(int code, String token, Object data) {}
+    public record LoginResponse(int code, String token, Object data) {
+    }
+
+
 }

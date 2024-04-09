@@ -3,6 +3,7 @@ import { BehaviorSubject, catchError, map, Observable, of, ReplaySubject, tap } 
 import { UserData, UserSession } from "../types/UserTypes"
 import { HttpClient, HttpHeaders } from "@angular/common/http"
 import { environment } from "../../environments/environment"
+import { DataService } from "./data.service"
 
 @Injectable({
   providedIn: "root",
@@ -11,7 +12,10 @@ export class UserService {
   currUser: ReplaySubject<UserData> = new ReplaySubject(1)
   currToken: BehaviorSubject<string | null> = new BehaviorSubject<string | null>(null)
 
-  constructor(private http: HttpClient) {}
+  constructor(
+    private http: HttpClient,
+    private dataService: DataService
+  ) {}
 
   public checkLogin(): Observable<boolean> {
     const token = localStorage.getItem("token")
@@ -56,16 +60,10 @@ export class UserService {
     )
   }
 
-  public loadUser() {
+  public loadUser(): Observable<UserData | null> {
     const token = this.currToken.getValue()
     if (!token) return of(null)
-    const headers = new HttpHeaders({ authentication: token })
-    return this.http.post<UserData | null>(`${environment.apiUrl}/me`, {}, { headers }).pipe(
-      tap((user) => {
-        if (!user) throw false
-        this.currUser.next(user)
-      })
-    )
+    return this.dataService.getDataWithAuth<UserData>(`${environment.apiUrl}/employee?id=${3}`)
   }
 
   getUser() {
