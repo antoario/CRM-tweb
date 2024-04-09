@@ -120,7 +120,7 @@ public abstract class BaseManager<T> {
         try (Connection conn = persistence.getConnection();
              PreparedStatement st = conn.prepareStatement(query)) {
             st.setInt(1, id);
-            int rowsAffected = st.executeUpdate(); // Usa executeUpdate() per operazioni di modifica dei dati
+            int rowsAffected = st.executeUpdate();
             return rowsAffected > 0;
         }
     }

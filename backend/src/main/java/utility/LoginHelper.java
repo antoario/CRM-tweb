@@ -11,7 +11,6 @@ import db.PoolingPersistenceManager;
 import java.sql.*;
 import java.util.Objects;
 
-
 public class LoginHelper {
     protected final static PoolingPersistenceManager persistence = PoolingPersistenceManager.getPersistenceManager();
     private final String SECRET = "SUPERSECRET!";
@@ -43,6 +42,7 @@ public class LoginHelper {
 
     public String loginEmailAndPassword(String email, String password) {
         String query = "SELECT password, id, role, department_id FROM employees WHERE email = ?";
+        System.out.println(email + password);
         try (Connection conn = persistence.getConnection(); PreparedStatement st = conn.prepareStatement(query, Statement.RETURN_GENERATED_KEYS)) {
             st.setString(1, email);
             ResultSet rs = st.executeQuery();
