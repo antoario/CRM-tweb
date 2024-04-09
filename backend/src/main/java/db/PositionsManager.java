@@ -34,6 +34,11 @@ public class PositionsManager extends BaseManager<Position> {
     }
 
     @Override
+    protected String getLoadAllManagerQuery() {
+        return "SELECT * FROM employees WHERE department_id = ?";
+    }
+
+    @Override
     protected String getLoadByIdQuery() {
         return this.builder.getSingle();
     }

@@ -1,5 +1,6 @@
 package servlet;
 
+import Data.Employee;
 import com.google.gson.Gson;
 import com.google.gson.reflect.TypeToken;
 import db.BaseManager;
@@ -18,8 +19,10 @@ import java.lang.reflect.Type;
 import java.util.Map;
 import java.util.stream.Collectors;
 
+import static java.lang.Integer.parseInt;
+
 @WebServlet(name = "CRMServlet", urlPatterns = {"/employees/*", "/benefits/*", "/contracts/*", "/departments/*", "/positions/*",
-        "/projects/*"})
+        "/projects/*", })
 public class CRMServlet extends HttpServlet {
     LoginHelper loginHelper = new LoginHelper();
     private Gson gson;
@@ -40,26 +43,40 @@ public class CRMServlet extends HttpServlet {
     protected void doGet(HttpServletRequest request, HttpServletResponse response) throws IOException {
         response.setContentType("application/json");
         PrintWriter out = response.getWriter();
+        RequestBody body = getRequestBody(request);
+        Map<String, Object> requestMap = gson.fromJson(body.requestBody(), body.type());
+        Object entity = null;
 
         BaseManager<?> manager = ManagerFactory.getManager(request.getServletPath());
         String idParam = request.getParameter("id");
+        String roleParam = request.getParameter("role");
         String preToken = request.getHeader("Authorization");
 
         AuthenticationResult result = getAuthenticationResult(preToken, out);
         if (result == null) return;
 
+        if(roleParam != null) {
+            try {
+                int role = parseInt(roleParam);
+                if(role == 0) entity = manager.loadAll();
+                else if(role == 1) entity = manager.loadManagerView(result.getDepartment_id());
+                if (entity != null) out.println(entity);
+                return;
+            } catch (NumberFormatException e) {
+                response.sendError(HttpServletResponse.SC_BAD_REQUEST);
+            }
+        }
+
         if (idParam != null) {
             try {
                 int id = Integer.parseInt(idParam);
-                Object entity = manager.loadById(id);
+                entity = manager.loadById(id);
                 if (entity != null) out.println(gson.toJson(entity));
                 else response.sendError(HttpServletResponse.SC_NOT_FOUND);
             } catch (NumberFormatException e) {
                 response.sendError(HttpServletResponse.SC_BAD_REQUEST);
             }
-        } else {
-            out.println(manager.loadAll());
-        }
+        } else out.println(manager.loadAll());
     }
 
     @Override
@@ -122,7 +139,7 @@ public class CRMServlet extends HttpServlet {
     protected void doDelete(HttpServletRequest request, HttpServletResponse response) throws IOException {
         response.setContentType("application/json");
         PrintWriter out = response.getWriter();
-        int idParam = Integer.parseInt(request.getParameter("id"));
+        int idParam = parseInt(request.getParameter("id"));
         String preToken = request.getHeader("Authorization");
 
         AuthenticationResult result = getAuthenticationResult(preToken, out);

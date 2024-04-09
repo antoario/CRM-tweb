@@ -21,7 +21,7 @@ public class DepartmentsManager extends BaseManager<Department> {
                 rs.getInt("id"),
                 rs.getString("name"),
                 rs.getString("description"),
-                rs.getInt("manager"));
+                rs.getInt("manager_id"));
     }
 
     protected String getAddEntityQuery() {
@@ -31,6 +31,11 @@ public class DepartmentsManager extends BaseManager<Department> {
     @Override
     protected String getLoadAllQuery() {
         return builder.getAllData();
+    }
+
+    @Override
+    protected String getLoadAllManagerQuery() {
+        return "SELECT * FROM employees WHERE department_id = ?";
     }
 
     @Override
