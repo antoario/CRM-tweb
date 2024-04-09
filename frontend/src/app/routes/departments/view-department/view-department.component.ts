@@ -97,7 +97,6 @@ export class ViewDepartmentComponent implements OnInit, OnDestroy {
   }
 
   changeVal(val: Employee) {
-    console.log(val)
     this.isValid = this.formBuilderComponent.form.valid
   }
 
@@ -122,6 +121,7 @@ export class ViewDepartmentComponent implements OnInit, OnDestroy {
 
   handleFormSubmit() {
     let sub
+    console.log({ ...this.formBuilderComponent.form.value })
     if (this.isNew) {
       sub = this.data.addData(`${environment.apiUrl}/departments`, this.formBuilderComponent.form.value)
     } else {

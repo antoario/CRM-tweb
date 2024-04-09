@@ -9,7 +9,7 @@
 			<span>Name: <span class="font-bold">{{ user!.first_name }}</span></span>
 			<span>Surname: <span class="font-bold">{{ user!.last_name }}</span></span>
 			@if (user!.role === ROLE.manager || user!.role === ROLE.employee) {
-				<span>Your Department id: <pre class="inline-pre">{{ user!.id_department }}</pre></span>
+				<span>Your Department id: <pre class="inline-pre">{{ user!.department_id }}</pre></span>
 			}
 			<span>Benefits ids: <pre class="inline-pre">{{ user!.benefits || "🥲" | json }}</pre></span>
 		</div>

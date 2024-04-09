@@ -43,6 +43,7 @@ export class AddEmployeesComponent implements OnInit, OnDestroy {
   departments: Map<string, Department> = new Map()
   @ViewChild(FormBuilderComponent) formBuilderComponent!: FormBuilderComponent
   @ViewChild("imageElement") imageElement!: ElementRef<HTMLImageElement>
+  currEmployee!: Employee
 
   constructor(
     private data: DataService,
@@ -72,22 +73,24 @@ export class AddEmployeesComponent implements OnInit, OnDestroy {
             blocked: val ? val?.role >= ROLE.manager : false,
           })
         )
-        this.populateSelectOptions<Department>("department_id", this.compData.departments$, "name")
+        this.populateSelectOptions<Department>("department_id", this.compData.getDepartments(), "name")
         this.loading = true
       })
     )
     this.idEmp = this.active.snapshot.params["id"] ?? ""
 
     this.initializeForm()
-    this.populateSelectOptions<Position>("position_id", this.compData.positions$, "title")
+    this.populateSelectOptions<Position>("position_id", this.compData.getPositions(), "title")
   }
 
   private initializeForm() {
     if (this.idEmp) {
       this.data
-        .getDataWithAuth<Employee>(`${environment.apiUrl}/employees/${this.idEmp}`)
+        .getDataWithAuth<Employee>(`${environment.apiUrl}/employees?id=${this.idEmp}`)
         .pipe(
           tap((val) => {
+            console.log(val)
+            this.currEmployee = val
             this.formBuilderComponent.form.patchValue(val)
             this.isNew = false
           })
@@ -122,16 +125,21 @@ export class AddEmployeesComponent implements OnInit, OnDestroy {
 
   handleFormSubmit() {
     let sub
+    console.log(this.formBuilderComponent.form.value)
     if (this.isNew) {
-      sub = this.data.addData(`${environment.apiUrl}/employees`, this.formBuilderComponent.form.value)
-    } else {
-      sub = this.data.updateData(
-        `${environment.apiUrl}/employees/${this.idEmp}`,
+      sub = this.data.addData<Employee>(
+        `${environment.apiUrl}/employees`,
         this.formBuilderComponent.form.value
       )
+    } else {
+      sub = this.data.updateData<Employee>(`${environment.apiUrl}/employees`, {
+        ...this.currEmployee,
+        ...this.formBuilderComponent.form.value,
+      })
     }
 
     sub.subscribe((val) => {
+      if (val == null) return
       if (val["id"]) {
         this.router.navigate(["/employees", val["id"]], { replaceUrl: true })
         this.isNew = false

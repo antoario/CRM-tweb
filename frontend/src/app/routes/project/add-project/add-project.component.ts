@@ -48,9 +48,9 @@ export class AddProjectComponent implements OnInit {
   constructor(private dataService: DataService) {}
 
   ngOnInit() {
-    this.dataService.getDataWithAuth<Department[]>(`${environment.apiUrl}/departments`).subscribe((val) => {
+    this.dataService.getDataWithAuth<Department[]>(`${environment.apiUrl}/projects`).subscribe((val) => {
       const selectDepartment = new SelectForm({
-        key: "department_id",
+        key: "project",
         label: "Department",
         required: true,
         order: 3,

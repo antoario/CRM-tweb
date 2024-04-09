@@ -20,7 +20,7 @@ export class EmployeeTableComponent implements OnInit, OnDestroy {
   notDef = "Not defined yet"
   subscription = new Subscription()
   position: Map<string, Position> = new Map()
-  departments: Map<string, Department> = new Map()
+  departments: Map<any, Department> = new Map()
 
   constructor(
     private data: DataService,

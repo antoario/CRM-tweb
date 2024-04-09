@@ -10,6 +10,7 @@ import { MatListModule } from "@angular/material/list"
 import { MatSidenavModule } from "@angular/material/sidenav"
 import { MatToolbarModule } from "@angular/material/toolbar"
 import { RouterLink, RouterOutlet } from "@angular/router"
+import { Employee } from "../../types/data"
 
 @Component({
   selector: "app-logged-home",
@@ -29,7 +30,7 @@ import { RouterLink, RouterOutlet } from "@angular/router"
   styleUrl: "./logged-home.component.scss",
 })
 export class LoggedHomeComponent implements OnInit {
-  user: UserData | null = null
+  user: Employee | null = null
 
   constructor(private userService: UserService) {}
 

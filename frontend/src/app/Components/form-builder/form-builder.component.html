@@ -23,6 +23,16 @@
 				<input [formControlName]="control.key" [id]="control.key" [disabled]="control.value.blocked"
 				       [type]="control.value.type" class="form-input">
 			</div>
+			
+			<div *ngSwitchCase="'date'">
+				<label [for]="control.key" class="form-label">{{ control.value.label }}
+					@if (control.value.required) {
+						<span class="text-red-500 text-sm">*</span>
+					}
+				</label>
+				<input [formControlName]="control.key" [id]="control.key" [disabled]="control.value.blocked"
+				       [type]="control.value.type" class="form-input">
+			</div>
 
 			<div *ngSwitchCase="'email'">
 				<label [for]="control.key" class="form-label">{{ control.value.label }}

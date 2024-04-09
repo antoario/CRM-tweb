@@ -1,4 +1,4 @@
-import { CustomForm, EmailQuestion, JustInfo, SelectForm, TextForm } from "../types/data"
+import { CustomForm, DateQuestion, EmailQuestion, JustInfo, SelectForm, TextForm } from "../types/data"
 
 export const addEmployee: CustomForm<any>[] = [
   new JustInfo({
@@ -30,6 +30,12 @@ export const addEmployee: CustomForm<any>[] = [
     key: "email",
     label: "Email",
     required: false,
+  }),
+  new DateQuestion({
+    order: 3,
+    key: "date_of_birth",
+    label: "Date of Birth",
+    required: true,
   }),
   new TextForm({ key: "address", label: "Address", order: 4 }),
   new JustInfo({

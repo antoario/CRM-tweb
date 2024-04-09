@@ -11,10 +11,12 @@ export interface Employee {
   last_name: string
   date_of_birth: Date
   email: string
-  department_id: string
+  department_id: number
   benefits: string[]
   img_url?: string
   position_id: string
+  role: number
+  password: string
 }
 
 export interface Position {
