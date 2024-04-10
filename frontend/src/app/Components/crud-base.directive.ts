@@ -7,13 +7,6 @@ import { ConfirmationDialogComponent } from "./confirmation-dialog/confirmation-
 import { Dialog } from "@angular/cdk/dialog"
 import { ActivatedRoute, Router } from "@angular/router"
 
-export interface CreateConfig<T> {
-  url: string
-  isNew: boolean
-  idEl: string | number
-  data: T
-}
-
 @Directive()
 export class CrudBaseDirective<T> implements OnInit {
   currData!: T
@@ -36,13 +29,8 @@ export class CrudBaseDirective<T> implements OnInit {
     this.getData()
   }
 
-  create(conf: CreateConfig<T>) {
-    this.baseUrl = conf.url
-    this.isNew = conf.isNew
-    this.currData = conf.data
-  }
-
   getData(): Subscription {
+    if (this.isNew) return of(null).subscribe()
     return this.dataService
       .getDataWithAuth<T>(this.getUrl(this.idEl))
       .pipe(
@@ -51,7 +39,6 @@ export class CrudBaseDirective<T> implements OnInit {
           console.log(this.currData)
           // TODO we can generalize this
           this.formBuilderComponent.form.patchValue(val as any)
-          this.isNew = false
         })
       )
       .subscribe()
@@ -66,7 +53,8 @@ export class CrudBaseDirective<T> implements OnInit {
   }
 
   init() {
-    this.idEl = this.active.snapshot.params["id"] ?? ""
+    this.idEl = this.active.snapshot.params["id"] ?? false
+    this.isNew = !this.idEl
   }
 
   handleFormSubmit(): Subscription {
@@ -79,12 +67,20 @@ export class CrudBaseDirective<T> implements OnInit {
 
     return sub
       .pipe(
-        tap(() => {
-          this.showSaved = 1
-          this.isValid = false
-          setTimeout(() => {
-            this.showSaved = 0
-          }, 1000)
+        tap((val: { code: number; data: { id: number; message: string } }) => {
+          if (val.code != -1) {
+            this.showSaved = 1
+            this.isValid = false
+            setTimeout(() => {
+              this.showSaved = 0
+            }, 1000)
+            if (this.isNew) {
+              this.router.navigate([`/${this.baseUrl}`, val.data.id], { replaceUrl: true })
+              this.isNew = false
+            }
+          } else {
+            console.error(val.data)
+          }
         })
       )
       .subscribe()
@@ -100,7 +96,7 @@ export class CrudBaseDirective<T> implements OnInit {
         switchMap((val) => {
           if (val) {
             this.router.navigate([`/${this.baseUrl}`])
-            return this.dataService.removeData(`${environment.apiUrl}/${this.baseUrl}/${this.idEl}`)
+            return this.dataService.removeData(`${environment.apiUrl}/${this.baseUrl}?id=${this.idEl}`)
           } else {
             return of(null)
           }

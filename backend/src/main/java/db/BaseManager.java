@@ -44,6 +44,7 @@ public abstract class BaseManager<T> {
             Response res = addEntity(getUpdateFromParams(params));
             return new Gson().toJson(res);
         } catch (Exception ex) {
+            ex.printStackTrace();
             return new Gson().toJson(new Response(-1, ex.getMessage()));
         }
     }

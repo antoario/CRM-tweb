@@ -1,6 +1,17 @@
 import { Component, ElementRef, OnDestroy, OnInit, ViewChild } from "@angular/core"
 import { FormBuilderComponent } from "../../../Components/form-builder/form-builder.component"
-import { CustomForm, Department, Employee, OptionSelect, Position, SelectForm } from "../../../types/data"
+import {
+  CustomForm,
+  DateQuestion,
+  Department,
+  EmailQuestion,
+  Employee,
+  JustInfo,
+  OptionSelect,
+  Position,
+  SelectForm,
+  TextForm,
+} from "../../../types/data"
 import { addEmployee } from "../../../forms/Employees"
 import { DataService } from "../../../Services/data.service"
 import { environment } from "../../../../environments/environment"
@@ -15,6 +26,7 @@ import { ConfirmationDialogComponent } from "../../../Components/confirmation-di
 import { CompanyDataService } from "../../../Services/company-data.service"
 import { UserService } from "../../../Services/user.service"
 import { ROLE } from "../../../types"
+import { CrudBaseDirective } from "../../../Components/crud-base.directive"
 
 @Component({
   selector: "app-add-employees",
@@ -32,137 +44,120 @@ import { ROLE } from "../../../types"
   templateUrl: "./add-employees.component.html",
   styleUrl: "./add-employees.component.scss",
 })
-export class AddEmployeesComponent implements OnInit, OnDestroy {
-  loading = false
-  addEmployee: Map<string, CustomForm<any>> = new Map()
-  isNew = true
-  isValid = false
-  idEmp: string = ""
-  showSaved = 0
-  subscription = new Subscription()
-  departments: Map<string, Department> = new Map()
-  @ViewChild(FormBuilderComponent) formBuilderComponent!: FormBuilderComponent
-  @ViewChild("imageElement") imageElement!: ElementRef<HTMLImageElement>
-  currEmployee!: Employee
+export class AddEmployeesComponent extends CrudBaseDirective<Employee> implements OnInit {
+  override baseUrl = "employees"
+  controls = new Map<keyof Employee | string, CustomForm<any>>()
 
-  constructor(
-    private data: DataService,
-    private active: ActivatedRoute,
-    private router: Router,
-    public dialog: Dialog,
-    private compData: CompanyDataService,
-    private userService: UserService
-  ) {}
-
-  ngOnDestroy() {
-    this.subscription.unsubscribe()
-  }
-
-  ngOnInit() {
-    for (const i of addEmployee) {
-      this.addEmployee.set(i.key, i)
-    }
-    this.subscription.add(
-      this.userService.currUser.subscribe((val) => {
-        this.addEmployee.set(
-          "department_id",
-          new SelectForm({
-            order: 5,
-            key: "department_id",
-            label: "Department",
-            blocked: val ? val?.role >= ROLE.manager : false,
-            required: true,
-          })
-        )
-        this.populateSelectOptions<Department>("department_id", this.compData.getDepartments(), "name")
-        this.loading = true
-      })
-    )
-    this.idEmp = this.active.snapshot.params["id"] ?? ""
-
-    this.initializeForm()
-    this.populateSelectOptions<Position>("position_id", this.compData.getPositions(), "title")
-  }
-
-  private initializeForm() {
-    if (this.idEmp) {
-      this.data
-        .getDataWithAuth<Employee>(`${environment.apiUrl}/employees?id=${this.idEmp}`)
-        .pipe(
-          tap((val) => {
-            console.log(val)
-            this.currEmployee = val
-            this.formBuilderComponent.form.patchValue(val)
-            this.isNew = false
-          })
-        )
-        .subscribe()
-    }
-  }
-
-  changeVal(val: Employee) {
-    this.isValid = this.formBuilderComponent.form.valid
-    this.imageElement.nativeElement.src = val.image_url || ""
-  }
-
-  deleteEmployee() {
-    const dialogRef = this.dialog.open<string>(ConfirmationDialogComponent, {
-      width: "250px",
+  override ngOnInit() {
+    super.ngOnInit()
+    const selection = new SelectForm({
+      order: 10,
+      key: "department_id",
     })
 
-    dialogRef.closed
-      .pipe(
-        switchMap((val) => {
-          if (val) {
-            this.router.navigate(["/employees"])
-            return this.data.removeData(`${environment.apiUrl}/employees/${this.idEmp}`)
-          } else {
-            return of(null)
+    this.dataService.getDataWithAuth<Department[]>(`${environment.apiUrl}/departments`).subscribe((val) => {
+      selection.setOptions(
+        val.map((dep) => {
+          return {
+            key: dep.id,
+            value: dep.name,
           }
         })
       )
-      .subscribe()
-  }
-
-  handleFormSubmit() {
-    let sub
-    console.log(this.formBuilderComponent.form.value)
-    if (this.isNew) {
-      sub = this.data.addData<Employee>(
-        `${environment.apiUrl}/employees`,
-        this.formBuilderComponent.form.value
-      )
-    } else {
-      sub = this.data.updateData<Employee>(`${environment.apiUrl}/employees`, {
-        ...this.currEmployee,
-        ...this.formBuilderComponent.form.value,
-      })
-    }
-
-    sub.subscribe((val) => {
-      if (val == null) return
-      if (val["id"]) {
-        this.router.navigate(["/employees", val["id"]], { replaceUrl: true })
-        this.isNew = false
-      }
-      this.showSaved = 1
-      this.isValid = false
-      setTimeout(() => {
-        this.showSaved = 0
-      }, 1000)
     })
-  }
-
-  private populateSelectOptions<T>(formKey: string, data$: Observable<Map<string, T>>, valueKey: keyof T) {
-    this.subscription.add(
-      data$.subscribe((el) => {
-        const options: OptionSelect[] = Array.from(el.entries()).map(([key, val]) => ({
-          key,
-          value: val[valueKey] as string,
-        }))
-        const selectForm = this.addEmployee.get(formKey) as SelectForm
-        selectForm.setOptions(options)
-      })
-    )
+    this.controls
+      .set(
+        "personal",
+        new JustInfo({
+          order: 0,
+          key: "personal_info",
+          width: "100%",
+          label: "Personal Information",
+          subtext: "Add your personal information",
+        })
+      )
+      .set(
+        "url_image",
+        new TextForm({
+          order: -1,
+          key: "url_image",
+          label: "Image Profile",
+        })
+      )
+      .set(
+        "first_name",
+        new TextForm({
+          order: 1,
+          key: "first_name",
+          label: "First Name",
+          required: true,
+        })
+      )
+      .set(
+        "last_name",
+        new TextForm({
+          order: 2,
+          key: "last_name",
+          label: "Lastname",
+          required: true,
+        })
+      )
+      .set(
+        "email",
+        new EmailQuestion({
+          order: 3,
+          key: "email",
+          label: "Email",
+          required: false,
+        })
+      )
+      .set(
+        "date_of_birth",
+        new DateQuestion({
+          order: 3,
+          key: "date_of_birth",
+          label: "Date of Birth",
+          required: true,
+        })
+      )
+      .set(
+        "address",
+        new TextForm({
+          key: "address",
+          label: "Address",
+          order: 4,
+        })
+      )
+      .set(
+        "dep_info",
+        new JustInfo({
+          order: 4,
+          key: "dep_info",
+          width: "100%",
+          label: "Assign to department",
+          subtext: "Add your personal information. You can assign later",
+        })
+      )
+      .set(
+        "role",
+        new SelectForm({
+          label: "Role",
+          key: "role",
+          required: true,
+          options: [
+            { key: 1, value: "Manager" },
+            { key: 2, value: "Employee" },
+          ],
+        })
+      )
+      .set(
+        "password",
+        new TextForm({
+          label: "Password",
+          key: "password",
+          required: true,
+        })
+      )
+      .set("department_id", selection)
   }
 }

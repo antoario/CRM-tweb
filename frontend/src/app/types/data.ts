@@ -60,7 +60,7 @@ export class CustomForm<T> {
   required: boolean
   order: number
   type: string
-  options: { key: string; value: string }[]
+  options: OptionSelect[]
   subForm: Map<string, CustomForm<T>>
   width: string
   subtext: string
@@ -96,7 +96,7 @@ export class CustomForm<T> {
   }
 }
 
-export type optionSelect = { key: string; value: string }
+export type optionSelect = { key: string | number; value: string }
 
 export class TextForm extends CustomForm<string> {
   override type = "text"
@@ -135,4 +135,4 @@ export class SelectForm extends CustomForm<string> {
   }
 }
 
-export type OptionSelect = { key: string; value: string }
+export type OptionSelect = { key: string | number; value: string }

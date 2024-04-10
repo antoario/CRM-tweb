@@ -26,19 +26,18 @@ export class ViewDepartmentComponent extends CrudBaseDirective<Department> imple
       order: 2,
       label: "Manager",
     })
-    selectionForm.initData(
-      this.dataService.getDataWithAuth<Employee[]>(`${environment.apiUrl}/employees`),
-      (val) => {
-        return val
-          .filter((emp) => emp.role == 1)
-          .map((emp) => {
-            return {
-              key: emp.id,
-              value: `${emp.first_name} ${emp.last_name}`,
-            }
-          })
-      }
-    )
+
+    this.dataService.getDataWithAuth<Employee[]>(`${environment.apiUrl}/employees`).subscribe((val) => {
+      const arr = val
+        .filter((emp) => emp.role == 1)
+        .map((emp) => {
+          return {
+            key: emp.id,
+            value: `${emp.first_name} ${emp.last_name}`,
+          }
+        })
+      selectionForm.setOptions(arr)
+    })
 
     this.departments
       .set(
