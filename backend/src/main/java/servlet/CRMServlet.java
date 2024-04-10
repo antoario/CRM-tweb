@@ -23,7 +23,7 @@ import java.util.stream.Collectors;
 import static java.lang.Integer.parseInt;
 
 @WebServlet(name = "CRMServlet", urlPatterns = {"/employees/*", "/benefits/*", "/contracts/*", "/departments/*", "/positions/*",
-        "/projects/*", })
+        "/projects/*",})
 public class CRMServlet extends HttpServlet {
     LoginHelper loginHelper = new LoginHelper();
     private Gson gson;
@@ -56,15 +56,16 @@ public class CRMServlet extends HttpServlet {
         AuthenticationResult result = getAuthenticationResult(preToken, out);
         if (result == null) return;
 
-        if(roleParam != null) {
+        if (roleParam != null) {
             try {
                 int role = parseInt(roleParam);
-                if(role == 0) entity = manager.loadAll();
-                else if(role == 1) entity = manager.loadManagerView(result.getDepartment_id());
+                if (role == 0) entity = manager.loadAll();
+                else if (role == 1) entity = manager.loadManagerView(result.getDepartment_id());
                 if (entity != null) out.println(entity);
                 return;
-            } catch (NumberFormatException e) {
-                response.sendError(HttpServletResponse.SC_BAD_REQUEST);
+            } catch (Exception e) {
+                this.printResult(out, -1, e.getMessage());
+                return;
             }
         }
 
@@ -73,9 +74,9 @@ public class CRMServlet extends HttpServlet {
                 int id = Integer.parseInt(idParam);
                 entity = manager.loadById(id);
                 if (entity != null) out.println(gson.toJson(entity));
-                else response.sendError(HttpServletResponse.SC_NOT_FOUND);
-            } catch (NumberFormatException e) {
-                response.sendError(HttpServletResponse.SC_BAD_REQUEST);
+                else this.printResult(out, -1, "Data not found");
+            } catch (Exception e) {
+                this.printResult(out, -1, e.getMessage());
             }
         } else out.println(manager.loadAll());
     }
@@ -136,9 +137,10 @@ public class CRMServlet extends HttpServlet {
         String resultId = null;
         try {
             resultId = manager.updateFromParams(requestMap);
-        } catch (SQLException e) {
+        } catch (Exception e) {
             out.println(new Gson().toJson(new Response(-1, e.getMessage())));
             e.printStackTrace();
+            return;
         }
         out.println(resultId);
     }

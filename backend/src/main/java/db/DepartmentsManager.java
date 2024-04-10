@@ -12,7 +12,6 @@ public class DepartmentsManager extends BaseManager<Department> {
     SQLbuilder builder = new SQLbuilder("departments");
 
     public DepartmentsManager() {
-
     }
 
     @Override

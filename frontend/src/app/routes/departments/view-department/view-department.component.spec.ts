@@ -1,23 +1,22 @@
-import { ComponentFixture, TestBed } from '@angular/core/testing';
+import { ComponentFixture, TestBed } from "@angular/core/testing"
 
-import { ViewDepartmentComponent } from './view-department.component';
+import { ViewDepartmentComponent } from "./view-department.component"
 
-describe('ViewDepartmentComponent', () => {
-  let component: ViewDepartmentComponent;
-  let fixture: ComponentFixture<ViewDepartmentComponent>;
+describe("ViewDepartmentComponent", () => {
+  let component: ViewDepartmentComponent
+  let fixture: ComponentFixture<ViewDepartmentComponent>
 
   beforeEach(async () => {
     await TestBed.configureTestingModule({
-      imports: [ViewDepartmentComponent]
-    })
-    .compileComponents();
-    
-    fixture = TestBed.createComponent(ViewDepartmentComponent);
-    component = fixture.componentInstance;
-    fixture.detectChanges();
-  });
+      imports: [ViewDepartmentComponent],
+    }).compileComponents()
 
-  it('should create', () => {
-    expect(component).toBeTruthy();
-  });
-});
+    fixture = TestBed.createComponent(ViewDepartmentComponent)
+    component = fixture.componentInstance
+    fixture.detectChanges()
+  })
+
+  it("should create", () => {
+    expect(component).toBeTruthy()
+  })
+})

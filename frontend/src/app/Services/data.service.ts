@@ -10,7 +10,7 @@ export class DataService {
 
   addData<T>(url: string, data: T): Observable<T> {
     const token = this.getToken()
-    throw new Error("Something bad happened")
+    if (!token) throw new Error("Something bad happened")
     return this.http.post<T>(url, data, { headers: this.buildHeader(token) })
   }
 
