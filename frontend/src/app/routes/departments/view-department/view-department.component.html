@@ -1,39 +1,39 @@
 <div class="max-w-3xl m-auto my-10">
-  <div>
-    <a routerLink="../">
-      <button class="button-btn bg-white">back to the list</button>
-    </a>
-  </div>
+	<div>
+		<a routerLink="../">
+			<button class="button-btn bg-white">back to the list</button>
+		</a>
+	</div>
 
-  <div class="border border-gray-300 rounded-2xl bg-white">
-    <div class="p-5 flex">
-      <div>
-        <h1 class="good-title">Employee</h1>
-        <p class="text-gray-600 text-sm">Here you can manage the employee</p>
-      </div>
-      <div class="ml-auto">
+	<div class="border border-gray-300 rounded-2xl bg-white">
+		<div class="p-5 flex">
+			<div>
+				<h1 class="good-title">Department {{ (department && department.name) || "" }}</h1>
+				<p class="text-gray-600 text-sm">Here you can manage the department</p>
+			</div>
+			<div class="ml-auto">
 
         <span class="text-green-600 mx-2 font-medium transition-all"
               [style.opacity]="showSaved">Saved ✅</span>
-        @if (!isNew) {
-          <button (click)="deleteEmployee()"
-                  class="button-btn bg-red-500 text-white mx-2">Delete
-          </button>
-        }
-        <button (click)="handleFormSubmit()"
-                [disabled]="!isValid"
-                class="button-btn bg-blue-500 text-white disabled:bg-gray-300 transition-all">Save
-        </button>
-      </div>
-    </div>
+				@if (!isNew) {
+					<button (click)="deleteEmployee()"
+					        class="button-btn bg-red-500 text-white mx-2">Delete
+					</button>
+				}
+				<button (click)="handleFormSubmit()"
+				        [disabled]="!isValid"
+				        class="button-btn bg-blue-500 text-white disabled:bg-gray-300 transition-all">Save
+				</button>
+			</div>
+		</div>
 
-    <hr>
+		<hr>
 
-    <div class="p-5">
-      <app-form-builder (formChange)="changeVal($event)" [controls]="departments"></app-form-builder>
-    </div>
+		<div class="p-5">
+			<app-form-builder (formChange)="changeVal($event)" [controls]="departments"></app-form-builder>
+		</div>
 
-  </div>
+	</div>
 
 </div>
 

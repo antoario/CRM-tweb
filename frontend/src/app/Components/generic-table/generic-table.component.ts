@@ -62,7 +62,7 @@ export class GenericTableComponent implements OnInit {
       sub = this.data.addData(`${environment.apiUrl}/${this.url}`, this.formBuilderComponent.form.value)
     } else {
       sub = this.data.updateData(
-        `${environment.apiUrl}/${this.url}/${this.idVal}`,
+        `${environment.apiUrl}/${this.url}?id=${this.idVal}`,
         this.formBuilderComponent.form.value
       )
     }

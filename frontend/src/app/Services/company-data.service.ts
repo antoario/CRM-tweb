@@ -1,6 +1,6 @@
 import { Injectable } from "@angular/core"
 import { BehaviorSubject, map, merge, Observable } from "rxjs"
-import { Benefits, Contracts, Department, Position, Projects } from "../types/data"
+import { Benefits, Contracts, Department, Position, Project } from "../types/data"
 import { DataService } from "./data.service"
 import { environment } from "../../environments/environment"
 
@@ -12,7 +12,7 @@ export class CompanyDataService {
   departments$: BehaviorSubject<Map<string, Department>> = new BehaviorSubject<Map<string, Department>>(
     new Map()
   )
-  projects$: BehaviorSubject<Map<string, Projects>> = new BehaviorSubject<Map<string, Projects>>(new Map())
+  projects$: BehaviorSubject<Map<string, Project>> = new BehaviorSubject<Map<string, Project>>(new Map())
   benefits$: BehaviorSubject<Map<string, Benefits>> = new BehaviorSubject<Map<string, Benefits>>(new Map())
   contracts$: BehaviorSubject<Map<string, Contracts>> = new BehaviorSubject<Map<string, Contracts>>(new Map())
 
@@ -30,7 +30,7 @@ export class CompanyDataService {
       .pipe(map((pos) => this.manageData(pos, this.departments$)))
   }
 
-  public getProjects(): Observable<Map<string, Projects>> {
+  public getProjects(): Observable<Map<string, Project>> {
     return this.getObservable(`${environment.apiUrl}/projects`, this.projects$)
   }
 

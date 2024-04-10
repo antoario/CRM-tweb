@@ -29,14 +29,6 @@ import { ConfirmationDialogComponent } from "../../../Components/confirmation-di
 export class ViewDepartmentComponent implements OnInit, OnDestroy {
   departments: Map<keyof Department, CustomForm<any>> = new Map()
     .set(
-      "intro",
-      new JustInfo({
-        order: 0,
-        label: "Manage dep",
-        width: "100%",
-      })
-    )
-    .set(
       "description",
       new TextForm({
         order: 2,
@@ -56,12 +48,12 @@ export class ViewDepartmentComponent implements OnInit, OnDestroy {
       })
     )
 
-  // TODO refactoring
   isNew = true
   isValid = false
   idEmp: string = ""
   showSaved = 0
   subscription = new Subscription()
+  department!: Department
   @ViewChild(FormBuilderComponent) formBuilderComponent!: FormBuilderComponent
   @ViewChild("imageElement") imageElement!: ElementRef<HTMLImageElement>
 
@@ -85,9 +77,10 @@ export class ViewDepartmentComponent implements OnInit, OnDestroy {
   private initializeForm() {
     if (this.idEmp) {
       this.data
-        .getDataWithAuth<Employee>(`${environment.apiUrl}/departments/${this.idEmp}`)
+        .getDataWithAuth<Department>(`${environment.apiUrl}/departments?id=${this.idEmp}`)
         .pipe(
           tap((val) => {
+            this.department = val
             this.formBuilderComponent.form.patchValue(val)
             this.isNew = false
           })
@@ -96,8 +89,12 @@ export class ViewDepartmentComponent implements OnInit, OnDestroy {
     }
   }
 
-  changeVal(val: Employee) {
+  changeVal(val: Department) {
     this.isValid = this.formBuilderComponent.form.valid
+    this.department = {
+      ...this.department,
+      ...this.formBuilderComponent.form.value,
+    }
   }
 
   deleteEmployee() {
@@ -121,16 +118,13 @@ export class ViewDepartmentComponent implements OnInit, OnDestroy {
 
   handleFormSubmit() {
     let sub
-    console.log({ ...this.formBuilderComponent.form.value })
     if (this.isNew) {
-      sub = this.data.addData(`${environment.apiUrl}/departments`, this.formBuilderComponent.form.value)
+      sub = this.data.addData(`${environment.apiUrl}/departments`, this.department)
     } else {
-      sub = this.data.updateData(
-        `${environment.apiUrl}/employees/${this.idEmp}`,
-        this.formBuilderComponent.form.value
-      )
+      sub = this.data.updateData(`${environment.apiUrl}/departments`, this.department)
     }
 
+    console.log(this.department)
     sub.subscribe((val) => {
       if (val["id"]) {
         this.router.navigate(["/departments", val["id"]], { replaceUrl: true })

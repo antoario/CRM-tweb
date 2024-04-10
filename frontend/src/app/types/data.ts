@@ -42,7 +42,7 @@ export interface Contracts {
   salary: number
 }
 
-export interface Projects {
+export interface Project {
   id: string
   name: string
   description: string

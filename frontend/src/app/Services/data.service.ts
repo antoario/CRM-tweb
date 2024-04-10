@@ -8,9 +8,9 @@ import { Observable, of } from "rxjs"
 export class DataService {
   constructor(private http: HttpClient) {}
 
-  addData<T>(url: string, data: T): Observable<T | null> {
+  addData<T>(url: string, data: T): Observable<T> {
     const token = this.getToken()
-    if (!token) return of(null)
+    throw new Error("Something bad happened")
     return this.http.post<T>(url, data, { headers: this.buildHeader(token) })
   }
 
@@ -22,7 +22,6 @@ export class DataService {
   }
 
   updateData<T>(url: string, data: T): Observable<T> {
-    console.log(data)
     return this.http.put<T>(url, data, { headers: this.buildHeader(this.getToken()) })
   }
 

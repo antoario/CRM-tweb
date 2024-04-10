@@ -2,11 +2,8 @@ import { Component, OnInit, ViewChild } from "@angular/core"
 import { GenericTableComponent } from "../../../Components/generic-table/generic-table.component"
 import {
   CustomForm,
-  Department,
   JustInfo,
-  OptionSelect,
-  Projects,
-  SelectForm,
+  Project,
   TextForm,
 } from "../../../types/data"
 import { DataService } from "../../../Services/data.service"
@@ -44,23 +41,14 @@ export class AddProjectComponent implements OnInit {
   ]
   loading = false
   @ViewChild(GenericTableComponent) genericTable!: GenericTableComponent
+  project !: Project;
 
   constructor(private dataService: DataService) {}
 
   ngOnInit() {
-    this.dataService.getDataWithAuth<Department[]>(`${environment.apiUrl}/projects`).subscribe((val) => {
-      const selectDepartment = new SelectForm({
-        key: "project",
-        label: "Department",
-        required: true,
-        order: 3,
-      })
-      const options: OptionSelect[] = val.map((op) => {
-        return { key: op.id, value: op.name }
-      })
-      selectDepartment.setOptions(options)
-      this.controls.push(selectDepartment)
-      this.loading = true
+    const id = ""
+    this.dataService.getDataWithAuth<Project>(`${environment.apiUrl}/project?id=${id}`).subscribe(val => {
+      this.project = val
     })
   }
 
