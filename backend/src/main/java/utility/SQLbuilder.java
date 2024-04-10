@@ -17,8 +17,6 @@ public class SQLbuilder {
     }
 
     public String getSingle() {
-        return "SELECT * from " + this.table + "WHERE id = ?";
+        return "SELECT * from " + this.table + " WHERE id = ?";
     }
-
-
 }

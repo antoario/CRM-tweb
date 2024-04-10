@@ -1,7 +1,6 @@
 package db;
 
 import Data.Employee;
-
 import java.sql.*;
 import java.util.Arrays;
 import java.util.List;
@@ -21,12 +20,13 @@ public class EmployeesManager extends BaseManager<Employee> {
                 rs.getString("email"),
                 rs.getInt("department_id"),
                 rs.getString("password"),
-                rs.getInt("role"));
+                rs.getInt("role"),
+                rs.getString("url_image"));
     }
 
 
     protected String getAddEntityQuery() {
-        return "INSERT INTO employees (first_name, last_name, date_of_birth, email, department_id, password, role) VALUES (?, ?, ?, ?, ?, ?, ?)";
+        return "INSERT INTO employees (first_name, last_name, date_of_birth, email, department_id, password, role, url_image) VALUES (?, ?, ?, ?, ?, ?, ?, ?)";
     }
 
     @Override
@@ -46,7 +46,7 @@ public class EmployeesManager extends BaseManager<Employee> {
 
     @Override
     protected String getUpdateEntityQuery() {
-        return "UPDATE employees SET first_name = ?, last_name = ?, date_of_birth = ?, email = ?, department_id = ?, password = ?, role = ? WHERE id = ?";
+        return "UPDATE employees SET first_name = ?, last_name = ?, date_of_birth = ?, email = ?, department_id = ?, password = ?, role = ?, url_image = ? WHERE id = ?";
     }
 
     @Override
@@ -65,6 +65,7 @@ public class EmployeesManager extends BaseManager<Employee> {
         String email = (String) params.get("email");
         int role = (int) ((Double) params.get("role")).doubleValue();
         int idDepartment = (int) ((Double) params.get("department_id")).doubleValue();
+        String url_image = (String) params.get("url_image");
 
         return Arrays.asList(
                 firstName,
@@ -74,6 +75,7 @@ public class EmployeesManager extends BaseManager<Employee> {
                 idDepartment,
                 password,
                 role,
+                url_image,
                 id
         );
     }

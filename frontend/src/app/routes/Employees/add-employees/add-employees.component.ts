@@ -101,7 +101,7 @@ export class AddEmployeesComponent implements OnInit, OnDestroy {
 
   changeVal(val: Employee) {
     this.isValid = this.formBuilderComponent.form.valid
-    this.imageElement.nativeElement.src = val.img_url || ""
+    this.imageElement.nativeElement.src = val.url_image || ""
   }
 
   deleteEmployee() {
