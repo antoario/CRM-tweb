@@ -4,6 +4,9 @@
 			<span class="text-xl font-medium">Your information</span>
 		</div>
 
+
+		<img [src]="user?.url_image" alt="" class="rounded-full mb-5">
+
 		<div class="flex flex-col gap-2">
 			<span>Role: <pre class="inline-pre">{{ ROLE[user!.role] }}</pre></span>
 			<span>Name: <span class="font-bold">{{ user!.first_name }}</span></span>
@@ -14,4 +17,6 @@
 			<span>Benefits ids: <pre class="inline-pre">{{ user!.benefits || "🥲" | json }}</pre></span>
 		</div>
 	</app-layout-single>
+
+	<app-project></app-project>
 }

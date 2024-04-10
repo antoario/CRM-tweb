@@ -43,8 +43,8 @@ export const routes: Routes = [
         path: "positions",
         children: [
           { path: "", component: PositionsComponent },
-          { path: ":id", component: PositionSingleComponent },
           { path: "add", component: PositionSingleComponent },
+          { path: ":id", component: PositionSingleComponent },
         ],
       },
       {

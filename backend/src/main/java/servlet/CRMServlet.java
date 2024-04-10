@@ -12,6 +12,7 @@ import utility.ErrorHandler;
 import utility.LoginHelper;
 import utility.Response;
 import com.google.gson.GsonBuilder;
+
 import java.io.BufferedReader;
 import java.io.IOException;
 import java.io.PrintWriter;
@@ -19,6 +20,7 @@ import java.lang.reflect.Type;
 import java.text.SimpleDateFormat;
 import java.util.Map;
 import java.util.stream.Collectors;
+
 import static java.lang.Integer.parseInt;
 
 @WebServlet(name = "CRMServlet", urlPatterns = {"/employees/*", "/benefits/*", "/contracts/*", "/departments/*", "/positions/*",
@@ -37,7 +39,8 @@ public class CRMServlet extends HttpServlet {
         return new RequestBody(requestBody, manager, type);
     }
 
-    public void init() {}
+    public void init() {
+    }
 
     @Override
     protected void doGet(HttpServletRequest request, HttpServletResponse response) throws IOException {
@@ -55,8 +58,9 @@ public class CRMServlet extends HttpServlet {
         if (roleParam != null) {
             try {
                 int role = parseInt(roleParam);
-                if (role == 0) entity = manager.loadAll();
-                else if (role == 1) entity = manager.loadManagerView(result.getDepartment_id());
+                // Todo add check inside the function
+                System.out.println(role);
+                entity = manager.loadManagerView(role);
                 if (entity != null) out.println(entity);
                 return;
             } catch (Exception e) {
@@ -131,6 +135,7 @@ public class CRMServlet extends HttpServlet {
         try {
             resultId = manager.updateFromParams(requestMap);
         } catch (Exception e) {
+            e.printStackTrace();
             errorHandler.handleBadRequest(response, out, e.getMessage());
             return;
         }

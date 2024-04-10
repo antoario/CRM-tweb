@@ -4,6 +4,7 @@ import com.google.gson.Gson;
 import com.google.gson.GsonBuilder;
 import utility.ErrorHandler;
 import utility.Response;
+
 import java.sql.*;
 import java.util.ArrayList;
 import java.util.List;
@@ -11,13 +12,21 @@ import java.util.Map;
 
 public abstract class BaseManager<T> {
     protected final static PoolingPersistenceManager persistence = PoolingPersistenceManager.getPersistenceManager();
+
     protected abstract T mapRowToEntity(ResultSet rs) throws SQLException;
+
     protected abstract String getLoadAllQuery();
+
     protected abstract String getLoadAllManagerQuery();
+
     protected abstract String getLoadByIdQuery();
+
     protected abstract String getAddEntityQuery();
+
     protected abstract String getUpdateEntityQuery();
+
     protected abstract String getDeleteEntityQuery();
+
     protected abstract List<Object> getUpdateFromParams(Map<String, Object> params);
 
     public String loadAll() {
@@ -80,6 +89,7 @@ public abstract class BaseManager<T> {
         try (Connection conn = persistence.getConnection();
              PreparedStatement st = conn.prepareStatement(query)) {
             st.setInt(1, department_id);
+            System.out.println(st);
             ResultSet rs = st.executeQuery();
             while (rs.next()) {
                 entities.add(mapRowToEntity(rs));
@@ -140,7 +150,9 @@ public abstract class BaseManager<T> {
         }
     }
 
-    record ResponseData(int id, String message) {}
+    record ResponseData(int id, String message) {
+    }
 
-    record ResponseDataFail(String message) {}
+    record ResponseDataFail(String message) {
+    }
 }

@@ -46,7 +46,7 @@ export class FormBuilderComponent implements OnInit, OnDestroy {
     this.form = this.toFormGroup(this.controls)
 
     this.subscription = this.form.valueChanges.subscribe(() => {
-      this.formChange.emit(this.form.value)
+      this.formChange.emit(this.form.getRawValue())
     })
   }
 
@@ -78,6 +78,6 @@ export class FormBuilderComponent implements OnInit, OnDestroy {
   }
 
   onSubmit() {
-    this.formSubmit.emit(this.form.value) // Emetti i valori del form al submit
+    this.formSubmit.emit(this.form.getRawValue()) // Emetti i valori del form al submit
   }
 }

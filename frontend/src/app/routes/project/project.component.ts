@@ -4,6 +4,11 @@ import { LayoutSingleComponent } from "../../Components/layout-single/layout-sin
 import { CompanyDataService } from "../../Services/company-data.service"
 import { Columns } from "../../types"
 import { RouterLink } from "@angular/router"
+import { UserService } from "../../Services/user.service"
+import { switchMap, tap } from "rxjs"
+import { DataService } from "../../Services/data.service"
+import { Project } from "../../types/data"
+import { environment } from "../../../environments/environment"
 
 @Component({
   selector: "app-project",
@@ -20,11 +25,28 @@ export class ProjectComponent implements OnInit {
   ]
   columnsDefs = ["id", "name", "actions"]
 
-  constructor(private companyDataService: CompanyDataService) {}
+  constructor(
+    private companyDataService: CompanyDataService,
+    private userService: UserService,
+    private dataService: DataService
+  ) {}
 
   ngOnInit() {
-    this.companyDataService.getProjects().subscribe((val) => {
-      this.data = Array.from(val, ([, value]) => value)
-    })
+    this.userService.currUser
+      .pipe(
+        switchMap((usr) => {
+          if (usr.role > 0) {
+            console.log(usr.department_id)
+            return this.dataService.getDataWithAuth<Project[]>(
+              `${environment.apiUrl}/projects?role=${usr.department_id}`
+            )
+          } else {
+            return this.dataService.getDataWithAuth<Project[]>(`${environment.apiUrl}/projects`)
+          }
+        })
+      )
+      .subscribe((val) => {
+        this.data = val
+      })
   }
 }

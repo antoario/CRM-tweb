@@ -37,7 +37,7 @@ public class ProjectsManager extends BaseManager<Project> {
 
     @Override
     protected String getLoadAllManagerQuery() {
-        return "SELECT * FROM employees WHERE department_id = ?";
+        return "SELECT * FROM projects WHERE department_id = ?";
     }
 
     @Override

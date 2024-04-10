@@ -4,11 +4,12 @@ import { LayoutSingleComponent } from "../../Components/layout-single/layout-sin
 import { CustomTableComponent } from "../../Components/custom-table/custom-table.component"
 import { Columns } from "../../types"
 import { CompanyDataService } from "../../Services/company-data.service"
+import { RouterLink } from "@angular/router"
 
 @Component({
   selector: "app-positions",
   standalone: true,
-  imports: [CdkCell, LayoutSingleComponent, CustomTableComponent],
+  imports: [CdkCell, LayoutSingleComponent, CustomTableComponent, RouterLink],
   templateUrl: "./positions.component.html",
   styleUrl: "./positions.component.scss",
 })

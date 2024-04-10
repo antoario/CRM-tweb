@@ -3,7 +3,7 @@ import { UserData } from "../../types/UserTypes"
 import { LayoutSingleComponent } from "../../Components/layout-single/layout-single.component"
 import { ROLE } from "../../types"
 import { Component, OnInit } from "@angular/core"
-import { CommonModule } from "@angular/common"
+import { CommonModule, NgOptimizedImage } from "@angular/common"
 import { MatButtonModule } from "@angular/material/button"
 import { MatIconModule } from "@angular/material/icon"
 import { MatListModule } from "@angular/material/list"
@@ -11,6 +11,7 @@ import { MatSidenavModule } from "@angular/material/sidenav"
 import { MatToolbarModule } from "@angular/material/toolbar"
 import { RouterLink, RouterOutlet } from "@angular/router"
 import { Employee } from "../../types/data"
+import { ProjectComponent } from "../project/project.component"
 
 @Component({
   selector: "app-logged-home",
@@ -25,6 +26,8 @@ import { Employee } from "../../types/data"
     RouterOutlet,
     RouterLink,
     LayoutSingleComponent,
+    NgOptimizedImage,
+    ProjectComponent,
   ],
   templateUrl: "./logged-home.component.html",
   styleUrl: "./logged-home.component.scss",
