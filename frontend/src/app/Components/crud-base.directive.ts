@@ -1,11 +1,11 @@
-import { Directive, EventEmitter, Output } from "@angular/core"
+import { Directive, OnInit, ViewChild } from "@angular/core"
 import { DataService } from "../Services/data.service"
 import { Observable, of, Subscription, switchMap, tap } from "rxjs"
 import { environment } from "../../environments/environment"
 import { FormBuilderComponent } from "./form-builder/form-builder.component"
 import { ConfirmationDialogComponent } from "./confirmation-dialog/confirmation-dialog.component"
 import { Dialog } from "@angular/cdk/dialog"
-import { Router } from "@angular/router"
+import { ActivatedRoute, Router } from "@angular/router"
 
 export interface CreateConfig<T> {
   url: string
@@ -15,40 +15,25 @@ export interface CreateConfig<T> {
 }
 
 @Directive()
-export class CrudBaseDirective<T> {
+export class CrudBaseDirective<T> implements OnInit {
   currData!: T
   baseUrl!: string
   isNew!: boolean
   idEl!: string | null | undefined
-  formBuilderComponent!: FormBuilderComponent
-  @Output() showSavedChange = new EventEmitter<number>()
-  @Output() isValidChange = new EventEmitter<boolean>()
-  dataService!: DataService
-  dialog!: Dialog
-  router!: Router
+  @ViewChild(FormBuilderComponent) formBuilderComponent!: FormBuilderComponent
+  isValid: boolean = false
+  showSaved: number = 0
 
-  constructor() {}
+  constructor(
+    private dataService: DataService,
+    private active: ActivatedRoute,
+    private router: Router,
+    private dialog: Dialog
+  ) {}
 
-  private _showSaved: number = 0
-
-  get showSaved(): number {
-    return this._showSaved
-  }
-
-  set showSaved(value: number) {
-    this._showSaved = value
-    this.showSavedChange.emit(this._showSaved)
-  }
-
-  private _isValid = false
-
-  get isValid(): boolean {
-    return this._isValid
-  }
-
-  set isValid(value: boolean) {
-    this._isValid = value
-    this.isValidChange.emit(this._isValid)
+  ngOnInit(): void {
+    this.init()
+    this.getData()
   }
 
   create(conf: CreateConfig<T>) {
@@ -77,6 +62,10 @@ export class CrudBaseDirective<T> {
       ...val,
       ...this.formBuilderComponent.form.value,
     }
+  }
+
+  init() {
+    this.idEl = this.active.snapshot.params["id"] ?? ""
   }
 
   handleFormSubmit(): Subscription {

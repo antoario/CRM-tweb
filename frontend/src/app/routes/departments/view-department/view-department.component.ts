@@ -1,10 +1,8 @@
-import { Component, ElementRef, OnInit, ViewChild } from "@angular/core"
+import { Component, ElementRef, ViewChild } from "@angular/core"
 import { CustomForm, Department, TextForm } from "../../../types/data"
 import { FormBuilderComponent } from "../../../Components/form-builder/form-builder.component"
 import { NgOptimizedImage } from "@angular/common"
-import { ActivatedRoute, Router, RouterLink } from "@angular/router"
-import { DataService } from "../../../Services/data.service"
-import { Dialog } from "@angular/cdk/dialog"
+import { RouterLink } from "@angular/router"
 import { CrudBaseDirective } from "../../../Components/crud-base.directive"
 
 @Component({
@@ -14,7 +12,7 @@ import { CrudBaseDirective } from "../../../Components/crud-base.directive"
   templateUrl: "./view-department.component.html",
   styleUrl: "./view-department.component.scss",
 })
-export class ViewDepartmentComponent extends CrudBaseDirective<Department> implements OnInit {
+export class ViewDepartmentComponent extends CrudBaseDirective<Department> {
   departments: Map<keyof Department, CustomForm<any>> = new Map()
     .set(
       "description",
@@ -36,22 +34,6 @@ export class ViewDepartmentComponent extends CrudBaseDirective<Department> imple
       })
     )
 
-  override idEl: string = ""
   override baseUrl = "departments"
-  @ViewChild(FormBuilderComponent) override formBuilderComponent!: FormBuilderComponent
   @ViewChild("imageElement") imageElement!: ElementRef<HTMLImageElement>
-
-  constructor(
-    override dataService: DataService,
-    private active: ActivatedRoute,
-    override router: Router,
-    override dialog: Dialog
-  ) {
-    super()
-  }
-
-  ngOnInit() {
-    this.idEl = this.active.snapshot.params["id"] ?? ""
-    super.getData()
-  }
 }
