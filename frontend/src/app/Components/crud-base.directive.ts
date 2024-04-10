@@ -1,4 +1,4 @@
-import { Directive, OnInit, ViewChild } from "@angular/core"
+import { ChangeDetectorRef, Directive, OnInit, ViewChild } from "@angular/core"
 import { DataService } from "../Services/data.service"
 import { Observable, of, Subscription, switchMap, tap } from "rxjs"
 import { environment } from "../../environments/environment"
@@ -23,7 +23,8 @@ export class CrudBaseDirective<T> implements OnInit {
     private active: ActivatedRoute,
     private router: Router,
     private dialog: Dialog,
-    public userService: UserService
+    public userService: UserService,
+    public cdRef: ChangeDetectorRef
   ) {}
 
   ngOnInit(): void {

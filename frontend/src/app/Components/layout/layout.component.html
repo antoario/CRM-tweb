@@ -19,8 +19,8 @@
 					<app-items-menu [element]="menu" *ngIf="user && user.role <= menu.canActive"></app-items-menu>
 				}
 				<hr class="my-3">
-				<app-items-menu
-					[element]="{text: 'Manage users', link:'./users', icon: 'manage_accounts'}"></app-items-menu>
+				<!--				<app-items-menu-->
+				<!--					[element]="{text: 'Manage users', link:'./users', icon: 'manage_accounts'}"></app-items-menu>-->
 
 				<div class="mt-auto">
 					<button class="button-btn bg-blue-500 text-white" (click)="logout()">Logout</button>

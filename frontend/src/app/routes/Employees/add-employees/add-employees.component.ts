@@ -1,4 +1,4 @@
-import { Component, ElementRef, OnDestroy, OnInit, ViewChild } from "@angular/core"
+import { AfterViewInit, Component, ElementRef, OnDestroy, OnInit, ViewChild } from "@angular/core"
 import { FormBuilderComponent } from "../../../Components/form-builder/form-builder.component"
 import {
   CustomForm,
@@ -44,7 +44,7 @@ import { CrudBaseDirective } from "../../../Components/crud-base.directive"
   templateUrl: "./add-employees.component.html",
   styleUrl: "./add-employees.component.scss",
 })
-export class AddEmployeesComponent extends CrudBaseDirective<Employee> implements OnInit {
+export class AddEmployeesComponent extends CrudBaseDirective<Employee> implements OnInit, AfterViewInit {
   override baseUrl = "employees"
   controls = new Map<keyof Employee | string, CustomForm<any>>()
   imageUrl =
@@ -57,6 +57,17 @@ export class AddEmployeesComponent extends CrudBaseDirective<Employee> implement
       "https://static.vecteezy.com/system/resources/thumbnails/009/292/244/small/default-avatar-icon-of-social-media-user-vector.jpg"
   }
 
+  ngAfterViewInit() {
+    this.userService.currUser.subscribe((usr) => {
+      if (usr.role == ROLE.manager) {
+        const control = this.formBuilderComponent.form.get("department_id")
+        control?.disable()
+        control?.setValue(usr.department_id)
+        this.cdRef.detectChanges()
+      }
+    })
+  }
+
   override ngOnInit() {
     super.ngOnInit()
 
@@ -65,14 +76,6 @@ export class AddEmployeesComponent extends CrudBaseDirective<Employee> implement
       key: "department_id",
       label: "Department",
       required: true,
-    })
-
-    this.userService.currUser.subscribe((usr) => {
-      if (usr.role == ROLE.manager) {
-        const control = this.formBuilderComponent.form.controls["department_id"]
-        control.setValue(usr.department_id)
-        control.disable()
-      }
     })
 
     this.dataService.getDataWithAuth<Department[]>(`${environment.apiUrl}/departments`).subscribe((val) => {

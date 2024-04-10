@@ -1,4 +1,4 @@
-import { Component, OnInit } from "@angular/core"
+import { AfterViewInit, Component, OnInit } from "@angular/core"
 import { GenericTableComponent } from "../../../Components/generic-table/generic-table.component"
 import {
   CustomForm,
@@ -23,8 +23,19 @@ import { ROLE } from "../../../types"
   templateUrl: "./add-project.component.html",
   styleUrl: "./add-project.component.scss",
 })
-export class AddProjectComponent extends CrudBaseDirective<Project> implements OnInit {
+export class AddProjectComponent extends CrudBaseDirective<Project> implements OnInit, AfterViewInit {
   project = new Map<keyof Project, CustomForm<any>>()
+
+  ngAfterViewInit() {
+    this.userService.currUser.subscribe((usr) => {
+      if (usr.role == ROLE.manager) {
+        const control = this.formBuilderComponent.form.get("department_id")
+        control?.disable()
+        control?.setValue(usr.department_id)
+        this.cdRef.detectChanges()
+      }
+    })
+  }
 
   override ngOnInit() {
     super.ngOnInit()
@@ -34,14 +45,6 @@ export class AddProjectComponent extends CrudBaseDirective<Project> implements O
       order: 4,
       key: "department_id",
       label: "Department",
-    })
-
-    this.userService.currUser.subscribe((usr) => {
-      if (usr.role == ROLE.manager) {
-        const control = this.formBuilderComponent.form.controls["department_id"]
-        control.setValue(usr.department_id)
-        control.disable()
-      }
     })
 
     this.dataService.getDataWithAuth<Department[]>(`${environment.apiUrl}/departments/`).subscribe((val) => {
