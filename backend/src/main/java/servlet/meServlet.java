@@ -11,6 +11,7 @@ import jakarta.servlet.http.HttpServletRequest;
 import jakarta.servlet.http.HttpServletResponse;
 import utility.LoginHelper;
 import utility.Response;
+
 import java.io.IOException;
 import java.io.PrintWriter;
 
@@ -30,6 +31,7 @@ public class meServlet extends HttpServlet {
             out.println(new Gson().toJson(employee));
         } catch (Exception ex) {
             out.println(new Gson().toJson(new Response(-1, ex.getMessage())));
+            ex.printStackTrace();
         }
     }
 }

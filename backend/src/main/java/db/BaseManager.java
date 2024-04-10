@@ -89,7 +89,6 @@ public abstract class BaseManager<T> {
         try (Connection conn = persistence.getConnection();
              PreparedStatement st = conn.prepareStatement(query)) {
             st.setInt(1, department_id);
-            System.out.println(st);
             ResultSet rs = st.executeQuery();
             while (rs.next()) {
                 entities.add(mapRowToEntity(rs));

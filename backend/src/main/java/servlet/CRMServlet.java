@@ -59,7 +59,6 @@ public class CRMServlet extends HttpServlet {
             try {
                 int role = parseInt(roleParam);
                 // Todo add check inside the function
-                System.out.println(role);
                 entity = manager.loadManagerView(role);
                 if (entity != null) out.println(entity);
                 return;

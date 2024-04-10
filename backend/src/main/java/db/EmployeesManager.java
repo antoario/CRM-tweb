@@ -58,7 +58,6 @@ public class EmployeesManager extends BaseManager<Employee> {
             id = null;
         }
 
-        System.out.println(params);
         String firstName = (String) params.get("first_name");
         String lastName = (String) params.get("last_name");
         Date dateOfBirth = Date.valueOf((String) params.get("date_of_birth"));

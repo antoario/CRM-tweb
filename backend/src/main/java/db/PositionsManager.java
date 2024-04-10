@@ -35,7 +35,7 @@ public class PositionsManager extends BaseManager<Position> {
 
     @Override
     protected String getLoadAllManagerQuery() {
-        return "SELECT * FROM employees WHERE department_id = ?";
+        return "SELECT * FROM positions WHERE department_id = ?";
     }
 
     @Override
@@ -45,7 +45,7 @@ public class PositionsManager extends BaseManager<Position> {
 
     @Override
     protected String getUpdateEntityQuery() {
-        return "UPDATE positions SET title = ?, description = ?, level = ?, department_id = ?, WHERE id = ?";
+        return "UPDATE positions SET title = ?, description = ?, level = ?, department_id = ? WHERE id = ?";
     }
 
     @Override
@@ -55,7 +55,12 @@ public class PositionsManager extends BaseManager<Position> {
 
     @Override
     protected List<Object> getUpdateFromParams(Map<String, Object> params) {
-        int id = (int) ((Double) params.get("id")).doubleValue();
+        Integer id;
+        try {
+            id = (int) ((Double) params.get("id")).doubleValue();
+        } catch (Exception ex) {
+            id = null;
+        }
         String title = (String) params.get("title");
         String description = (String) params.get("description");
         String level = (String) params.get("level");
