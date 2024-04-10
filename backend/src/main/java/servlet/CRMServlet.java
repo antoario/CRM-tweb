@@ -1,10 +1,8 @@
 package servlet;
 
 import com.google.gson.Gson;
-import com.google.gson.GsonBuilder;
 import com.google.gson.reflect.TypeToken;
 import db.BaseManager;
-import jakarta.servlet.ServletException;
 import jakarta.servlet.annotation.WebServlet;
 import jakarta.servlet.http.HttpServlet;
 import jakarta.servlet.http.HttpServletRequest;
@@ -13,17 +11,14 @@ import utility.AuthenticationResult;
 import utility.ErrorHandler;
 import utility.LoginHelper;
 import utility.Response;
-
+import com.google.gson.GsonBuilder;
 import java.io.BufferedReader;
 import java.io.IOException;
 import java.io.PrintWriter;
 import java.lang.reflect.Type;
-import java.sql.Date;
-import java.sql.SQLException;
 import java.text.SimpleDateFormat;
 import java.util.Map;
 import java.util.stream.Collectors;
-
 import static java.lang.Integer.parseInt;
 
 @WebServlet(name = "CRMServlet", urlPatterns = {"/employees/*", "/benefits/*", "/contracts/*", "/departments/*", "/positions/*",
@@ -42,9 +37,7 @@ public class CRMServlet extends HttpServlet {
         return new RequestBody(requestBody, manager, type);
     }
 
-    public void init() {
-
-    }
+    public void init() {}
 
     @Override
     protected void doGet(HttpServletRequest request, HttpServletResponse response) throws IOException {
@@ -66,7 +59,7 @@ public class CRMServlet extends HttpServlet {
                 else if (role == 1) entity = manager.loadManagerView(result.getDepartment_id());
                 if (entity != null) out.println(entity);
                 return;
-            } catch (NumberFormatException e) {
+            } catch (Exception e) {
                 errorHandler.handleBadRequest(response, out, "Invalid role (doGet)");
                 return;
             }
@@ -78,7 +71,7 @@ public class CRMServlet extends HttpServlet {
                 entity = manager.loadById(id);
                 if (entity != null) out.println(gson.toJson(entity));
                 else errorHandler.handleNotFound(response, out, "id not found (doGet)");
-            } catch (NumberFormatException e) {
+            } catch (Exception e) {
                 errorHandler.handleBadRequest(response, out, "id format error (doGet)");
             }
         } else out.println(manager.loadAll());
@@ -137,8 +130,7 @@ public class CRMServlet extends HttpServlet {
         String resultId = null;
         try {
             resultId = manager.updateFromParams(requestMap);
-        } catch (SQLException e) {
-            e.printStackTrace();
+        } catch (Exception e) {
             errorHandler.handleBadRequest(response, out, e.getMessage());
             return;
         }

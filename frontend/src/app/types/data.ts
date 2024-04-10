@@ -29,13 +29,13 @@ export interface Position {
   department_id: string
 }
 
-export interface Benefits {
+export interface Benefit {
   id: string
   description: string
   value: string
 }
 
-export interface Contracts {
+export interface Contract {
   id: string
   employee_id: string
   contract_type: string

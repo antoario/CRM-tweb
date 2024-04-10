@@ -1,57 +1,49 @@
-import { Component, ElementRef, ViewChild } from "@angular/core"
-import {
-  CustomForm,
-  Department,
-  Employee,
-  JustInfo,
-  OptionSelect,
-  Position,
-  SelectForm,
-  TextForm,
-} from "../../../types/data"
-import { GenericTableComponent } from "../../../Components/generic-table/generic-table.component"
-import { LayoutSingleComponent } from "../../../Components/layout-single/layout-single.component"
-import { RouterLink } from "@angular/router"
-import { DataService } from "../../../Services/data.service"
-import { environment } from "../../../../environments/environment"
+import { Component, OnInit } from "@angular/core";
+import { Benefit, CustomForm, SelectForm, TextForm } from "../../../types/data";
+import { CrudBaseDirective } from "../../../Components/crud-base.directive";
+import {FormBuilderComponent} from "../../../Components/form-builder/form-builder.component";
+import {RouterLink} from "@angular/router";
 
 @Component({
   selector: "app-single-benefit",
-  standalone: true,
-  imports: [GenericTableComponent, LayoutSingleComponent, RouterLink],
   templateUrl: "./single-benefit.component.html",
-  styleUrl: "./single-benefit.component.scss",
+  styleUrls: ["./single-benefit.component.scss"],
+  imports: [
+    FormBuilderComponent,
+    RouterLink
+  ],
+  standalone: true
 })
-export class SingleBenefitComponent {
-  valid = false
-  controls: CustomForm<any>[] = [
-    new JustInfo({
-      key: "first info",
-      label: "Insert the info of project",
-      subtext: "Lorem ciao madre",
-      width: "100%",
-      order: 0,
-    }),
-    new TextForm({
-      order: 1,
-      key: "description",
-      label: "Title",
-    }),
-    new TextForm({
+export class SingleBenefitComponent extends CrudBaseDirective<Benefit> implements OnInit {
+  benefits = new Map<string, CustomForm<any>>();
+
+
+  override ngOnInit() {
+    super.ngOnInit();
+
+    const selectionForm = new SelectForm({
+      key: "employee_id",
+      label: "Employee",
       order: 2,
-      key: "value",
-      label: "Description",
-    }),
-  ]
-  @ViewChild(GenericTableComponent) genericTable!: GenericTableComponent
+      width: "100%",
+    });
 
-  constructor(private dataService: DataService) {}
-
-  save() {
-    this.genericTable.handleFormSubmit()
+    this.benefits
+      .set("description", new TextForm({
+        order: 2,
+        label: "Description",
+        key: "description",
+        width: "100%",
+      }))
+      .set("value", new TextForm({
+        key: "value",
+        required: true,
+        label: "Value",
+        width: "100%",
+        order: 1,
+      }))
+      .set("employee_id", selectionForm);
   }
 
-  checkValid(valid: boolean) {
-    this.valid = valid
-  }
+  override baseUrl = "benefits"
 }

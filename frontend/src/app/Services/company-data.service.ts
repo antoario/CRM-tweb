@@ -1,6 +1,6 @@
 import { Injectable } from "@angular/core"
 import { BehaviorSubject, map, merge, Observable } from "rxjs"
-import { Benefits, Contracts, Department, Position, Project } from "../types/data"
+import { Benefit, Contract, Department, Position, Project } from "../types/data"
 import { DataService } from "./data.service"
 import { environment } from "../../environments/environment"
 
@@ -13,8 +13,8 @@ export class CompanyDataService {
     new Map()
   )
   projects$: BehaviorSubject<Map<string, Project>> = new BehaviorSubject<Map<string, Project>>(new Map())
-  benefits$: BehaviorSubject<Map<string, Benefits>> = new BehaviorSubject<Map<string, Benefits>>(new Map())
-  contracts$: BehaviorSubject<Map<string, Contracts>> = new BehaviorSubject<Map<string, Contracts>>(new Map())
+  benefits$: BehaviorSubject<Map<string, Benefit>> = new BehaviorSubject<Map<string, Benefit>>(new Map())
+  contracts$: BehaviorSubject<Map<string, Contract>> = new BehaviorSubject<Map<string, Contract>>(new Map())
 
   constructor(private data: DataService) {}
 
@@ -34,12 +34,12 @@ export class CompanyDataService {
     return this.getObservable(`${environment.apiUrl}/projects`, this.projects$)
   }
 
-  public getBenefits(): Observable<Map<string, Benefits>> {
+  public getBenefits(): Observable<Map<string, Benefit>> {
     return this.getObservable(`${environment.apiUrl}/benefits`, this.benefits$)
   }
 
-  public getContracts(): Observable<Map<string, Contracts>> {
-    return this.getObservable<Contracts>(`${environment.apiUrl}/contracts`, this.contracts$)
+  public getContracts(): Observable<Map<string, Contract>> {
+    return this.getObservable<Contract>(`${environment.apiUrl}/contracts`, this.contracts$)
   }
 
   private getObservable<T extends { id: string }>(url: string, subject: BehaviorSubject<Map<string, T>>) {

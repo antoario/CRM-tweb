@@ -1,13 +1,39 @@
-<div class="my-3">
-	<a routerLink="../" class="button-btn">back</a>
+<div class="max-w-3xl m-auto my-10">
+  <div>
+    <a routerLink="../">
+      <button class="button-btn bg-white">back to the list</button>
+    </a>
+  </div>
+
+  <div class="border border-gray-300 rounded-2xl bg-white">
+    <div class="p-5 flex">
+      <div>
+        <h1 class="good-title">Benefit {{ (currData && currData.description) || "" }}</h1>
+        <p class="text-gray-600 text-sm">Here you can manage the benefit</p>
+      </div>
+      <div class="ml-auto">
+
+        <span class="text-green-600 mx-2 font-medium transition-all"
+              [style.opacity]="showSaved">Saved ✅</span>
+        @if (!isNew) {
+          <button (click)="deleteEmployee()"
+                  class="button-btn bg-red-500 text-white mx-2">Delete
+          </button>
+        }
+        <button (click)="handleFormSubmit()"
+                [disabled]="!isValid"
+                class="button-btn bg-blue-500 text-white disabled:bg-gray-300 transition-all">Save
+        </button>
+      </div>
+    </div>
+
+    <hr>
+
+    <div class="p-5">
+      <app-form-builder (formChange)="changeVal($event)" [controls]="benefits"></app-form-builder>
+    </div>
+
+  </div>
+
 </div>
 
-<app-layout-single>
-	<div title class="flex align-middle items-center ">
-		<span class="font-bold text-xl">Edit Benefit</span>
-		<button class="button-save ml-auto" (click)="save()" [disabled]="!this.valid">Save</button>
-	</div>
-
-	<app-generic-table (isValidChange)="checkValid($event)" [formBuilder]="controls"
-	                   [url]="'benefits'"></app-generic-table>
-</app-layout-single>
