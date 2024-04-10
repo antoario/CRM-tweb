@@ -11,7 +11,8 @@ import java.util.Map;
 public class DepartmentsManager extends BaseManager<Department> {
     SQLbuilder builder = new SQLbuilder("departments");
 
-    public DepartmentsManager() {}
+    public DepartmentsManager() {
+    }
 
     @Override
     protected Department mapRowToEntity(ResultSet rs) throws SQLException {
@@ -23,7 +24,7 @@ public class DepartmentsManager extends BaseManager<Department> {
     }
 
     protected String getAddEntityQuery() {
-        return "INSERT INTO departments (name, description, manager) VALUES (?, ?, ?)";
+        return "INSERT INTO departments (name, description, manager_id) VALUES (?, ?, ?)";
     }
 
     @Override
@@ -43,7 +44,7 @@ public class DepartmentsManager extends BaseManager<Department> {
 
     @Override
     protected String getUpdateEntityQuery() {
-        return "UPDATE departments SET name = ?, description = ?, manager = ? WHERE id = ?";
+        return "UPDATE departments SET name = ?, description = ?, manager_id = ? WHERE id = ?";
     }
 
     @Override
@@ -56,7 +57,7 @@ public class DepartmentsManager extends BaseManager<Department> {
         int id = (int) ((Double) params.get("id")).doubleValue();
         String name = (String) params.get("name");
         String description = (String) params.get("description");
-        int manager = (int) ((Double) params.get("manager")).doubleValue();
+        int manager = (int) ((Double) params.get("manager_id")).doubleValue();
 
         return Arrays.asList(
                 name,

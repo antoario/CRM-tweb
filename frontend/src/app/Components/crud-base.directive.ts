@@ -25,7 +25,7 @@ export class CrudBaseDirective<T> implements OnInit {
   showSaved: number = 0
 
   constructor(
-    private dataService: DataService,
+    public dataService: DataService,
     private active: ActivatedRoute,
     private router: Router,
     private dialog: Dialog
@@ -74,6 +74,8 @@ export class CrudBaseDirective<T> implements OnInit {
     const sub: Observable<any> = this.isNew
       ? this.dataService.addData(this.getUrl(), this.currData)
       : this.dataService.updateData(this.getUrl(), this.currData)
+
+    console.log(this.currData)
 
     return sub
       .pipe(

@@ -1,3 +1,5 @@
+import { map, Observable, tap } from "rxjs"
+
 export interface Department {
   id: string
   name: string
@@ -121,6 +123,15 @@ export class SelectForm extends CustomForm<string> {
 
   setOptions(options: OptionSelect[]) {
     this.options = options
+  }
+
+  initData<T>(obs: Observable<T>, fun: (val: T) => OptionSelect[]) {
+    return obs
+      .pipe(
+        map(fun),
+        tap((val) => this.setOptions(val))
+      )
+      .subscribe()
   }
 }
 
