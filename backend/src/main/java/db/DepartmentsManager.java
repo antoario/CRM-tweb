@@ -11,8 +11,7 @@ import java.util.Map;
 public class DepartmentsManager extends BaseManager<Department> {
     SQLbuilder builder = new SQLbuilder("departments");
 
-    public DepartmentsManager() {
-    }
+    public DepartmentsManager() {}
 
     @Override
     protected Department mapRowToEntity(ResultSet rs) throws SQLException {

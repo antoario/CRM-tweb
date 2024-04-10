@@ -15,7 +15,7 @@ CREATE TABLE departments
 (
     id          SERIAL PRIMARY KEY,
     name        VARCHAR(255) NOT NULL,
-    description TEXT,
+    description TEXT NULL,
     manager_id  INT          NULL -- Cambiato in INT, modificato dopo che employees è stato creato
 );
 
@@ -24,8 +24,8 @@ CREATE TABLE positions
 (
     id            SERIAL PRIMARY KEY,
     title         VARCHAR(255) NOT NULL,
-    description   TEXT,
-    level         VARCHAR(50),
+    description   TEXT NULL,
+    level         VARCHAR(50) NOT NULL,
     department_id INT          REFERENCES departments (id) ON DELETE SET NULL
 );
 
@@ -33,17 +33,17 @@ CREATE TABLE projects
 (
     id            SERIAL PRIMARY KEY,
     name          VARCHAR(255) NOT NULL,
-    description   TEXT,
-    start_date    DATE,
-    end_date      DATE,
+    description   TEXT NULL,
+    start_date    DATE NOT NULL,
+    end_date      DATE NULL,
     department_id INT          REFERENCES departments (id) ON DELETE SET NULL
 );
 
 CREATE TABLE benefits
 (
     id          SERIAL PRIMARY KEY,
-    description TEXT,
-    value       VARCHAR(255),
+    description TEXT NULL,
+    value       VARCHAR(255) NOT NULL,
     employee_id INT REFERENCES employees (id) ON DELETE CASCADE
 );
 
@@ -52,9 +52,9 @@ CREATE TABLE contracts
     id            SERIAL PRIMARY KEY,
     employee_id   INT REFERENCES employees (id) ON DELETE CASCADE,
     contract_type VARCHAR(255) NOT NULL,
-    start_date    DATE,
-    end_date      DATE,
-    salary        NUMERIC
+    start_date    DATE NOT NULL,
+    end_date      DATE NULL,
+    salary        NUMERIC NOT NULL
 );
 
 CREATE TABLE employee_benefits

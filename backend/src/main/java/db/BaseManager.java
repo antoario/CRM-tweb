@@ -1,6 +1,7 @@
 package db;
 
 import com.google.gson.Gson;
+import utility.ErrorHandler;
 import utility.Response;
 import java.sql.*;
 import java.util.ArrayList;
@@ -86,7 +87,8 @@ public abstract class BaseManager<T> {
     }
 
     protected Response addEntity(List<Object> values) {
-        int generatedId = -2;
+        int generatedId;
+
         try (Connection conn = persistence.getConnection();
              PreparedStatement st = conn.prepareStatement(getAddEntityQuery(), Statement.RETURN_GENERATED_KEYS)) {
 
