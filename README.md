@@ -98,6 +98,7 @@ For Angular, we are using Google Material Components, which are very useful for 
    - **email**: string;
    - **role**: number; // form 0 to 2
    - **department_id**: string; // foreign key linking to the departments table
+   - **url_image**: string;
 
 2. Departments
 

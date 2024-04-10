@@ -7,7 +7,8 @@ CREATE TABLE employees
     password      VARCHAR(255)        NOT NULL,
     email         VARCHAR(255) UNIQUE NOT NULL,
     role          INTEGER             NOT NULL CHECK (role >= 0 AND role <= 2),
-    department_id INT                 NULL -- Questo sarà aggiornato dopo la creazione di departments
+    department_id INT                 NULL, -- Questo sarà aggiornato dopo la creazione di departments
+    url_image     VARCHAR(255)        NULL
 );
 
 CREATE TABLE departments
@@ -71,10 +72,10 @@ ALTER TABLE employees
     ADD CONSTRAINT fk_department_id FOREIGN KEY (department_id) REFERENCES departments (id) ON DELETE SET NULL;
 
 -- Inserimento dei dati nella tabella Employees
-INSERT INTO employees (first_name, last_name, date_of_birth, password, email, role, department_id)
-VALUES ('Mario', 'Rossi', '1980-05-15', 'password123', 'mario.rossi@example.com', 2, NULL),
-       ('Luca', 'Bianchi', '1975-08-23', 'password123', 'luca.bianchi@example.com', 1, NULL),
-       ('Sofia', 'Verdi', '1988-12-30', 'password123', 'sofia.verdi@example.com', 0, NULL);
+INSERT INTO employees (first_name, last_name, date_of_birth, password, email, role, department_id, url_image)
+VALUES ('Mario', 'Rossi', '1980-05-15', 'password123', 'mario.rossi@example.com', 2, NULL, 'http://www.test-img.com'),
+       ('Luca', 'Bianchi', '1975-08-23', 'password123', 'luca.bianchi@example.com', 1, NULL, 'http://www.test-img.com'),
+       ('Sofia', 'Verdi', '1988-12-30', 'password123', 'sofia.verdi@example.com', 0, NULL, 'http://www.test-img.com');
 
 -- Inserimento dei dati nella tabella Departments
 -- Assumeremo di aggiornare manager_id dopo aver inserito questi dati,

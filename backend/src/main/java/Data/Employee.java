@@ -12,8 +12,9 @@ public class Employee {
     int department_id;
     String password;
     int role;
+    String url_image;
 
-    public Employee(int id, String first_name, String last_name, Date date_of_birth, String email, int department_id, String password, int role) {
+    public Employee(int id, String first_name, String last_name, Date date_of_birth, String email, int department_id, String password, int role, String url_image) {
         this.id = id;
         this.first_name = first_name;
         this.last_name = last_name;
@@ -22,6 +23,7 @@ public class Employee {
         this.department_id = department_id;
         this.password = password;
         this.role = role;
+        this.url_image = url_image;
     }
 
     public int getId() {
@@ -86,5 +88,13 @@ public class Employee {
 
     public void setRole(int role) {
         this.role = role;
+    }
+
+    public String getUrl_image() {
+        return url_image;
+    }
+
+    public void setUrl_image(String url_image) {
+        this.url_image = url_image;
     }
 }
