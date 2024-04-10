@@ -8,6 +8,7 @@ import jakarta.servlet.http.HttpServlet;
 import jakarta.servlet.http.HttpServletRequest;
 import jakarta.servlet.http.HttpServletResponse;
 import utility.AuthenticationResult;
+import utility.ErrorHandler;
 import utility.LoginHelper;
 import utility.Response;
 
@@ -25,7 +26,12 @@ import static java.lang.Integer.parseInt;
         "/projects/*",})
 public class CRMServlet extends HttpServlet {
     LoginHelper loginHelper = new LoginHelper();
+    ErrorHandler errorHandler = new ErrorHandler();
     private Gson gson;
+
+    public void init() {
+        gson = new Gson();
+    }
 
     private static RequestBody getRequestBody(HttpServletRequest request) throws IOException {
         String requestBody = request.getReader().lines().collect(Collectors.joining(System.lineSeparator()));
@@ -35,16 +41,10 @@ public class CRMServlet extends HttpServlet {
         return new RequestBody(requestBody, manager, type);
     }
 
-    public void init() {
-        gson = new Gson();
-    }
-
     @Override
     protected void doGet(HttpServletRequest request, HttpServletResponse response) throws IOException {
         response.setContentType("application/json");
         PrintWriter out = response.getWriter();
-        RequestBody body = getRequestBody(request);
-        Map<String, Object> requestMap = gson.fromJson(body.requestBody(), body.type());
         Object entity = null;
 
         BaseManager<?> manager = ManagerFactory.getManager(request.getServletPath());
@@ -53,7 +53,6 @@ public class CRMServlet extends HttpServlet {
         String preToken = request.getHeader("Authorization");
 
         AuthenticationResult result = getAuthenticationResult(preToken, out);
-        if (result == null) return;
 
         if (roleParam != null) {
             try {
@@ -62,9 +61,8 @@ public class CRMServlet extends HttpServlet {
                 else if (role == 1) entity = manager.loadManagerView(result.getDepartment_id());
                 if (entity != null) out.println(entity);
                 return;
-            } catch (Exception e) {
-                this.printResult(out, -1, e.getMessage());
-                return;
+            } catch (NumberFormatException e) {
+                errorHandler.handleBadRequest(response, out, "Invalid role (doGet)");
             }
         }
 
@@ -73,9 +71,9 @@ public class CRMServlet extends HttpServlet {
                 int id = Integer.parseInt(idParam);
                 entity = manager.loadById(id);
                 if (entity != null) out.println(gson.toJson(entity));
-                else this.printResult(out, -1, "Data not found");
-            } catch (Exception e) {
-                this.printResult(out, -1, e.getMessage());
+                else errorHandler.handleNotFound(response, out, "id not found (doGet)");
+            } catch (NumberFormatException e) {
+                errorHandler.handleBadRequest(response, out, "id format error (doGet)");
             }
         } else out.println(manager.loadAll());
     }
@@ -87,21 +85,18 @@ public class CRMServlet extends HttpServlet {
         String preToken = request.getHeader("Authorization");
 
         AuthenticationResult result = getAuthenticationResult(preToken, out);
-        if (result == null) return;
 
         RequestBody body = getRequestBody(request);
         Map<String, Object> requestMap = gson.fromJson(body.requestBody(), body.type());
 
         switch (result.getRole()) {
             case 2:
-                this.printResult(out, -1, "you don't have right role");
-                return;
+                errorHandler.handleBadRequest(response, out, "Invalid role (doPost)");
             case 1:
                 if (requestMap.get("department_id") != null) {
                     int departmentIdFromRequest = ((Double) requestMap.get("department_id")).intValue();
                     if (departmentIdFromRequest != result.getDepartment_id()) {
-                        this.printResult(out, -1, "you cannot add data on different department");
-                        return;
+                        errorHandler.handleBadRequest(response, out, "you cannot add data on different department (doPost)");
                     }
                 }
         }
@@ -109,16 +104,14 @@ public class CRMServlet extends HttpServlet {
         try {
             out.println(body.manager().addFromParams(requestMap));
         } catch (Exception ex) {
-            this.printResult(out, -1, ex.getMessage());
-            ex.printStackTrace();
+            errorHandler.handleBadRequest(response, out, "error adding data (doPost)");
         }
     }
 
     private AuthenticationResult getAuthenticationResult(String preToken, PrintWriter out) {
         AuthenticationResult result = LoginHelper.authenticate(preToken, loginHelper);
         if (!result.isSuccess()) {
-            this.printResult(out, -1, result.getErrorMessage());
-            return null;
+            errorHandler.commonError(out, "error authenticating user");
         }
         return result;
     }
@@ -136,10 +129,8 @@ public class CRMServlet extends HttpServlet {
         String resultId = null;
         try {
             resultId = manager.updateFromParams(requestMap);
-        } catch (Exception e) {
-            out.println(new Gson().toJson(new Response(-1, e.getMessage())));
-            e.printStackTrace();
-            return;
+        } catch (SQLException e) {
+            errorHandler.handleBadRequest(response, out, "sql error in (doPut)");
         }
         out.println(resultId);
     }
@@ -151,11 +142,9 @@ public class CRMServlet extends HttpServlet {
         String preToken = request.getHeader("Authorization");
 
         AuthenticationResult result = getAuthenticationResult(preToken, out);
-        if (result == null) return;
 
         if (result.getRole() == 2) {
-            this.printResult(out, -1, "you don't have right role");
-            return;
+            errorHandler.handleBadRequest(response, out, "not right role (doDelete)");
         }
 
         RequestBody body = getRequestBody(request);
@@ -164,34 +153,9 @@ public class CRMServlet extends HttpServlet {
             body.manager.deleteEntity(idParam);
             out.println(new Gson().toJson(new Response(0, "Successfully deleted")));
         } catch (Exception ex) {
-            this.printResult(out, -1, ex.getMessage());
-            ex.printStackTrace();
+            errorHandler.handleBadRequest(response, out, "error deleting entity (doDelete)");
         }
 
-    }
-
-    public void destroy() {
-    }
-
-    private Map<String, Object> extractRequestMap(HttpServletRequest request) throws IOException {
-        if ("application/json".equalsIgnoreCase(request.getContentType())) {
-            String requestBody = request.getReader().lines().collect(Collectors.joining(System.lineSeparator()));
-            Type type = new TypeToken<Map<String, Object>>() {
-            }.getType();
-            return new Gson().fromJson(requestBody, type);
-        } else if ("application/x-www-form-urlencoded".equalsIgnoreCase(request.getContentType())) {
-            return request.getParameterMap().entrySet().stream()
-                    .collect(Collectors.toMap(
-                            Map.Entry::getKey,
-                            e -> e.getValue()[0]
-                    ));
-        } else {
-            throw new IOException("Unsupported Content-Type: " + request.getContentType());
-        }
-    }
-
-    private void printResult(PrintWriter out, int code, String message) {
-        out.println(new Gson().toJson(new Response(code, message)));
     }
 
     private record RequestBody(String requestBody, BaseManager<?> manager, Type type) {
