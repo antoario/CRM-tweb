@@ -39,10 +39,9 @@
 					priority="" sizes="auto" style="position: relative; width: auto">
 			</div>
 
-			@if (loading) {
 
-				<app-form-builder (formChange)="changeVal($event)" [controls]="addEmployee"></app-form-builder>
-			}
+			<app-form-builder (formChange)="changeVal($event)" [controls]="controls"></app-form-builder>
+
 
 		</div>
 
