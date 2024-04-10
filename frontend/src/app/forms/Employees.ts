@@ -10,7 +10,7 @@ export const addEmployee: CustomForm<any>[] = [
   }),
   new TextForm({
     order: -1,
-    key: "img_url",
+    key: "url_image",
     label: "Image Profile",
   }),
   new TextForm({

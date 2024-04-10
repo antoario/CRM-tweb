@@ -1,8 +1,10 @@
 package servlet;
 
 import com.google.gson.Gson;
+import com.google.gson.GsonBuilder;
 import com.google.gson.reflect.TypeToken;
 import db.BaseManager;
+import jakarta.servlet.ServletException;
 import jakarta.servlet.annotation.WebServlet;
 import jakarta.servlet.http.HttpServlet;
 import jakarta.servlet.http.HttpServletRequest;
@@ -16,7 +18,9 @@ import java.io.BufferedReader;
 import java.io.IOException;
 import java.io.PrintWriter;
 import java.lang.reflect.Type;
+import java.sql.Date;
 import java.sql.SQLException;
+import java.text.SimpleDateFormat;
 import java.util.Map;
 import java.util.stream.Collectors;
 
@@ -27,11 +31,8 @@ import static java.lang.Integer.parseInt;
 public class CRMServlet extends HttpServlet {
     LoginHelper loginHelper = new LoginHelper();
     ErrorHandler errorHandler = new ErrorHandler();
-    private Gson gson;
-
-    public void init() {
-        gson = new Gson();
-    }
+    SimpleDateFormat sdf = new SimpleDateFormat("yyyy-MM-dd");
+    Gson gson = new GsonBuilder().setDateFormat(sdf.toPattern()).create();
 
     private static RequestBody getRequestBody(HttpServletRequest request) throws IOException {
         String requestBody = request.getReader().lines().collect(Collectors.joining(System.lineSeparator()));
@@ -39,6 +40,10 @@ public class CRMServlet extends HttpServlet {
         Type type = new TypeToken<Map<String, Object>>() {
         }.getType();
         return new RequestBody(requestBody, manager, type);
+    }
+
+    public void init() {
+
     }
 
     @Override
@@ -63,6 +68,7 @@ public class CRMServlet extends HttpServlet {
                 return;
             } catch (NumberFormatException e) {
                 errorHandler.handleBadRequest(response, out, "Invalid role (doGet)");
+                return;
             }
         }
 
@@ -92,11 +98,13 @@ public class CRMServlet extends HttpServlet {
         switch (result.getRole()) {
             case 2:
                 errorHandler.handleBadRequest(response, out, "Invalid role (doPost)");
+                return;
             case 1:
                 if (requestMap.get("department_id") != null) {
                     int departmentIdFromRequest = ((Double) requestMap.get("department_id")).intValue();
                     if (departmentIdFromRequest != result.getDepartment_id()) {
                         errorHandler.handleBadRequest(response, out, "you cannot add data on different department (doPost)");
+                        return;
                     }
                 }
         }
@@ -130,7 +138,9 @@ public class CRMServlet extends HttpServlet {
         try {
             resultId = manager.updateFromParams(requestMap);
         } catch (SQLException e) {
-            errorHandler.handleBadRequest(response, out, "sql error in (doPut)");
+            e.printStackTrace();
+            errorHandler.handleBadRequest(response, out, e.getMessage());
+            return;
         }
         out.println(resultId);
     }

@@ -13,7 +13,7 @@ export interface Employee {
   email: string
   department_id: number
   benefits: string[]
-  url_image?: string
+  image_url?: string
   position_id: string
   role: number
   password: string

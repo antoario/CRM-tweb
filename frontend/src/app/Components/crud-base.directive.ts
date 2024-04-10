@@ -48,6 +48,7 @@ export class CrudBaseDirective<T> implements OnInit {
       .pipe(
         tap((val) => {
           this.currData = val
+          console.log(this.currData)
           // TODO we can generalize this
           this.formBuilderComponent.form.patchValue(val as any)
           this.isNew = false
@@ -59,8 +60,8 @@ export class CrudBaseDirective<T> implements OnInit {
   changeVal(val: T) {
     this.isValid = this.formBuilderComponent.form.valid
     this.currData = {
+      ...this.currData,
       ...val,
-      ...this.formBuilderComponent.form.value,
     }
   }
 

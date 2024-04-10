@@ -71,6 +71,7 @@ export class AddEmployeesComponent implements OnInit, OnDestroy {
             key: "department_id",
             label: "Department",
             blocked: val ? val?.role >= ROLE.manager : false,
+            required: true,
           })
         )
         this.populateSelectOptions<Department>("department_id", this.compData.getDepartments(), "name")
@@ -101,7 +102,7 @@ export class AddEmployeesComponent implements OnInit, OnDestroy {
 
   changeVal(val: Employee) {
     this.isValid = this.formBuilderComponent.form.valid
-    this.imageElement.nativeElement.src = val.url_image || ""
+    this.imageElement.nativeElement.src = val.image_url || ""
   }
 
   deleteEmployee() {
