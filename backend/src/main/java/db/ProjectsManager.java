@@ -57,11 +57,23 @@ public class ProjectsManager extends BaseManager<Project> {
 
     @Override
     protected List<Object> getUpdateFromParams(Map<String, Object> params) {
-        int id = (int) ((Double) params.get("id")).doubleValue();
+        Integer id;
+        Date endDate;
+        try {
+            id = (int) ((Double) params.get("id")).doubleValue();
+        } catch (Exception ex) {
+            id = null;
+        }
+
         String name = (String) params.get("name");
         String description = (String) params.get("description");
         Date startDate = Date.valueOf((String) params.get("start_date"));
-        Date endDate = Date.valueOf((String) params.get("end_date"));
+        try {
+            endDate = Date.valueOf((String) params.get("end_date"));
+        } catch (Exception ex) {
+            endDate = null;
+        }
+
         int idDepartment = (int) ((Double) params.get("department_id")).doubleValue();
 
         return Arrays.asList(

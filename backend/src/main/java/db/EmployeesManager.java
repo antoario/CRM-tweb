@@ -1,7 +1,10 @@
 package db;
 
 import Data.Employee;
-import java.sql.*;
+
+import java.sql.Date;
+import java.sql.ResultSet;
+import java.sql.SQLException;
 import java.util.Arrays;
 import java.util.List;
 import java.util.Map;
@@ -12,16 +15,7 @@ public class EmployeesManager extends BaseManager<Employee> {
 
     @Override
     protected Employee mapRowToEntity(ResultSet rs) throws SQLException {
-        return new Employee(
-                rs.getInt("id"),
-                rs.getString("first_name"),
-                rs.getString("last_name"),
-                rs.getDate("date_of_birth"),
-                rs.getString("email"),
-                rs.getInt("department_id"),
-                rs.getString("password"),
-                rs.getInt("role"),
-                rs.getString("url_image"));
+        return new Employee(rs.getInt("id"), rs.getString("first_name"), rs.getString("last_name"), rs.getDate("date_of_birth"), rs.getString("email"), rs.getInt("department_id"), rs.getString("password"), rs.getInt("role"), rs.getString("url_image"));
     }
 
 
@@ -57,7 +51,14 @@ public class EmployeesManager extends BaseManager<Employee> {
 
     @Override
     protected List<Object> getUpdateFromParams(Map<String, Object> params) {
-        int id = (int) ((Double) params.get("id")).doubleValue();
+        Integer id;
+        try {
+            id = (int) ((Double) params.get("id")).doubleValue();
+        } catch (Exception e) {
+            id = null;
+        }
+
+        System.out.println(params);
         String firstName = (String) params.get("first_name");
         String lastName = (String) params.get("last_name");
         Date dateOfBirth = Date.valueOf((String) params.get("date_of_birth"));
@@ -67,16 +68,6 @@ public class EmployeesManager extends BaseManager<Employee> {
         int idDepartment = (int) ((Double) params.get("department_id")).doubleValue();
         String url_image = (String) params.get("url_image");
 
-        return Arrays.asList(
-                firstName,
-                lastName,
-                dateOfBirth,
-                email,
-                idDepartment,
-                password,
-                role,
-                url_image,
-                id
-        );
+        return Arrays.asList(firstName, lastName, dateOfBirth, email, idDepartment, password, role, url_image, id);
     }
 }

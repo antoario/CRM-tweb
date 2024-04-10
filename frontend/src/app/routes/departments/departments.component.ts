@@ -7,6 +7,9 @@ import { LayoutSingleComponent } from "../../Components/layout-single/layout-sin
 import { CdkCell, CdkCellDef, CdkHeaderCell, CdkTableModule } from "@angular/cdk/table"
 import { RouterLink } from "@angular/router"
 import { CustomTableComponent } from "../../Components/custom-table/custom-table.component"
+import { UserService } from "../../Services/user.service"
+import { concatWith, map } from "rxjs"
+import { ROLE } from "../../types"
 
 @Component({
   selector: "app-departments",
@@ -30,16 +33,39 @@ export class DepartmentsComponent implements OnInit {
   departments: Department[] = []
   columns: { key: string; label: string }[] = [
     { key: "id", label: "ID" },
-    { key: "name", label: "Name" },
+    {
+      key: "name",
+      label: "Name",
+    },
     { key: "description", label: "Description" },
   ]
   columnsDefs: string[] = ["name", "description", "actions"]
+  userId = -1
 
-  constructor(public compData: CompanyDataService) {}
+  constructor(
+    public compData: CompanyDataService,
+    private userService: UserService
+  ) {}
 
   ngOnInit() {
-    this.compData.getDepartments().subscribe((val) => {
-      this.departments = Array.from(val.entries()).map(([, val]) => val)
-    })
+    let tempDep: Department[] = []
+
+    this.compData
+      .getDepartments()
+      .pipe(
+        map((val) => {
+          tempDep = Array.from(val.entries()).map(([, val]) => val)
+        }),
+        concatWith(
+          this.userService.currUser.pipe(
+            map((usr) => {
+              if (usr.role == ROLE.manager)
+                this.departments = tempDep.filter((dep) => dep.manager_id == usr.id)
+              else this.departments = tempDep
+            })
+          )
+        )
+      )
+      .subscribe()
   }
 }

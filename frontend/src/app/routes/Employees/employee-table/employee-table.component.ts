@@ -6,7 +6,9 @@ import { JsonPipe, KeyValuePipe, NgOptimizedImage } from "@angular/common"
 import { RouterLink } from "@angular/router"
 import { LayoutSingleComponent } from "../../../Components/layout-single/layout-single.component"
 import { CompanyDataService } from "../../../Services/company-data.service"
-import { Subscription } from "rxjs"
+import { Subscription, switchMap } from "rxjs"
+import { ROLE } from "../../../types"
+import { UserService } from "../../../Services/user.service"
 
 @Component({
   selector: "app-employee-table",
@@ -24,7 +26,8 @@ export class EmployeeTableComponent implements OnInit, OnDestroy {
 
   constructor(
     private data: DataService,
-    private compData: CompanyDataService
+    private compData: CompanyDataService,
+    private userService: UserService
   ) {}
 
   ngOnDestroy() {
@@ -37,14 +40,33 @@ export class EmployeeTableComponent implements OnInit, OnDestroy {
         this.position = el
       })
     )
-    this.subscription.add(
-      this.compData.departments$.subscribe((el) => {
-        this.departments = el
-      })
-    )
 
-    this.data.getDataWithAuth<Employee[]>(`${environment.apiUrl}/employees`).subscribe((val) => {
-      this.employees = val
+    this.data.getDataWithAuth<Department[]>(`${environment.apiUrl}/departments`).subscribe((val) => {
+      val.map((dep) => {
+        this.departments.set(dep.id, dep)
+      })
     })
+
+    this.data.getDataWithAuth<Department[]>(`${environment.apiUrl}/departments`).subscribe((val) => {
+      val.map((dep) => {
+        this.departments.set(dep.id, dep)
+      })
+    })
+
+    this.userService.currUser
+      .pipe(
+        switchMap((val) => {
+          if (val.role == ROLE.manager) {
+            return this.data.getDataWithAuth<Employee[]>(`${environment.apiUrl}/employees?role=1`)
+          } else {
+            return this.data.getDataWithAuth<Employee[]>(`${environment.apiUrl}/employees`)
+          }
+        })
+      )
+      .subscribe((val) => {
+        this.employees = val
+      })
   }
+
+  protected readonly ROLE = ROLE
 }

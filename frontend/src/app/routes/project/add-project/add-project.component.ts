@@ -1,10 +1,20 @@
-import { Component } from "@angular/core"
+import { Component, OnInit } from "@angular/core"
 import { GenericTableComponent } from "../../../Components/generic-table/generic-table.component"
-import { CustomForm, DateQuestion, JustInfo, Project, TextForm } from "../../../types/data"
+import {
+  CustomForm,
+  DateQuestion,
+  Department,
+  JustInfo,
+  Project,
+  SelectForm,
+  TextForm,
+} from "../../../types/data"
 import { LayoutSingleComponent } from "../../../Components/layout-single/layout-single.component"
 import { RouterLink } from "@angular/router"
 import { CrudBaseDirective } from "../../../Components/crud-base.directive"
 import { FormBuilderComponent } from "../../../Components/form-builder/form-builder.component"
+import { environment } from "../../../../environments/environment"
+import { ROLE } from "../../../types"
 
 @Component({
   selector: "app-add-project",
@@ -13,32 +23,64 @@ import { FormBuilderComponent } from "../../../Components/form-builder/form-buil
   templateUrl: "./add-project.component.html",
   styleUrl: "./add-project.component.scss",
 })
-export class AddProjectComponent extends CrudBaseDirective<Project> {
+export class AddProjectComponent extends CrudBaseDirective<Project> implements OnInit {
   project = new Map<keyof Project, CustomForm<any>>()
-    .set(
-      "name",
-      new TextForm({
-        order: 1,
-        key: "name",
-        label: "Title",
+
+  override ngOnInit() {
+    super.ngOnInit()
+    this.getData()
+
+    const selectForm = new SelectForm({
+      order: 4,
+      key: "department_id",
+      label: "Department",
+    })
+
+    this.userService.currUser.subscribe((usr) => {
+      if (usr.role == ROLE.manager) {
+        const control = this.formBuilderComponent.form.controls["department_id"]
+        control.setValue(usr.department_id)
+        control.disable()
+      }
+    })
+
+    this.dataService.getDataWithAuth<Department[]>(`${environment.apiUrl}/departments/`).subscribe((val) => {
+      const arr = val.map((emp) => {
+        return {
+          key: emp.id,
+          value: `${emp.name}`,
+        }
       })
-    )
-    .set(
-      "description",
-      new TextForm({
-        order: 2,
-        key: "description",
-        label: "Description",
-      })
-    )
-    .set(
-      "start_date",
-      new DateQuestion({
-        order: 3,
-        key: "start_date",
-        label: "Start Date",
-      })
-    )
+      selectForm.setOptions(arr)
+    })
+
+    this.project
+      .set(
+        "name",
+        new TextForm({
+          order: 1,
+          key: "name",
+          label: "Title",
+        })
+      )
+      .set(
+        "description",
+        new TextForm({
+          order: 2,
+          key: "description",
+          label: "Description",
+        })
+      )
+      .set(
+        "start_date",
+        new DateQuestion({
+          order: 3,
+          key: "start_date",
+          label: "Start Date",
+        })
+      )
+      .set("department_id", selectForm)
+  }
 
   override baseUrl = "projects"
 }

@@ -54,7 +54,12 @@ public class DepartmentsManager extends BaseManager<Department> {
 
     @Override
     protected List<Object> getUpdateFromParams(Map<String, Object> params) {
-        int id = (int) ((Double) params.get("id")).doubleValue();
+        Integer id;
+        try {
+            id = (int) ((Double) params.get("id")).doubleValue();
+        } catch (Exception ex) {
+            id = null;
+        }
         String name = (String) params.get("name");
         String description = (String) params.get("description");
         int manager = (int) ((Double) params.get("manager_id")).doubleValue();

@@ -55,6 +55,7 @@ export const routes: Routes = [
         path: "benefits",
         children: [
           { path: "", component: BenefitsComponent },
+          { path: "add", component: SingleBenefitComponent },
           { path: ":id", component: SingleBenefitComponent },
         ],
       },

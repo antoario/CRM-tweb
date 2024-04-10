@@ -47,12 +47,32 @@ import { CrudBaseDirective } from "../../../Components/crud-base.directive"
 export class AddEmployeesComponent extends CrudBaseDirective<Employee> implements OnInit {
   override baseUrl = "employees"
   controls = new Map<keyof Employee | string, CustomForm<any>>()
+  imageUrl =
+    "https://static.vecteezy.com/system/resources/thumbnails/009/292/244/small/default-avatar-icon-of-social-media-user-vector.jpg"
+
+  override changeVal(val: Employee) {
+    super.changeVal(val)
+    this.imageUrl =
+      val.url_image ??
+      "https://static.vecteezy.com/system/resources/thumbnails/009/292/244/small/default-avatar-icon-of-social-media-user-vector.jpg"
+  }
 
   override ngOnInit() {
     super.ngOnInit()
+
     const selection = new SelectForm({
-      order: 10,
+      order: 9,
       key: "department_id",
+      label: "Department",
+      required: true,
+    })
+
+    this.userService.currUser.subscribe((usr) => {
+      if (usr.role == ROLE.manager) {
+        const control = this.formBuilderComponent.form.controls["department_id"]
+        control.setValue(usr.department_id)
+        control.disable()
+      }
     })
 
     this.dataService.getDataWithAuth<Department[]>(`${environment.apiUrl}/departments`).subscribe((val) => {
@@ -105,16 +125,16 @@ export class AddEmployeesComponent extends CrudBaseDirective<Employee> implement
       .set(
         "email",
         new EmailQuestion({
-          order: 3,
+          order: 7,
           key: "email",
           label: "Email",
-          required: false,
+          required: true,
         })
       )
       .set(
         "date_of_birth",
         new DateQuestion({
-          order: 3,
+          order: 6,
           key: "date_of_birth",
           label: "Date of Birth",
           required: true,
@@ -125,13 +145,13 @@ export class AddEmployeesComponent extends CrudBaseDirective<Employee> implement
         new TextForm({
           key: "address",
           label: "Address",
-          order: 4,
+          order: 5,
         })
       )
       .set(
         "dep_info",
         new JustInfo({
-          order: 4,
+          order: 8,
           key: "dep_info",
           width: "100%",
           label: "Assign to department",
@@ -148,6 +168,7 @@ export class AddEmployeesComponent extends CrudBaseDirective<Employee> implement
             { key: 1, value: "Manager" },
             { key: 2, value: "Employee" },
           ],
+          order: 4,
         })
       )
       .set(
@@ -156,6 +177,7 @@ export class AddEmployeesComponent extends CrudBaseDirective<Employee> implement
           label: "Password",
           key: "password",
           required: true,
+          order: 3,
         })
       )
       .set("department_id", selection)

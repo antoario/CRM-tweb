@@ -6,6 +6,7 @@ import { FormBuilderComponent } from "./form-builder/form-builder.component"
 import { ConfirmationDialogComponent } from "./confirmation-dialog/confirmation-dialog.component"
 import { Dialog } from "@angular/cdk/dialog"
 import { ActivatedRoute, Router } from "@angular/router"
+import { UserService } from "../Services/user.service"
 
 @Directive()
 export class CrudBaseDirective<T> implements OnInit {
@@ -21,7 +22,8 @@ export class CrudBaseDirective<T> implements OnInit {
     public dataService: DataService,
     private active: ActivatedRoute,
     private router: Router,
-    private dialog: Dialog
+    private dialog: Dialog,
+    public userService: UserService
   ) {}
 
   ngOnInit(): void {
@@ -36,7 +38,6 @@ export class CrudBaseDirective<T> implements OnInit {
       .pipe(
         tap((val) => {
           this.currData = val
-          console.log(this.currData)
           // TODO we can generalize this
           this.formBuilderComponent.form.patchValue(val as any)
         })
