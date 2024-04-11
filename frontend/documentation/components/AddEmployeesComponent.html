@@ -1,0 +1,1514 @@
+<!doctype html>
+<html class="no-js" lang="">
+    <head>
+        <meta charset="utf-8">
+        <meta http-equiv="x-ua-compatible" content="ie=edge">
+        <title>frontend documentation</title>
+        <meta name="description" content="">
+        <meta name="viewport" content="width=device-width, initial-scale=1">
+
+        <link rel="icon" type="image/x-icon" href="../images/favicon.ico">
+	   <link rel="stylesheet" href="../styles/style.css">
+        <link rel="stylesheet" href="../styles/dark.css">
+        <link rel="stylesheet" href="../styles/laravel.css">
+    </head>
+    <body>
+          <script>
+               // Blocking script to avaoid flickering dark mode
+               // Dark mode toggle button
+               var useDark = window.matchMedia('(prefers-color-scheme: dark)');
+               var darkModeState = useDark.matches;
+               var $darkModeToggleSwitchers = document.querySelectorAll('.dark-mode-switch input');
+               var $darkModeToggles = document.querySelectorAll('.dark-mode-switch');
+               var darkModeStateLocal = localStorage.getItem('compodoc_darkmode-state');
+
+               function checkToggle(check) {
+                    for (var i = 0; i < $darkModeToggleSwitchers.length; i++) {
+                         $darkModeToggleSwitchers[i].checked = check;
+                    }
+               }
+
+               function toggleDarkMode(state) {
+                    if (window.localStorage) {
+                         localStorage.setItem('compodoc_darkmode-state', state);
+                    }
+
+                    checkToggle(state);
+
+                    const hasClass = document.body.classList.contains('dark');
+
+                    if (state) {
+                         for (var i = 0; i < $darkModeToggles.length; i++) {
+                              $darkModeToggles[i].classList.add('dark');
+                         }
+                         if (!hasClass) {
+                              document.body.classList.add('dark');
+                         }
+                    } else {
+                         for (var i = 0; i < $darkModeToggles.length; i++) {
+                              $darkModeToggles[i].classList.remove('dark');
+                         }
+                         if (hasClass) {
+                              document.body.classList.remove('dark');
+                         }
+                    }
+               }
+
+               useDark.addEventListener('change', function (evt) {
+                    toggleDarkMode(evt.matches);
+               });
+               if (darkModeStateLocal) {
+                    darkModeState = darkModeStateLocal === 'true';
+               }
+               toggleDarkMode(darkModeState);
+
+               if ($darkModeToggles.length > 0) {
+                    for (var i = 0; i < $darkModeToggleSwitchers.length; i++) {
+                         $darkModeToggleSwitchers[i].addEventListener('change', function (event) {
+                              darkModeState = !darkModeState;
+                              toggleDarkMode(darkModeState);
+                         });
+                    }
+               }
+          </script>
+
+        <div class="navbar navbar-default navbar-fixed-top d-block d-sm-none">
+            <a href="../" class="navbar-brand">frontend documentation</a>
+            <button type="button" class="btn btn-default btn-menu ion-ios-menu" id="btn-menu"></button>
+        </div>
+
+        <div class="xs-menu menu" id="mobile-menu">
+                <div id="book-search-input" role="search"><input type="text" placeholder="Type to search"></div>            <compodoc-menu></compodoc-menu>
+        </div>
+
+        <div class="container-fluid main">
+           <div class="row main">
+               <div class="hidden-xs menu">
+                   <compodoc-menu mode="normal"></compodoc-menu>
+               </div>
+               <!-- START CONTENT -->
+               <div class="content component">
+                   <div class="content-data">
+
+
+
+
+<ol class="breadcrumb">
+  <li class="breadcrumb-item">Components</li>
+  <li class="breadcrumb-item"
+  >
+  AddEmployeesComponent</li>
+</ol>
+
+<ul class="nav nav-tabs" role="tablist">
+        <li class="nav-item">
+            <a href="#info" class="nav-link active"
+                role="tab" id="info-tab" data-bs-toggle="tab" data-link="info">Info</a>
+        </li>
+        <li class="nav-item">
+            <a href="#source" class="nav-link"
+                role="tab" id="source-tab" data-bs-toggle="tab" data-link="source">Source</a>
+        </li>
+        <li class="nav-item">
+            <a href="#templateData" class="nav-link"
+                role="tab" id="templateData-tab" data-bs-toggle="tab" data-link="template">Template</a>
+        </li>
+        <li class="nav-item">
+            <a href="#tree" class="nav-link"
+                role="tab" id="tree-tab" data-bs-toggle="tab" data-link="dom-tree">DOM Tree</a>
+        </li>
+</ul>
+
+<div class="tab-content">
+    <div class="tab-pane fade active in" id="info"><p class="comment">
+    <h3>File</h3>
+</p>
+<p class="comment">
+    <code>src/app/routes/Employees/add-employees/add-employees.component.ts</code>
+</p>
+
+
+
+    <p class="comment">
+        <h3>Extends</h3>
+    </p>
+    <p class="comment">
+                    <code><a href="../directives/CrudBaseDirective.html" target="_self" >CrudBaseDirective</a></code>
+    </p>
+
+    <p class="comment">
+        <h3>Implements</h3>
+    </p>
+    <p class="comment">
+                <code>OnInit</code>
+                <code>AfterViewInit</code>
+    </p>
+
+
+<section data-compodoc="block-metadata">
+    <h3>Metadata</h3>
+    <table class="table table-sm table-hover metadata">
+        <tbody>
+
+
+
+
+
+
+
+
+
+
+
+
+            <tr>
+                <td class="col-md-3">selector</td>
+                <td class="col-md-9"><code>app-add-employees</code></td>
+            </tr>
+
+            <tr>
+                <td class="col-md-3">Standalone</td>
+                <td class="col-md-9"><code>true</code></td>
+            </tr>
+
+            <tr>
+                <td class="col-md-3">imports</td>
+                <td class="col-md-9">
+                                <code><a href="../components/FormBuilderComponent.html" target="_self" >FormBuilderComponent</a></code>
+                            <code>MatButtonModule</code>
+                            <code>RouterLink</code>
+                            <code>NgForOf</code>
+                            <code>ReactiveFormsModule</code>
+                            <code>NgOptimizedImage</code>
+                            <code>JsonPipe</code>
+                            <code>OverlayModule</code>
+                </td>
+            </tr>
+
+
+
+
+            <tr>
+                <td class="col-md-3">templateUrl</td>
+                <td class="col-md-9"><code>./add-employees.component.html</code></td>
+            </tr>
+
+
+
+            <tr>
+                <td class="col-md-3">styleUrl</td>
+                <td class="col-md-9"><code>./add-employees.component.scss</code></td>
+            </tr>
+
+
+
+
+
+        </tbody>
+    </table>
+</section>
+
+    <section data-compodoc="block-index">
+    <h3 id="index">Index</h3>
+    <table class="table table-sm table-bordered index-table">
+        <tbody>
+                <tr>
+                    <td class="col-md-4">
+                        <h6><b>Properties</b></h6>
+                    </td>
+                </tr>
+                <tr>
+                    <td class="col-md-4">
+                        <ul class="index-list">
+                            <li>
+                                    <span class="modifier"></span>
+                                <a href="#baseUrl" >baseUrl</a>
+                            </li>
+                            <li>
+                                <a href="#controls" >controls</a>
+                            </li>
+                            <li>
+                                <a href="#imageUrl" >imageUrl</a>
+                            </li>
+                            <li>
+                                    <span class="modifier">Public</span>
+                                <a href="#cdRef" >cdRef</a>
+                            </li>
+                            <li>
+                                <a href="#currData" >currData</a>
+                            </li>
+                            <li>
+                                    <span class="modifier">Public</span>
+                                <a href="#dataService" >dataService</a>
+                            </li>
+                            <li>
+                                    <span class="modifier"></span>
+                                <a href="#formBuilderComponent" >formBuilderComponent</a>
+                            </li>
+                            <li>
+                                <a href="#idEl" >idEl</a>
+                            </li>
+                            <li>
+                                <a href="#isNew" >isNew</a>
+                            </li>
+                            <li>
+                                <a href="#isValid" >isValid</a>
+                            </li>
+                            <li>
+                                <a href="#showSaved" >showSaved</a>
+                            </li>
+                            <li>
+                                    <span class="modifier">Public</span>
+                                <a href="#userService" >userService</a>
+                            </li>
+                        </ul>
+                    </td>
+                </tr>
+
+                <tr>
+                    <td class="col-md-4">
+                        <h6><b>Methods</b></h6>
+                    </td>
+                </tr>
+                <tr>
+                    <td class="col-md-4">
+                        <ul class="index-list">
+                            <li>
+                                    <span class="modifier"></span>
+                                <a href="#changeVal" >changeVal</a>
+                            </li>
+                            <li>
+                                <a href="#ngAfterViewInit" >ngAfterViewInit</a>
+                            </li>
+                            <li>
+                                    <span class="modifier"></span>
+                                <a href="#ngOnInit" >ngOnInit</a>
+                            </li>
+                            <li>
+                                <a href="#deleteEmployee" >deleteEmployee</a>
+                            </li>
+                            <li>
+                                <a href="#getData" >getData</a>
+                            </li>
+                            <li>
+                                    <span class="modifier">Private</span>
+                                <a href="#getUrl" >getUrl</a>
+                            </li>
+                            <li>
+                                <a href="#handleFormSubmit" >handleFormSubmit</a>
+                            </li>
+                            <li>
+                                <a href="#init" >init</a>
+                            </li>
+                        </ul>
+                    </td>
+                </tr>
+
+
+
+
+
+        </tbody>
+    </table>
+</section>
+
+
+
+
+
+
+    <section data-compodoc="block-methods">
+    
+    <h3 id="methods">
+        Methods
+    </h3>
+    <table class="table table-sm table-bordered">
+        <tbody>
+            <tr>
+                <td class="col-md-4">
+                    <a name="changeVal"></a>
+                    <span class="name">
+                            <span class="modifier"></span>
+                        <span ><b>changeVal</b></span>
+                        <a href="#changeVal"><span class="icon ion-ios-link"></span></a>
+                    </span>
+                </td>
+            </tr>
+            <tr>
+                <td class="col-md-4">
+                        <span class="modifier-icon icon ion-ios-reset"></span>
+                    <code>changeVal(val: <a href="../interfaces/Employee.html" target="_self">Employee</a>)</code>
+                </td>
+            </tr>
+
+
+                    <tr>
+                        <td class="col-md-4">
+                            <div class="io-line">Inherited from         <code><a href="../directives/CrudBaseDirective.html" target="_self" >CrudBaseDirective</a></code>
+</div>
+                        </td>
+                    </tr>
+                    <tr>
+                        <td class="col-md-4">
+                                <div class="io-line">Defined in         <code><a href="../directives/CrudBaseDirective.html#source" target="_self" >CrudBaseDirective:53</a></code>
+</div>
+                        </td>
+                    </tr>
+
+
+            <tr>
+                <td class="col-md-4">
+
+                            <div class="io-description">
+                                <b>Parameters :</b>
+                                
+                                <table class="params">
+                                    <thead>
+                                        <tr>
+                                            <td>Name</td>
+                                                <td>Type</td>
+                                            <td>Optional</td>
+                                        </tr>
+                                    </thead>
+                                    <tbody>
+                                        <tr>
+                                                <td>val</td>
+                                            <td>
+                                                            <code><a href="../interfaces/Employee.html" target="_self" >Employee</a></code>
+                                            </td>
+
+                                            <td>
+                                                    No
+                                            </td>
+
+
+                                        </tr>
+                                    </tbody>
+                                </table>
+                            </div>
+                        <div class="io-description">
+                            <b>Returns : </b>        <code><a href="https://www.typescriptlang.org/docs/handbook/basic-types.html" target="_blank" >void</a></code>
+
+                        </div>
+                            <div class="io-description">
+                                
+                            </div>
+                </td>
+            </tr>
+        </tbody>
+    </table>
+    <table class="table table-sm table-bordered">
+        <tbody>
+            <tr>
+                <td class="col-md-4">
+                    <a name="ngAfterViewInit"></a>
+                    <span class="name">
+                        <span ><b>ngAfterViewInit</b></span>
+                        <a href="#ngAfterViewInit"><span class="icon ion-ios-link"></span></a>
+                    </span>
+                </td>
+            </tr>
+            <tr>
+                <td class="col-md-4">
+<code>ngAfterViewInit()</code>
+                </td>
+            </tr>
+
+
+                    <tr>
+                        <td class="col-md-4">
+                            <div class="io-line">Defined in <a href="" data-line="60"
+                                    class="link-to-prism">src/app/routes/Employees/add-employees/add-employees.component.ts:60</a></div>
+                        </td>
+                    </tr>
+
+
+            <tr>
+                <td class="col-md-4">
+
+                        <div class="io-description">
+                            <b>Returns : </b>        <code><a href="https://www.typescriptlang.org/docs/handbook/basic-types.html" target="_blank" >void</a></code>
+
+                        </div>
+                </td>
+            </tr>
+        </tbody>
+    </table>
+    <table class="table table-sm table-bordered">
+        <tbody>
+            <tr>
+                <td class="col-md-4">
+                    <a name="ngOnInit"></a>
+                    <span class="name">
+                            <span class="modifier"></span>
+                        <span ><b>ngOnInit</b></span>
+                        <a href="#ngOnInit"><span class="icon ion-ios-link"></span></a>
+                    </span>
+                </td>
+            </tr>
+            <tr>
+                <td class="col-md-4">
+                        <span class="modifier-icon icon ion-ios-reset"></span>
+                    <code>ngOnInit()</code>
+                </td>
+            </tr>
+
+
+                    <tr>
+                        <td class="col-md-4">
+                            <div class="io-line">Inherited from         <code><a href="../directives/CrudBaseDirective.html" target="_self" >CrudBaseDirective</a></code>
+</div>
+                        </td>
+                    </tr>
+                    <tr>
+                        <td class="col-md-4">
+                                <div class="io-line">Defined in         <code><a href="../directives/CrudBaseDirective.html#source" target="_self" >CrudBaseDirective:71</a></code>
+</div>
+                        </td>
+                    </tr>
+
+
+            <tr>
+                <td class="col-md-4">
+
+                        <div class="io-description">
+                            <b>Returns : </b>        <code><a href="https://www.typescriptlang.org/docs/handbook/basic-types.html" target="_blank" >void</a></code>
+
+                        </div>
+                </td>
+            </tr>
+        </tbody>
+    </table>
+    <table class="table table-sm table-bordered">
+        <tbody>
+            <tr>
+                <td class="col-md-4">
+                    <a name="deleteEmployee"></a>
+                    <span class="name">
+                        <span ><b>deleteEmployee</b></span>
+                        <a href="#deleteEmployee"><span class="icon ion-ios-link"></span></a>
+                    </span>
+                </td>
+            </tr>
+            <tr>
+                <td class="col-md-4">
+<code>deleteEmployee()</code>
+                </td>
+            </tr>
+
+
+                    <tr>
+                        <td class="col-md-4">
+                            <div class="io-line">Inherited from         <code><a href="../directives/CrudBaseDirective.html" target="_self" >CrudBaseDirective</a></code>
+</div>
+                        </td>
+                    </tr>
+                    <tr>
+                        <td class="col-md-4">
+                                <div class="io-line">Defined in         <code><a href="../directives/CrudBaseDirective.html#source" target="_self" >CrudBaseDirective:91</a></code>
+</div>
+                        </td>
+                    </tr>
+
+
+            <tr>
+                <td class="col-md-4">
+
+                        <div class="io-description">
+                            <b>Returns : </b>        <code><a href="https://www.typescriptlang.org/docs/handbook/basic-types.html" target="_blank" >void</a></code>
+
+                        </div>
+                </td>
+            </tr>
+        </tbody>
+    </table>
+    <table class="table table-sm table-bordered">
+        <tbody>
+            <tr>
+                <td class="col-md-4">
+                    <a name="getData"></a>
+                    <span class="name">
+                        <span ><b>getData</b></span>
+                        <a href="#getData"><span class="icon ion-ios-link"></span></a>
+                    </span>
+                </td>
+            </tr>
+            <tr>
+                <td class="col-md-4">
+<code>getData()</code>
+                </td>
+            </tr>
+
+
+                    <tr>
+                        <td class="col-md-4">
+                            <div class="io-line">Inherited from         <code><a href="../directives/CrudBaseDirective.html" target="_self" >CrudBaseDirective</a></code>
+</div>
+                        </td>
+                    </tr>
+                    <tr>
+                        <td class="col-md-4">
+                                <div class="io-line">Defined in         <code><a href="../directives/CrudBaseDirective.html#source" target="_self" >CrudBaseDirective:35</a></code>
+</div>
+                        </td>
+                    </tr>
+
+
+            <tr>
+                <td class="col-md-4">
+
+                        <div class="io-description">
+                            <b>Returns : </b>    <code>Subscription</code>
+
+                        </div>
+                </td>
+            </tr>
+        </tbody>
+    </table>
+    <table class="table table-sm table-bordered">
+        <tbody>
+            <tr>
+                <td class="col-md-4">
+                    <a name="getUrl"></a>
+                    <span class="name">
+                            <span class="modifier">Private</span>
+                        <span ><b>getUrl</b></span>
+                        <a href="#getUrl"><span class="icon ion-ios-link"></span></a>
+                    </span>
+                </td>
+            </tr>
+            <tr>
+                <td class="col-md-4">
+                        <span class="modifier-icon icon ion-ios-reset"></span>
+                    <code>getUrl(id: string | null)</code>
+                </td>
+            </tr>
+
+
+                    <tr>
+                        <td class="col-md-4">
+                            <div class="io-line">Inherited from         <code><a href="../directives/CrudBaseDirective.html" target="_self" >CrudBaseDirective</a></code>
+</div>
+                        </td>
+                    </tr>
+                    <tr>
+                        <td class="col-md-4">
+                                <div class="io-line">Defined in         <code><a href="../directives/CrudBaseDirective.html#source" target="_self" >CrudBaseDirective:110</a></code>
+</div>
+                        </td>
+                    </tr>
+
+
+            <tr>
+                <td class="col-md-4">
+
+                            <div class="io-description">
+                                <b>Parameters :</b>
+                                
+                                <table class="params">
+                                    <thead>
+                                        <tr>
+                                            <td>Name</td>
+                                                <td>Type</td>
+                                            <td>Optional</td>
+                                                <td>Default value</td>
+                                        </tr>
+                                    </thead>
+                                    <tbody>
+                                        <tr>
+                                                <td>id</td>
+                                            <td>
+                                                        <code>string | null</code>
+                                            </td>
+
+                                            <td>
+                                                    No
+                                            </td>
+
+                                            <td>
+                                                    <code>null</code>
+                                            </td>
+
+                                        </tr>
+                                    </tbody>
+                                </table>
+                            </div>
+                        <div class="io-description">
+                            <b>Returns : </b>        <code><a href="https://developer.mozilla.org/en-US/docs/Web/JavaScript/Reference/Global_Objects/string" target="_blank" >string</a></code>
+
+                        </div>
+                            <div class="io-description">
+                                
+                            </div>
+                </td>
+            </tr>
+        </tbody>
+    </table>
+    <table class="table table-sm table-bordered">
+        <tbody>
+            <tr>
+                <td class="col-md-4">
+                    <a name="handleFormSubmit"></a>
+                    <span class="name">
+                        <span ><b>handleFormSubmit</b></span>
+                        <a href="#handleFormSubmit"><span class="icon ion-ios-link"></span></a>
+                    </span>
+                </td>
+            </tr>
+            <tr>
+                <td class="col-md-4">
+<code>handleFormSubmit()</code>
+                </td>
+            </tr>
+
+
+                    <tr>
+                        <td class="col-md-4">
+                            <div class="io-line">Inherited from         <code><a href="../directives/CrudBaseDirective.html" target="_self" >CrudBaseDirective</a></code>
+</div>
+                        </td>
+                    </tr>
+                    <tr>
+                        <td class="col-md-4">
+                                <div class="io-line">Defined in         <code><a href="../directives/CrudBaseDirective.html#source" target="_self" >CrudBaseDirective:62</a></code>
+</div>
+                        </td>
+                    </tr>
+
+
+            <tr>
+                <td class="col-md-4">
+
+                        <div class="io-description">
+                            <b>Returns : </b>    <code>Subscription</code>
+
+                        </div>
+                </td>
+            </tr>
+        </tbody>
+    </table>
+    <table class="table table-sm table-bordered">
+        <tbody>
+            <tr>
+                <td class="col-md-4">
+                    <a name="init"></a>
+                    <span class="name">
+                        <span ><b>init</b></span>
+                        <a href="#init"><span class="icon ion-ios-link"></span></a>
+                    </span>
+                </td>
+            </tr>
+            <tr>
+                <td class="col-md-4">
+<code>init()</code>
+                </td>
+            </tr>
+
+
+                    <tr>
+                        <td class="col-md-4">
+                            <div class="io-line">Inherited from         <code><a href="../directives/CrudBaseDirective.html" target="_self" >CrudBaseDirective</a></code>
+</div>
+                        </td>
+                    </tr>
+                    <tr>
+                        <td class="col-md-4">
+                                <div class="io-line">Defined in         <code><a href="../directives/CrudBaseDirective.html#source" target="_self" >CrudBaseDirective:57</a></code>
+</div>
+                        </td>
+                    </tr>
+
+
+            <tr>
+                <td class="col-md-4">
+
+                        <div class="io-description">
+                            <b>Returns : </b>        <code><a href="https://www.typescriptlang.org/docs/handbook/basic-types.html" target="_blank" >void</a></code>
+
+                        </div>
+                </td>
+            </tr>
+        </tbody>
+    </table>
+</section>
+    <section data-compodoc="block-properties">
+    
+    <h3 id="inputs">
+        Properties
+    </h3>
+    <table class="table table-sm table-bordered">
+        <tbody>
+            <tr>
+                <td class="col-md-4">
+                    <a name="baseUrl"></a>
+                    <span class="name">
+                            <span class="modifier"></span>
+                        <span ><b>baseUrl</b></span>
+                        <a href="#baseUrl"><span class="icon ion-ios-link"></span></a>
+                    </span>
+                </td>
+            </tr>
+                <tr>
+                    <td class="col-md-4">
+                        <i>Type : </i>        <code><a href="https://developer.mozilla.org/en-US/docs/Web/JavaScript/Reference/Global_Objects/string" target="_blank" >string</a></code>
+
+                    </td>
+                </tr>
+                <tr>
+                    <td class="col-md-4">
+                        <i>Default value : </i><code>&quot;employees&quot;</code>
+                    </td>
+                </tr>
+                        <tr>
+                            <td class="col-md-4">
+                                <div class="io-line">Inherited from         <code><a href="../directives/CrudBaseDirective.html" target="_self" >CrudBaseDirective</a></code>
+</div>
+                            </td>
+                        </tr>
+                    <tr>
+                        <td class="col-md-4">
+                                <div class="io-line">Defined in         <code><a href="../directives/CrudBaseDirective.html#source" target="_self" >CrudBaseDirective:48</a></code>
+</div>
+                        </td>
+                    </tr>
+
+
+        </tbody>
+    </table>
+    <table class="table table-sm table-bordered">
+        <tbody>
+            <tr>
+                <td class="col-md-4">
+                    <a name="controls"></a>
+                    <span class="name">
+                        <span ><b>controls</b></span>
+                        <a href="#controls"><span class="icon ion-ios-link"></span></a>
+                    </span>
+                </td>
+            </tr>
+                <tr>
+                    <td class="col-md-4">
+                        <i>Default value : </i><code>new Map&lt;keyof Employee | string, CustomForm&lt;any&gt;&gt;()</code>
+                    </td>
+                </tr>
+                    <tr>
+                        <td class="col-md-4">
+                                <div class="io-line">Defined in <a href="" data-line="49" class="link-to-prism">src/app/routes/Employees/add-employees/add-employees.component.ts:49</a></div>
+                        </td>
+                    </tr>
+
+
+        </tbody>
+    </table>
+    <table class="table table-sm table-bordered">
+        <tbody>
+            <tr>
+                <td class="col-md-4">
+                    <a name="imageUrl"></a>
+                    <span class="name">
+                        <span ><b>imageUrl</b></span>
+                        <a href="#imageUrl"><span class="icon ion-ios-link"></span></a>
+                    </span>
+                </td>
+            </tr>
+                <tr>
+                    <td class="col-md-4">
+                        <i>Type : </i>        <code><a href="https://developer.mozilla.org/en-US/docs/Web/JavaScript/Reference/Global_Objects/string" target="_blank" >string</a></code>
+
+                    </td>
+                </tr>
+                <tr>
+                    <td class="col-md-4">
+                        <i>Default value : </i><code>&quot;https://static.vecteezy.com/system/resources/thumbnails/009/292/244/small/default-avatar-icon-of-social-media-user-vector.jpg&quot;</code>
+                    </td>
+                </tr>
+                    <tr>
+                        <td class="col-md-4">
+                                <div class="io-line">Defined in <a href="" data-line="50" class="link-to-prism">src/app/routes/Employees/add-employees/add-employees.component.ts:50</a></div>
+                        </td>
+                    </tr>
+
+
+        </tbody>
+    </table>
+    <table class="table table-sm table-bordered">
+        <tbody>
+            <tr>
+                <td class="col-md-4">
+                    <a name="cdRef"></a>
+                    <span class="name">
+                            <span class="modifier">Public</span>
+                        <span ><b>cdRef</b></span>
+                        <a href="#cdRef"><span class="icon ion-ios-link"></span></a>
+                    </span>
+                </td>
+            </tr>
+                <tr>
+                    <td class="col-md-4">
+                        <i>Type : </i>    <code>ChangeDetectorRef</code>
+
+                    </td>
+                </tr>
+                        <tr>
+                            <td class="col-md-4">
+                                <div class="io-line">Inherited from         <code><a href="../directives/CrudBaseDirective.html" target="_self" >CrudBaseDirective</a></code>
+</div>
+                            </td>
+                        </tr>
+                    <tr>
+                        <td class="col-md-4">
+                                <div class="io-line">Defined in         <code><a href="../directives/CrudBaseDirective.html#source" target="_self" >CrudBaseDirective:27</a></code>
+</div>
+                        </td>
+                    </tr>
+
+
+        </tbody>
+    </table>
+    <table class="table table-sm table-bordered">
+        <tbody>
+            <tr>
+                <td class="col-md-4">
+                    <a name="currData"></a>
+                    <span class="name">
+                        <span ><b>currData</b></span>
+                        <a href="#currData"><span class="icon ion-ios-link"></span></a>
+                    </span>
+                </td>
+            </tr>
+                <tr>
+                    <td class="col-md-4">
+                        <i>Type : </i>    <code>T</code>
+
+                    </td>
+                </tr>
+                        <tr>
+                            <td class="col-md-4">
+                                <div class="io-line">Inherited from         <code><a href="../directives/CrudBaseDirective.html" target="_self" >CrudBaseDirective</a></code>
+</div>
+                            </td>
+                        </tr>
+                    <tr>
+                        <td class="col-md-4">
+                                <div class="io-line">Defined in         <code><a href="../directives/CrudBaseDirective.html#source" target="_self" >CrudBaseDirective:13</a></code>
+</div>
+                        </td>
+                    </tr>
+
+
+        </tbody>
+    </table>
+    <table class="table table-sm table-bordered">
+        <tbody>
+            <tr>
+                <td class="col-md-4">
+                    <a name="dataService"></a>
+                    <span class="name">
+                            <span class="modifier">Public</span>
+                        <span ><b>dataService</b></span>
+                        <a href="#dataService"><span class="icon ion-ios-link"></span></a>
+                    </span>
+                </td>
+            </tr>
+                <tr>
+                    <td class="col-md-4">
+                        <i>Type : </i>        <code><a href="../injectables/DataService.html" target="_self" >DataService</a></code>
+
+                    </td>
+                </tr>
+                        <tr>
+                            <td class="col-md-4">
+                                <div class="io-line">Inherited from         <code><a href="../directives/CrudBaseDirective.html" target="_self" >CrudBaseDirective</a></code>
+</div>
+                            </td>
+                        </tr>
+                    <tr>
+                        <td class="col-md-4">
+                                <div class="io-line">Defined in         <code><a href="../directives/CrudBaseDirective.html#source" target="_self" >CrudBaseDirective:22</a></code>
+</div>
+                        </td>
+                    </tr>
+
+
+        </tbody>
+    </table>
+    <table class="table table-sm table-bordered">
+        <tbody>
+            <tr>
+                <td class="col-md-4">
+                    <a name="formBuilderComponent"></a>
+                    <span class="name">
+                            <span class="modifier"></span>
+                        <span ><b>formBuilderComponent</b></span>
+                        <a href="#formBuilderComponent"><span class="icon ion-ios-link"></span></a>
+                    </span>
+                </td>
+            </tr>
+                <tr>
+                    <td class="col-md-4">
+                        <i>Type : </i>        <code><a href="../components/FormBuilderComponent.html" target="_self" >FormBuilderComponent</a></code>
+
+                    </td>
+                </tr>
+                <tr>
+                    <td class="col-md-4">
+                        <b>Decorators : </b>
+                        <br />
+                        <code>
+                            @ViewChild(FormBuilderComponent)<br />
+                        </code>
+                    </td>
+                </tr>
+                        <tr>
+                            <td class="col-md-4">
+                                <div class="io-line">Inherited from         <code><a href="../directives/CrudBaseDirective.html" target="_self" >CrudBaseDirective</a></code>
+</div>
+                            </td>
+                        </tr>
+                    <tr>
+                        <td class="col-md-4">
+                                <div class="io-line">Defined in         <code><a href="../directives/CrudBaseDirective.html#source" target="_self" >CrudBaseDirective:17</a></code>
+</div>
+                        </td>
+                    </tr>
+
+
+        </tbody>
+    </table>
+    <table class="table table-sm table-bordered">
+        <tbody>
+            <tr>
+                <td class="col-md-4">
+                    <a name="idEl"></a>
+                    <span class="name">
+                        <span ><b>idEl</b></span>
+                        <a href="#idEl"><span class="icon ion-ios-link"></span></a>
+                    </span>
+                </td>
+            </tr>
+                <tr>
+                    <td class="col-md-4">
+                        <i>Type : </i>    <code>string | null | undefined</code>
+
+                    </td>
+                </tr>
+                        <tr>
+                            <td class="col-md-4">
+                                <div class="io-line">Inherited from         <code><a href="../directives/CrudBaseDirective.html" target="_self" >CrudBaseDirective</a></code>
+</div>
+                            </td>
+                        </tr>
+                    <tr>
+                        <td class="col-md-4">
+                                <div class="io-line">Defined in         <code><a href="../directives/CrudBaseDirective.html#source" target="_self" >CrudBaseDirective:16</a></code>
+</div>
+                        </td>
+                    </tr>
+
+
+        </tbody>
+    </table>
+    <table class="table table-sm table-bordered">
+        <tbody>
+            <tr>
+                <td class="col-md-4">
+                    <a name="isNew"></a>
+                    <span class="name">
+                        <span ><b>isNew</b></span>
+                        <a href="#isNew"><span class="icon ion-ios-link"></span></a>
+                    </span>
+                </td>
+            </tr>
+                <tr>
+                    <td class="col-md-4">
+                        <i>Type : </i>        <code><a href="https://developer.mozilla.org/en-US/docs/Web/JavaScript/Reference/Global_Objects/boolean" target="_blank" >boolean</a></code>
+
+                    </td>
+                </tr>
+                        <tr>
+                            <td class="col-md-4">
+                                <div class="io-line">Inherited from         <code><a href="../directives/CrudBaseDirective.html" target="_self" >CrudBaseDirective</a></code>
+</div>
+                            </td>
+                        </tr>
+                    <tr>
+                        <td class="col-md-4">
+                                <div class="io-line">Defined in         <code><a href="../directives/CrudBaseDirective.html#source" target="_self" >CrudBaseDirective:15</a></code>
+</div>
+                        </td>
+                    </tr>
+
+
+        </tbody>
+    </table>
+    <table class="table table-sm table-bordered">
+        <tbody>
+            <tr>
+                <td class="col-md-4">
+                    <a name="isValid"></a>
+                    <span class="name">
+                        <span ><b>isValid</b></span>
+                        <a href="#isValid"><span class="icon ion-ios-link"></span></a>
+                    </span>
+                </td>
+            </tr>
+                <tr>
+                    <td class="col-md-4">
+                        <i>Type : </i>        <code><a href="https://developer.mozilla.org/en-US/docs/Web/JavaScript/Reference/Global_Objects/boolean" target="_blank" >boolean</a></code>
+
+                    </td>
+                </tr>
+                <tr>
+                    <td class="col-md-4">
+                        <i>Default value : </i><code>false</code>
+                    </td>
+                </tr>
+                        <tr>
+                            <td class="col-md-4">
+                                <div class="io-line">Inherited from         <code><a href="../directives/CrudBaseDirective.html" target="_self" >CrudBaseDirective</a></code>
+</div>
+                            </td>
+                        </tr>
+                    <tr>
+                        <td class="col-md-4">
+                                <div class="io-line">Defined in         <code><a href="../directives/CrudBaseDirective.html#source" target="_self" >CrudBaseDirective:18</a></code>
+</div>
+                        </td>
+                    </tr>
+
+
+        </tbody>
+    </table>
+    <table class="table table-sm table-bordered">
+        <tbody>
+            <tr>
+                <td class="col-md-4">
+                    <a name="showSaved"></a>
+                    <span class="name">
+                        <span ><b>showSaved</b></span>
+                        <a href="#showSaved"><span class="icon ion-ios-link"></span></a>
+                    </span>
+                </td>
+            </tr>
+                <tr>
+                    <td class="col-md-4">
+                        <i>Type : </i>        <code><a href="https://developer.mozilla.org/en-US/docs/Web/JavaScript/Reference/Global_Objects/number" target="_blank" >number</a></code>
+
+                    </td>
+                </tr>
+                <tr>
+                    <td class="col-md-4">
+                        <i>Default value : </i><code>0</code>
+                    </td>
+                </tr>
+                        <tr>
+                            <td class="col-md-4">
+                                <div class="io-line">Inherited from         <code><a href="../directives/CrudBaseDirective.html" target="_self" >CrudBaseDirective</a></code>
+</div>
+                            </td>
+                        </tr>
+                    <tr>
+                        <td class="col-md-4">
+                                <div class="io-line">Defined in         <code><a href="../directives/CrudBaseDirective.html#source" target="_self" >CrudBaseDirective:19</a></code>
+</div>
+                        </td>
+                    </tr>
+
+
+        </tbody>
+    </table>
+    <table class="table table-sm table-bordered">
+        <tbody>
+            <tr>
+                <td class="col-md-4">
+                    <a name="userService"></a>
+                    <span class="name">
+                            <span class="modifier">Public</span>
+                        <span ><b>userService</b></span>
+                        <a href="#userService"><span class="icon ion-ios-link"></span></a>
+                    </span>
+                </td>
+            </tr>
+                <tr>
+                    <td class="col-md-4">
+                        <i>Type : </i>        <code><a href="../injectables/UserService.html" target="_self" >UserService</a></code>
+
+                    </td>
+                </tr>
+                        <tr>
+                            <td class="col-md-4">
+                                <div class="io-line">Inherited from         <code><a href="../directives/CrudBaseDirective.html" target="_self" >CrudBaseDirective</a></code>
+</div>
+                            </td>
+                        </tr>
+                    <tr>
+                        <td class="col-md-4">
+                                <div class="io-line">Defined in         <code><a href="../directives/CrudBaseDirective.html#source" target="_self" >CrudBaseDirective:26</a></code>
+</div>
+                        </td>
+                    </tr>
+
+
+        </tbody>
+    </table>
+</section>
+
+</div>
+
+
+    <div class="tab-pane fade  tab-source-code" id="source">
+        <pre class="line-numbers compodoc-sourcecode"><code class="language-typescript">import { AfterViewInit, Component, ElementRef, OnDestroy, OnInit, ViewChild } from &quot;@angular/core&quot;
+import { FormBuilderComponent } from &quot;../../../Components/form-builder/form-builder.component&quot;
+import {
+  CustomForm,
+  DateQuestion,
+  Department,
+  EmailQuestion,
+  Employee,
+  JustInfo,
+  OptionSelect,
+  Position,
+  SelectForm,
+  TextForm,
+} from &quot;../../../types/data&quot;
+import { addEmployee } from &quot;../../../forms/Employees&quot;
+import { DataService } from &quot;../../../Services/data.service&quot;
+import { environment } from &quot;../../../../environments/environment&quot;
+import { MatButtonModule } from &quot;@angular/material/button&quot;
+import { ActivatedRoute, Router, RouterLink } from &quot;@angular/router&quot;
+import { JsonPipe, NgForOf, NgOptimizedImage } from &quot;@angular/common&quot;
+import { ReactiveFormsModule } from &quot;@angular/forms&quot;
+import { Observable, of, Subscription, switchMap, tap } from &quot;rxjs&quot;
+import { OverlayModule } from &quot;@angular/cdk/overlay&quot;
+import { Dialog } from &quot;@angular/cdk/dialog&quot;
+import { ConfirmationDialogComponent } from &quot;../../../Components/confirmation-dialog/confirmation-dialog.component&quot;
+import { CompanyDataService } from &quot;../../../Services/company-data.service&quot;
+import { UserService } from &quot;../../../Services/user.service&quot;
+import { ROLE } from &quot;../../../types&quot;
+import { CrudBaseDirective } from &quot;../../../Components/crud-base.directive&quot;
+
+@Component({
+  selector: &quot;app-add-employees&quot;,
+  standalone: true,
+  imports: [
+    FormBuilderComponent,
+    MatButtonModule,
+    RouterLink,
+    NgForOf,
+    ReactiveFormsModule,
+    NgOptimizedImage,
+    JsonPipe,
+    OverlayModule,
+  ],
+  templateUrl: &quot;./add-employees.component.html&quot;,
+  styleUrl: &quot;./add-employees.component.scss&quot;,
+})
+export class AddEmployeesComponent extends CrudBaseDirective&lt;Employee&gt; implements OnInit, AfterViewInit {
+  override baseUrl &#x3D; &quot;employees&quot;
+  controls &#x3D; new Map&lt;keyof Employee | string, CustomForm&lt;any&gt;&gt;()
+  imageUrl &#x3D;
+    &quot;https://static.vecteezy.com/system/resources/thumbnails/009/292/244/small/default-avatar-icon-of-social-media-user-vector.jpg&quot;
+
+  override changeVal(val: Employee) {
+    super.changeVal(val)
+    this.imageUrl &#x3D;
+      val.url_image ??
+      &quot;https://static.vecteezy.com/system/resources/thumbnails/009/292/244/small/default-avatar-icon-of-social-media-user-vector.jpg&quot;
+  }
+
+  ngAfterViewInit() {
+    this.userService.currUser.subscribe((usr) &#x3D;&gt; {
+      if (usr.role &#x3D;&#x3D; ROLE.manager) {
+        const control &#x3D; this.formBuilderComponent.form.get(&quot;department_id&quot;)
+        control?.disable()
+        control?.setValue(usr.department_id)
+        this.cdRef.detectChanges()
+      }
+    })
+  }
+
+  override ngOnInit() {
+    super.ngOnInit()
+
+    const selection &#x3D; new SelectForm({
+      order: 9,
+      key: &quot;department_id&quot;,
+      label: &quot;Department&quot;,
+      required: true,
+    })
+
+    this.dataService.getDataWithAuth&lt;Department[]&gt;(&#x60;${environment.apiUrl}/departments&#x60;).subscribe((val) &#x3D;&gt; {
+      selection.setOptions(
+        val.map((dep) &#x3D;&gt; {
+          return {
+            key: dep.id,
+            value: dep.name,
+          }
+        })
+      )
+    })
+    this.controls
+      .set(
+        &quot;personal&quot;,
+        new JustInfo({
+          order: 0,
+          key: &quot;personal_info&quot;,
+          width: &quot;100%&quot;,
+          label: &quot;Personal Information&quot;,
+          subtext: &quot;Add your personal information&quot;,
+        })
+      )
+      .set(
+        &quot;url_image&quot;,
+        new TextForm({
+          order: -1,
+          key: &quot;url_image&quot;,
+          label: &quot;Image Profile&quot;,
+        })
+      )
+      .set(
+        &quot;first_name&quot;,
+        new TextForm({
+          order: 1,
+          key: &quot;first_name&quot;,
+          label: &quot;First Name&quot;,
+          required: true,
+        })
+      )
+      .set(
+        &quot;last_name&quot;,
+        new TextForm({
+          order: 2,
+          key: &quot;last_name&quot;,
+          label: &quot;Lastname&quot;,
+          required: true,
+        })
+      )
+      .set(
+        &quot;email&quot;,
+        new EmailQuestion({
+          order: 7,
+          key: &quot;email&quot;,
+          label: &quot;Email&quot;,
+          required: true,
+        })
+      )
+      .set(
+        &quot;date_of_birth&quot;,
+        new DateQuestion({
+          order: 6,
+          key: &quot;date_of_birth&quot;,
+          label: &quot;Date of Birth&quot;,
+          required: true,
+        })
+      )
+      .set(
+        &quot;address&quot;,
+        new TextForm({
+          key: &quot;address&quot;,
+          label: &quot;Address&quot;,
+          order: 5,
+        })
+      )
+      .set(
+        &quot;dep_info&quot;,
+        new JustInfo({
+          order: 8,
+          key: &quot;dep_info&quot;,
+          width: &quot;100%&quot;,
+          label: &quot;Assign to department&quot;,
+          subtext: &quot;Add your personal information. You can assign later&quot;,
+        })
+      )
+      .set(
+        &quot;role&quot;,
+        new SelectForm({
+          label: &quot;Role&quot;,
+          key: &quot;role&quot;,
+          required: true,
+          options: [
+            { key: 1, value: &quot;Manager&quot; },
+            { key: 2, value: &quot;Employee&quot; },
+          ],
+          order: 4,
+        })
+      )
+      .set(
+        &quot;password&quot;,
+        new TextForm({
+          label: &quot;Password&quot;,
+          key: &quot;password&quot;,
+          required: true,
+          order: 3,
+        })
+      )
+      .set(&quot;department_id&quot;, selection)
+  }
+}
+</code></pre>
+    </div>
+
+    <div class="tab-pane fade " id="templateData">
+        <pre class="line-numbers"><code class="language-html">&lt;div class&#x3D;&quot;max-w-3xl m-auto my-10&quot;&gt;
+	&lt;div&gt;
+		&lt;a routerLink&#x3D;&quot;../&quot;&gt;
+			&lt;button class&#x3D;&quot;button-btn bg-white&quot;&gt;back to the list&lt;/button&gt;
+		&lt;/a&gt;
+	&lt;/div&gt;
+
+	&lt;div class&#x3D;&quot;border border-gray-300 rounded-2xl bg-white&quot;&gt;
+		&lt;div class&#x3D;&quot;p-5 flex&quot;&gt;
+			&lt;div&gt;
+				&lt;h1 class&#x3D;&quot;good-title&quot;&gt;Employee&lt;/h1&gt;
+				&lt;p class&#x3D;&quot;text-gray-600 text-sm&quot;&gt;Here you can manage the employee&lt;/p&gt;
+			&lt;/div&gt;
+			&lt;div class&#x3D;&quot;ml-auto&quot;&gt;
+
+        &lt;span class&#x3D;&quot;text-green-600 mx-2 font-medium transition-all&quot;
+              [style.opacity]&#x3D;&quot;showSaved&quot;&gt;Saved ✅&lt;/span&gt;
+				@if (!isNew) {
+					&lt;button (click)&#x3D;&quot;deleteEmployee()&quot;
+					        class&#x3D;&quot;button-btn bg-red-500 text-white mx-2&quot;&gt;Delete
+					&lt;/button&gt;
+				}
+				&lt;button (click)&#x3D;&quot;handleFormSubmit()&quot;
+				        [disabled]&#x3D;&quot;!isValid&quot;
+				        class&#x3D;&quot;button-btn bg-blue-500 text-white disabled:bg-gray-300 transition-all&quot;&gt;Save
+				&lt;/button&gt;
+			&lt;/div&gt;
+		&lt;/div&gt;
+
+		&lt;hr&gt;
+
+		&lt;div class&#x3D;&quot;p-5&quot;&gt;
+			&lt;div class&#x3D;&quot;aspect-square h-24 rounded-full overflow-hidden w-fit mb-5&quot;&gt;
+				&lt;img
+          #imageElement
+					alt&#x3D;&quot;&quot;
+					fill&#x3D;&quot;fill&quot;
+					ngSrc&#x3D;&quot;{{imageUrl}}&quot;
+					priority&#x3D;&quot;&quot; sizes&#x3D;&quot;auto&quot; style&#x3D;&quot;position: relative; width: auto&quot;&gt;
+			&lt;/div&gt;
+
+
+			&lt;app-form-builder (formChange)&#x3D;&quot;changeVal($event)&quot; [controls]&#x3D;&quot;controls&quot;&gt;&lt;/app-form-builder&gt;
+
+
+		&lt;/div&gt;
+
+
+	&lt;/div&gt;
+
+&lt;/div&gt;
+
+</code></pre>
+    </div>
+
+
+    <div class="tab-pane fade " id="tree">
+        <div id="tree-container"></div>
+        <div class="tree-legend">
+            <div class="title">
+                <b>Legend</b>
+            </div>
+            <div>
+                <div class="color htmlelement"></div><span>Html element</span>
+            </div>
+            <div>
+                <div class="color component"></div><span>Component</span>
+            </div>
+            <div>
+                <div class="color directive"></div><span>Html element with directive</span>
+            </div>
+        </div>
+    </div>
+
+    
+</div>
+
+<script src="../js/libs/vis.min.js"></script>
+<script src="../js/libs/htmlparser.js"></script>
+<script src="../js/libs/deep-iterator.js"></script>
+<script>
+        var COMPONENT_TEMPLATE = '<div><div class="max-w-3xl m-auto my-10">	<div>		<a routerLink="../">			<button class="button-btn bg-white">back to the list</button>		</a>	</div>	<div class="border border-gray-300 rounded-2xl bg-white">		<div class="p-5 flex">			<div>				<h1 class="good-title">Employee</h1>				<p class="text-gray-600 text-sm">Here you can manage the employee</p>			</div>			<div class="ml-auto">        <span class="text-green-600 mx-2 font-medium transition-all"              [style.opacity]="showSaved">Saved ✅</span>				@if (!isNew) {					<button (click)="deleteEmployee()"					        class="button-btn bg-red-500 text-white mx-2">Delete					</button>				}				<button (click)="handleFormSubmit()"				        [disabled]="!isValid"				        class="button-btn bg-blue-500 text-white disabled:bg-gray-300 transition-all">Save				</button>			</div>		</div>		<hr>		<div class="p-5">			<div class="aspect-square h-24 rounded-full overflow-hidden w-fit mb-5">				<img          #imageElement					alt=""					fill="fill"					ngSrc="{{imageUrl}}"					priority="" sizes="auto" style="position: relative; width: auto">			</div>			<app-form-builder (formChange)="changeVal($event)" [controls]="controls"></app-form-builder>		</div>	</div></div></div>'
+    var COMPONENTS = [{'name': 'AddEmployeesComponent', 'selector': 'app-add-employees'},{'name': 'AddProjectComponent', 'selector': 'app-add-project'},{'name': 'AppComponent', 'selector': 'app-root'},{'name': 'BenefitsComponent', 'selector': 'app-benefits'},{'name': 'ConfirmationDialogComponent', 'selector': 'app-confirmation-dialog'},{'name': 'ContractsComponent', 'selector': 'app-contracts'},{'name': 'CustomTableComponent', 'selector': 'app-custom-table'},{'name': 'DepartmentsComponent', 'selector': 'app-departments'},{'name': 'EmployeeTableComponent', 'selector': 'app-employee-table'},{'name': 'FormBuilderComponent', 'selector': 'app-form-builder'},{'name': 'GenericTableComponent', 'selector': 'app-generic-table'},{'name': 'ItemsMenuComponent', 'selector': 'app-items-menu'},{'name': 'LayoutComponent', 'selector': 'app-layout'},{'name': 'LayoutSingleComponent', 'selector': 'app-layout-single'},{'name': 'LoggedHomeComponent', 'selector': 'app-logged-home'},{'name': 'LoginComponent', 'selector': 'app-login'},{'name': 'PositionsComponent', 'selector': 'app-positions'},{'name': 'PositionSingleComponent', 'selector': 'app-position-single'},{'name': 'ProjectComponent', 'selector': 'app-project'},{'name': 'SingleBenefitComponent', 'selector': 'app-single-benefit'},{'name': 'TableBuilderComponent', 'selector': 'app-table-builder'},{'name': 'UtentiComponent', 'selector': 'app-utenti'},{'name': 'ViewDepartmentComponent', 'selector': 'app-view-department'}];
+    var DIRECTIVES = [{'name': 'CrudBaseDirective', 'selector': ''}];
+    var ACTUAL_COMPONENT = {'name': 'AddEmployeesComponent'};
+</script>
+<script src="../js/tree.js"></script>
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+                   </div><div class="search-results">
+    <div class="has-results">
+        <h1 class="search-results-title"><span class='search-results-count'></span> results matching "<span class='search-query'></span>"</h1>
+        <ul class="search-results-list"></ul>
+    </div>
+    <div class="no-results">
+        <h1 class="search-results-title">No results matching "<span class='search-query'></span>"</h1>
+    </div>
+</div>
+</div>
+               <!-- END CONTENT -->
+           </div>
+       </div>
+
+          <label class="dark-mode-switch">
+               <input type="checkbox">
+               <span class="slider">
+                    <svg class="slider-icon" viewBox="0 0 24 24" fill="none" height="20" stroke="#000" stroke-linecap="round" stroke-linejoin="round" stroke-width="2" width="20" xmlns="http://www.w3.org/2000/svg">
+                    <path d="M21 12.79A9 9 0 1111.21 3 7 7 0 0021 12.79z"></path>
+                    </svg>
+               </span>
+          </label>
+
+       <script>
+            var COMPODOC_CURRENT_PAGE_DEPTH = 1;
+            var COMPODOC_CURRENT_PAGE_CONTEXT = 'component';
+            var COMPODOC_CURRENT_PAGE_URL = 'AddEmployeesComponent.html';
+            var MAX_SEARCH_RESULTS = 15;
+       </script>
+
+       <script src="../js/libs/custom-elements.min.js"></script>
+       <script src="../js/libs/lit-html.js"></script>
+
+       <script src="../js/menu-wc.js" defer></script>
+       <script nomodule src="../js/menu-wc_es5.js" defer></script>
+
+       <script src="../js/libs/bootstrap-native.js"></script>
+
+       <script src="../js/libs/es6-shim.min.js"></script>
+       <script src="../js/libs/EventDispatcher.js"></script>
+       <script src="../js/libs/promise.min.js"></script>
+       <script src="../js/libs/zepto.min.js"></script>
+
+       <script src="../js/compodoc.js"></script>
+
+       <script src="../js/tabs.js"></script>
+       <script src="../js/menu.js"></script>
+       <script src="../js/libs/clipboard.min.js"></script>
+       <script src="../js/libs/prism.js"></script>
+       <script src="../js/sourceCode.js"></script>
+          <script src="../js/search/search.js"></script>
+          <script src="../js/search/lunr.min.js"></script>
+          <script src="../js/search/search-lunr.js"></script>
+          <script src="../js/search/search_index.js"></script>
+       <script src="../js/lazy-load-graphs.js"></script>
+
+
+    </body>
+</html>
