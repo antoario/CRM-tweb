@@ -19,12 +19,11 @@ public class DepartmentsManager extends BaseManager<Department> {
         return new Department(
                 rs.getInt("id"),
                 rs.getString("name"),
-                rs.getString("description"),
-                rs.getInt("manager_id"));
+                rs.getString("description"));
     }
 
     protected String getAddEntityQuery() {
-        return "INSERT INTO departments (name, description, manager_id) VALUES (?, ?, ?)";
+        return "INSERT INTO departments (name, description) VALUES (?, ?)";
     }
 
     @Override
@@ -62,12 +61,10 @@ public class DepartmentsManager extends BaseManager<Department> {
         }
         String name = (String) params.get("name");
         String description = (String) params.get("description");
-        int manager = (int) ((Double) params.get("manager_id")).doubleValue();
 
         return Arrays.asList(
                 name,
                 description,
-                manager,
                 id
         );
     }
