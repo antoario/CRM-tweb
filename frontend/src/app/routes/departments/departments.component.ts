@@ -59,9 +59,10 @@ export class DepartmentsComponent implements OnInit {
         concatWith(
           this.userService.currUser.pipe(
             map((usr) => {
-              if (usr.role == ROLE.manager)
-                this.departments = tempDep.filter((dep) => dep.manager_id == usr.id)
+              if (usr.role == ROLE.manager) console.log()
+              // this.departments = tempDep.filter((dep) => dep.manager_id == usr.id)
               else this.departments = tempDep
+              this.departments = tempDep
             })
           )
         )

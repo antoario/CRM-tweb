@@ -4,7 +4,6 @@ export interface Department {
   id: string
   name: string
   description: string
-  manager_id: number
 }
 
 export interface Employee {

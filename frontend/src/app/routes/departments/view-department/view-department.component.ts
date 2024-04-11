@@ -20,25 +20,6 @@ export class ViewDepartmentComponent extends CrudBaseDirective<Department> imple
   override ngOnInit(): void {
     super.ngOnInit()
 
-    const selectionForm = new SelectForm({
-      key: "manager_id",
-      required: true,
-      order: 2,
-      label: "Manager",
-    })
-
-    this.dataService.getDataWithAuth<Employee[]>(`${environment.apiUrl}/employees`).subscribe((val) => {
-      const arr = val
-        .filter((emp) => emp.role == 1)
-        .map((emp) => {
-          return {
-            key: emp.id,
-            value: `${emp.first_name} ${emp.last_name}`,
-          }
-        })
-      selectionForm.setOptions(arr)
-    })
-
     this.departments
       .set(
         "description",
@@ -59,7 +40,6 @@ export class ViewDepartmentComponent extends CrudBaseDirective<Department> imple
           order: 1,
         })
       )
-      .set("manager_id", selectionForm)
   }
 
   override baseUrl = "departments"
