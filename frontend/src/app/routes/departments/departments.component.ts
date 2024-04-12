@@ -8,8 +8,10 @@ import { CdkCell, CdkCellDef, CdkHeaderCell, CdkTableModule } from "@angular/cdk
 import { RouterLink } from "@angular/router"
 import { CustomTableComponent } from "../../Components/custom-table/custom-table.component"
 import { UserService } from "../../Services/user.service"
-import { concatWith, map } from "rxjs"
+import { concatWith, map, switchMap } from "rxjs"
 import { ROLE } from "../../types"
+import { DataService } from "../../Services/data.service"
+import { environment } from "../../../environments/environment"
 
 @Component({
   selector: "app-departments",
@@ -44,28 +46,25 @@ export class DepartmentsComponent implements OnInit {
 
   constructor(
     public compData: CompanyDataService,
-    private userService: UserService
+    private userService: UserService,
+    private dataService: DataService
   ) {}
 
   ngOnInit() {
-    let tempDep: Department[] = []
-
-    this.compData
-      .getDepartments()
+    this.userService.currUser
       .pipe(
-        map((val) => {
-          tempDep = Array.from(val.entries()).map(([, val]) => val)
+        switchMap((val) => {
+          if (val.role == ROLE.manager) {
+            return this.dataService.getDataWithAuth<Department[]>(
+              `${environment.apiUrl}/departments?id=${val.role}`
+            )
+          }
+          return this.dataService.getDataWithAuth<Department[]>(`${environment.apiUrl}/departments`)
         }),
-        concatWith(
-          this.userService.currUser.pipe(
-            map((usr) => {
-              if (usr.role == ROLE.manager) console.log()
-              // this.departments = tempDep.filter((dep) => dep.manager_id == usr.id)
-              else this.departments = tempDep
-              this.departments = tempDep
-            })
-          )
-        )
+        map((dep) => {
+          console.log(dep)
+          this.departments = dep
+        })
       )
       .subscribe()
   }

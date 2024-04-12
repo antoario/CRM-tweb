@@ -10,8 +10,11 @@ import { MatListModule } from "@angular/material/list"
 import { MatSidenavModule } from "@angular/material/sidenav"
 import { MatToolbarModule } from "@angular/material/toolbar"
 import { RouterLink, RouterOutlet } from "@angular/router"
-import { Employee } from "../../types/data"
+import { Benefit, Employee } from "../../types/data"
 import { ProjectComponent } from "../project/project.component"
+import { DataService } from "../../Services/data.service"
+import { environment } from "../../../environments/environment"
+import { concatWith, map, switchMap, tap } from "rxjs"
 
 @Component({
   selector: "app-logged-home",
@@ -34,13 +37,28 @@ import { ProjectComponent } from "../project/project.component"
 })
 export class LoggedHomeComponent implements OnInit {
   user: Employee | null = null
+  listBenefits: string[] = []
 
-  constructor(private userService: UserService) {}
+  constructor(
+    private userService: UserService,
+    private dataService: DataService
+  ) {}
 
   ngOnInit() {
-    this.userService.currUser.subscribe((usr) => {
-      if (usr) this.user = usr
-    })
+    this.userService.currUser
+      .pipe(
+        tap((usr) => {
+          if (usr) this.user = usr
+        }),
+        switchMap((usr) => {
+          return this.dataService.getDataWithAuth<Benefit[]>(`${environment.apiUrl}/benefits?role=${usr.id}`)
+        })
+      )
+      .subscribe((data) => {
+        console.log(data)
+        this.listBenefits = data.map((ben) => ben.description)
+        console.log(this.listBenefits)
+      })
   }
 
   protected readonly ROLE = ROLE

@@ -1,21 +1,29 @@
 @if (this.user) {
-	<app-layout-single>
-		<div title>
-			<span class="text-xl font-medium">Your information</span>
-		</div>
+  <app-layout-single>
+    <div title>
+      <span class="text-xl font-medium">Your information</span>
+    </div>
 
 
-		<img [src]="user?.url_image" alt="" class="rounded-full mb-5" style="width: 100px; height: auto;">
+    <img [src]="user?.url_image" alt="" class="rounded-full mb-5 w-[100px] h-auto">
 
-		<div class="flex flex-col gap-2">
-			<span>Role: <pre class="inline-pre">{{ ROLE[user!.role] }}</pre></span>
-			<span>Name: <span class="font-bold">{{ user!.first_name }}</span></span>
-			<span>Surname: <span class="font-bold">{{ user!.last_name }}</span></span>
-			@if (user!.role === ROLE.manager || user!.role === ROLE.employee) {
-				<span>Your Department id: <pre class="inline-pre">{{ user!.department_id }}</pre></span>
-			}
-		</div>
-	</app-layout-single>
+    <div class="flex flex-col gap-2">
+      <span>Role: <pre class="inline-pre">{{ ROLE[user!.role] }}</pre></span>
+      <span>Name: <span class="font-bold">{{ user!.first_name }}</span></span>
+      <span>Surname: <span class="font-bold">{{ user!.last_name }}</span></span>
+      @if (user!.role === ROLE.manager || user!.role === ROLE.employee) {
+        <span>Your Department id: <pre class="inline-pre">{{ user!.department_id }}</pre></span>
+      }
+      <div class="flex gap-2 align-middle items-center">
+        Benefits:
+        @for (item of listBenefits; track item) {
+          <span class="inline-pre">{{ item }}</span>
+        } @empty {
+          <span>No benefits for you :(</span>
+        }
+      </div>
+    </div>
+  </app-layout-single>
 
-	<app-project></app-project>
+  <app-project></app-project>
 }

@@ -33,7 +33,7 @@ public class DepartmentsManager extends BaseManager<Department> {
 
     @Override
     protected String getLoadAllManagerQuery() {
-        return "SELECT * FROM employees WHERE department_id = ?";
+        return "SELECT * FROM departments WHERE department_id = ?";
     }
 
     @Override
